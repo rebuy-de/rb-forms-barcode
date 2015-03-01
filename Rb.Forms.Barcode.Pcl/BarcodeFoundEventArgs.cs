@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Rb.Forms.Barcode
+namespace Rb.Forms.Barcode.Pcl
 {
    public sealed class BarcodeFoundEventArgs : EventArgs
    {

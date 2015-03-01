@@ -3,7 +3,7 @@ using System.ComponentModel;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
 
-using Rb.Forms.Barcode;
+using Rb.Forms.Barcode.Pcl;
 using Rb.Forms.Barcode.Droid;
 using Rb.Forms.Barcode.Droid.Camera;
 using Rb.Forms.Barcode.Droid.Decoder;
@@ -12,7 +12,6 @@ using Rb.Forms.Barcode.Droid.Logger;
 using Android.Views;
 
 [assembly: ExportRenderer(typeof(BarcodeScanner), typeof(BarcodeScannerRenderer))]
-
 namespace Rb.Forms.Barcode.Droid
 {
     public class BarcodeScannerRenderer : ViewRenderer<BarcodeScanner, SurfaceView>, ISurfaceHolderCallback, ILog
@@ -24,6 +23,10 @@ namespace Rb.Forms.Barcode.Droid
 
         private AutoFocusCallback autoFocus;
         private PreviewFrameCallback previewFrameCallback;
+
+        public static void Init()
+        {
+        }
 
         public void SurfaceCreated(ISurfaceHolder holder)
         {
