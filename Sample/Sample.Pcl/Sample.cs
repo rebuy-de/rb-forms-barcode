@@ -7,6 +7,10 @@ namespace Sample.Pcl
 {
     public class App : Application
     {
+        public const string MessageOnStart = "OnStart";
+        public const string MessageOnSleep = "OnSleep";
+        public const string MessageOnResume = "OnResume";
+
         public App()
         {
             // The root page of your application
@@ -15,17 +19,17 @@ namespace Sample.Pcl
 
         protected override void OnStart()
         {
-            // Handle when your app starts
+            MessagingCenter.Send<App>(this, MessageOnStart);
         }
 
         protected override void OnSleep()
         {
-            // Handle when your app sleeps
+            MessagingCenter.Send<App>(this, MessageOnSleep);
         }
 
         protected override void OnResume()
         {
-            // Handle when your app resumes
+            MessagingCenter.Send<App>(this, MessageOnResume);
         }
     }
 }
