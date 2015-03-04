@@ -3,9 +3,9 @@
 using Xamarin.Forms;
 using System.Diagnostics;
 
-namespace Rb.Forms.Barcode
+namespace Rb.Forms.Barcode.Pcl
 {
-   public class BarcodeScanner : View
+    public class BarcodeScanner : View
    {
         public static readonly BindableProperty BarcodeProperty =
             BindableProperty.Create<BarcodeScanner, String>(
