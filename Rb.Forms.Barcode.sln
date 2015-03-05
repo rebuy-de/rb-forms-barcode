@@ -9,6 +9,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample.Pcl", "Sample\Sample
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample.Droid", "Sample\Sample.Droid\Sample.Droid.csproj", "{6975FAE2-CDF6-414E-83F4-427D7737CDB7}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D5500AC5-81E1-483D-9094-02D937DA7C04}"
+	ProjectSection(SolutionItems) = preProject
+		Rb.Forms.Barcode.sln = Rb.Forms.Barcode.sln
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -85,5 +90,7 @@ Global
 		{F5DC210F-379A-44CA-8FEA-0F4586240525}.Release|iPhone.Build.0 = Release|Any CPU
 		{F5DC210F-379A-44CA-8FEA-0F4586240525}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
 		{F5DC210F-379A-44CA-8FEA-0F4586240525}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
 	EndGlobalSection
 EndGlobal
