@@ -10,7 +10,9 @@ It provides **continues scanning**, aims to give high control to the user  combi
 
 [Available via Nuget](https://www.nuget.org/packages/Rb.Forms.Barcode), full of awesomeness and also unicorns.
 
-**Please note** that the library is fairly new and only available as beta as we are missing some features like iOS or WindowsPhone support and more detailed controls.
+**Please note** that the library is fairly new and only available as beta as we are missing some features like iOS or WindowsPhone support and more detailed controls. Although the android version should be rock solid.
+
+We are very eager about your beta feedback, so do not hesitate to create an issue or feel free to improve our code via a contribution.
 
 ### Features
 
