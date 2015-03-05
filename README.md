@@ -8,7 +8,7 @@ While the decoding capabilities are powered by ZXing.Net.Mobile, the plugin is w
 
 It provides **continues scanning**, aims to give high control to the user  combined with high stability.
 
-Available via Nuget, full of awesomeness and also unicorns.
+[Available via Nuget](https://www.nuget.org/packages/Rb.Forms.Barcode), full of awesomeness and also unicorns.
 
 **Please note** that the library is fairly new and only available as beta as we are missing some features like iOS or WindowsPhone support and more detailed controls.
 
@@ -23,7 +23,7 @@ Available via Nuget, full of awesomeness and also unicorns.
 
 ## Setup
 
-1. Install the package via nuget into your PCL and platform specific projects.
+1. Install the [package via nuget](https://www.nuget.org/packages/Rb.Forms.Barcode) into your PCL and platform specific projects.
 2. Add the registration call `BarcodeScannerRenderer.Init();` to your platform specific Main class.  
 3. Use the new `BarcodeScanner` class in your c# or xaml code.
 
