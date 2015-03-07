@@ -42,8 +42,6 @@ BarcodeScannerRenderer.Init();
 
 1. Create an instance of the `BarcodeScanner` class. Dont forget to give it a height and width.
 2. Register an EventHandler for the `BarcodeScanner.BarcodeFound` event.
-3. ???
-4. Done
 
 The scanning kicks in as soon as the element is visible on screen and stops when the view is not visible or the page holding the element gets removed from the stack.
 
