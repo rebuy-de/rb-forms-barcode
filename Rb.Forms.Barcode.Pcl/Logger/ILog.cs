@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Rb.Forms.Barcode.Droid.Logger
+namespace Rb.Forms.Barcode.Pcl.Logger
 {
     public interface ILog
     {

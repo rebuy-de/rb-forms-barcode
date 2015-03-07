@@ -4,6 +4,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
 
 using Rb.Forms.Barcode.Pcl;
+using Rb.Forms.Barcode.Pcl.Logger;
 using Rb.Forms.Barcode.Droid;
 using Rb.Forms.Barcode.Droid.Camera;
 using Rb.Forms.Barcode.Droid.Decoder;

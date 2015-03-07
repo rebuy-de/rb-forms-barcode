@@ -68,7 +68,6 @@
     <Compile Include="Camera\CameraControl.cs" />
     <Compile Include="Camera\PreviewFrameCallback.cs" />
     <Compile Include="Decoder\BarcodeDecoder.cs" />
-    <Compile Include="Logger\ILog.cs" />
     <Compile Include="Logger\Log.cs" />
     <Compile Include="BarcodeScannerRenderer.cs" />
   </ItemGroup>
