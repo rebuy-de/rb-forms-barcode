@@ -14,7 +14,6 @@ namespace Sample.Droid
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
-
             Xamarin.Forms.Forms.Init(this, bundle);
 
             BarcodeScannerRenderer.Init();

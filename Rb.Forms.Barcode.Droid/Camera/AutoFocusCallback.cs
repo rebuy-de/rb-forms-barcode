@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Timers;
+using Rb.Forms.Barcode.Pcl.Logger;
 using Rb.Forms.Barcode.Droid.Logger;
 
 using Android.Hardware;

@@ -2,6 +2,7 @@
 
 using Xamarin.Forms;
 using Sample.Pcl.Pages;
+using System.Diagnostics;
 
 namespace Sample.Pcl
 {

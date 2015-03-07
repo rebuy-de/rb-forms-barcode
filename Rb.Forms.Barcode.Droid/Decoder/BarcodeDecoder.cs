@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Rb.Forms.Barcode.Pcl.Logger;
 using Rb.Forms.Barcode.Droid.Logger;
 using ZXing;
 using ZXing.Mobile;
