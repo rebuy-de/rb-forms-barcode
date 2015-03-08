@@ -5,6 +5,7 @@ using Android.OS;
 using Sample.Pcl;
 using Xamarin.Forms.Platform.Android;
 using Rb.Forms.Barcode.Droid;
+using Rb.Forms.Barcode.Droid.Decoder;
 
 namespace Sample.Droid
 {
@@ -15,6 +16,7 @@ namespace Sample.Droid
         {
             base.OnCreate(bundle);
             Xamarin.Forms.Forms.Init(this, bundle);
+
 
             BarcodeScannerRenderer.Init();
 

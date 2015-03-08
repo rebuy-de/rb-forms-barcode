@@ -1,6 +1,7 @@
 ﻿using System;
 using Rb.Forms.Barcode.Pcl;
 using Xamarin.Forms;
+using Rb.Forms.Barcode.Pcl.Decoder;
 
 namespace Sample.Pcl.Pages
 {
