@@ -2,6 +2,7 @@
 
 using Xamarin.Forms;
 using System.Diagnostics;
+using Rb.Forms.Barcode.Pcl.Decoder;
 
 namespace Rb.Forms.Barcode.Pcl
 {
@@ -18,6 +19,19 @@ namespace Rb.Forms.Barcode.Pcl
         }
 
         public event EventHandler<BarcodeFoundEventArgs> BarcodeFound;
+
+        public IDecoder Decoder {
+            get {
+                if (null == decoder) {
+                    decoder = new ZxingNetMobileDecoder();
+                }
+
+                return decoder;
+            }
+            set { decoder = (value); } 
+        }
+
+        private IDecoder decoder;
 
         public void RaiseBarcodeFoundEvent(String barcode)
         {

@@ -7,10 +7,10 @@ using Rb.Forms.Barcode.Pcl;
 using Rb.Forms.Barcode.Pcl.Logger;
 using Rb.Forms.Barcode.Droid;
 using Rb.Forms.Barcode.Droid.Camera;
-using Rb.Forms.Barcode.Droid.Decoder;
 using Rb.Forms.Barcode.Droid.Logger;
 
 using Android.Views;
+using Rb.Forms.Barcode.Droid.Decoder;
 
 [assembly: ExportRenderer(typeof(BarcodeScanner), typeof(BarcodeScannerRenderer))]
 namespace Rb.Forms.Barcode.Droid
@@ -18,7 +18,6 @@ namespace Rb.Forms.Barcode.Droid
     public class BarcodeScannerRenderer : ViewRenderer<BarcodeScanner, SurfaceView>, ISurfaceHolderCallback, ILog
     {
         private readonly CameraControl cameraControl = CameraControl.Instance;
-        private readonly BarcodeDecoder barcodeDecoder = new BarcodeDecoder();
         private ViewStates currentVisibility;
         private static bool reuseCamera;
 
@@ -77,7 +76,7 @@ namespace Rb.Forms.Barcode.Droid
                 SetNativeControl(surfaceView);
 
                 autoFocus = new AutoFocusCallback(cameraControl);
-                previewFrameCallback = new PreviewFrameCallback(barcodeDecoder, Element);
+                previewFrameCallback = new PreviewFrameCallback(Element);
             }
         }
 
@@ -144,7 +143,7 @@ namespace Rb.Forms.Barcode.Droid
                 return;
             }
 
-            barcodeDecoder.RefreshToken();
+            Element.Decoder.StartDecoding();
 
             try {
                 cameraControl.OpenCamera();
@@ -158,7 +157,7 @@ namespace Rb.Forms.Barcode.Droid
         private void releaseCamera()
         {
             try {
-                barcodeDecoder.CancelDecoding();
+                Element.Decoder.PauseDecoding();
                 cameraControl.ReleaseCamera();
                 autoFocus.Enabled = false;
 

@@ -5,18 +5,19 @@ using Rb.Forms.Barcode.Droid.Logger;
 using Rb.Forms.Barcode.Droid.Decoder;
 
 using AndroidCamera = Android.Hardware.Camera;
+using Rb.Forms.Barcode.Pcl.Decoder;
 
 #pragma warning disable 618
 namespace Rb.Forms.Barcode.Droid.Camera
 {
     public class PreviewFrameCallback : Java.Lang.Object, AndroidCamera.IPreviewCallback, ILog
     {
-        private readonly BarcodeDecoder barcodeDecoder;
+        private readonly IDecoder barcodeDecoder;
         private readonly BarcodeScanner scanner;
 
-        public PreviewFrameCallback(BarcodeDecoder decoder, BarcodeScanner scanner)
+        public PreviewFrameCallback(BarcodeScanner scanner)
         {
-            barcodeDecoder = decoder;
+            barcodeDecoder = scanner.Decoder;
             this.scanner = scanner;
         }
 
