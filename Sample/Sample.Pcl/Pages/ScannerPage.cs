@@ -1,6 +1,7 @@
 ﻿using System;
 using Rb.Forms.Barcode.Pcl;
 using Xamarin.Forms;
+using System.Diagnostics;
 
 namespace Sample.Pcl.Pages
 {
@@ -34,9 +35,19 @@ namespace Sample.Pcl.Pages
             /**
              * Event that gets executed as soon as a barcode is detected.
              */
-            barcodeScanner.BarcodeFound += (object sender, BarcodeFoundEventArgs e) => {
+            barcodeScanner.BarcodeChanged += (object sender, BarcodeFoundEventArgs e) => {
                 flashScreenAsync(sender, e);
                 result.Text = String.Format("Last Barcode: {0}", e.Barcode);
+            };
+            
+            barcodeScanner.BarcodeDecoded += (sender, e) => {
+                Debug.WriteLine("Read barcode [{0}]", e.Barcode);
+            };
+            barcodeScanner.CameraOpened += (sender, e) => {
+                Debug.WriteLine("ScannerAvailable");
+            };
+            barcodeScanner.CameraReleased += (sender, e) => {
+                Debug.WriteLine("ScannerUnavailable");
             };
 
             /**
@@ -91,6 +102,27 @@ namespace Sample.Pcl.Pages
                 Text = "Hold the scanner above a barcode, wait for the autofocus and see its magic!",
                 XAlign = TextAlignment.Center
             });
+
+            var b = new Button {
+                Text = "Toggle preview state."
+            };
+
+            b.Clicked += (sender, e) => {
+                barcodeScanner.PreviewActive = !barcodeScanner.PreviewActive;
+            };
+
+            stackLayout.Children.Add(b);
+
+
+            var br = new Button {
+                Text = "Toggle barcode decoder."
+            };
+
+            br.Clicked += (sender, e) => {
+                barcodeScanner.BarcodeDecoder = !barcodeScanner.BarcodeDecoder;
+            };
+
+            stackLayout.Children.Add(br);
 
             relativeLayout.Children.Add(
                 stackLayout,

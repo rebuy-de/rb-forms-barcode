@@ -20,23 +20,36 @@ namespace Rb.Forms.Barcode.Droid.Camera
             this.Debug("Focus Mode [{0}]", focusMode);
             parameters.FocusMode = focusMode;
 
-            var sceneMode = determineSceneMode(camera);
-            this.Debug("Scene Mode [{0}]", sceneMode);
-            parameters.SceneMode = sceneMode;
 
-            this.Debug("Metering area [{0}]", (parameters.MaxNumMeteringAreas > 0).ToString());
-            if (parameters.MaxNumMeteringAreas > 0) {
-                parameters.MeteringAreas = createAreas();
+            if (isPickyDevice()) {
+                this.Debug("Used device is marked as picky. Skipping detailed configuration to ensure function compatibility.");
             }
 
-            this.Debug("Video stabilization [{0}]", parameters.IsVideoStabilizationSupported.ToString());
-            if (parameters.IsVideoStabilizationSupported) {
-                parameters.VideoStabilization = true;
-            }
+            if (!isPickyDevice()) {
+                var sceneMode = determineSceneMode(camera);
+                this.Debug("Scene Mode [{0}]", sceneMode);
+                parameters.SceneMode = sceneMode;
 
-            var whiteBalance = determineWhiteBalance(camera);
-            this.Debug("White balance [{0}]", whiteBalance);
-            parameters.WhiteBalance = whiteBalance;
+                this.Debug("Metering area [{0}]", (parameters.MaxNumMeteringAreas > 0).ToString());
+                if (parameters.MaxNumMeteringAreas > 0) {
+                    parameters.MeteringAreas = createAreas();
+                }
+
+                this.Debug("Focusing area [{0}]", (parameters.MaxNumFocusAreas > 0).ToString());
+                if (parameters.MaxNumFocusAreas > 0) {
+                    parameters.FocusAreas = createAreas();
+                }
+
+                this.Debug("Video stabilization [{0}]", parameters.IsVideoStabilizationSupported.ToString());
+                if (parameters.IsVideoStabilizationSupported) {
+                    parameters.VideoStabilization = true;
+                }
+
+                var whiteBalance = determineWhiteBalance(camera);
+                this.Debug("White balance [{0}]", whiteBalance);
+                parameters.WhiteBalance = whiteBalance;
+
+            }
 
             camera.SetParameters(parameters);
 
@@ -91,6 +104,11 @@ namespace Rb.Forms.Barcode.Droid.Camera
             return new List<AndroidCamera.Area>() {
                 area
             };
+        }
+
+        private bool isPickyDevice()
+        {
+            return Android.OS.Build.Manufacturer.Contains("samsung");
         }
     }
 }

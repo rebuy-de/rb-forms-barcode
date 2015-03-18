@@ -34,6 +34,10 @@ namespace Rb.Forms.Barcode.Droid.Decoder
                 return null;
             }
 
+            if (cancellationTokenSource.IsCancellationRequested) {
+                return null;
+            }
+
             lastPreviewScanAnalysis = DateTime.UtcNow;
 
             currentTask = Task.Run(() => {

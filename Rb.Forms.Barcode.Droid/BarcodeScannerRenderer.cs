@@ -5,6 +5,7 @@ using Xamarin.Forms.Platform.Android;
 
 using Rb.Forms.Barcode.Pcl;
 using Rb.Forms.Barcode.Pcl.Logger;
+using Rb.Forms.Barcode.Pcl.Extensions;
 using Rb.Forms.Barcode.Droid;
 using Rb.Forms.Barcode.Droid.Camera;
 using Rb.Forms.Barcode.Droid.Decoder;
@@ -101,6 +102,32 @@ namespace Rb.Forms.Barcode.Droid
                     releaseCamera();
                 }
             }
+
+            if (e.PropertyName == BarcodeScanner.PreviewActiveProperty.PropertyName) 
+            {
+                this.Debug("ScannerActive [{0}]", Element.PreviewActive);
+
+                if (Element.PreviewActive) {
+                    startPreview();
+                } 
+
+                if (!Element.PreviewActive) {
+                    haltPreview();
+                }
+            }
+
+            if (e.PropertyName == BarcodeScanner.BarcodeDecoderProperty.PropertyName) 
+            {
+                this.Debug("Decoder state [{0}]", Element.BarcodeDecoder);
+
+                if (Element.BarcodeDecoder) {
+                    barcodeDecoder.RefreshToken();
+                } 
+
+                if (!Element.BarcodeDecoder) {
+                    barcodeDecoder.CancelDecoding();
+                }
+            }
         }
 
         protected override void OnVisibilityChanged(global::Android.Views.View view, ViewStates visibility)
@@ -145,10 +172,13 @@ namespace Rb.Forms.Barcode.Droid
             }
 
             barcodeDecoder.RefreshToken();
+            Element.BarcodeDecoder = true;
 
             try {
                 cameraControl.OpenCamera();
                 cameraControl.AssignPreview(Control.Holder);
+
+                Element.OnCameraOpened();
             } catch (Exception ex) {
                 this.Debug("Unable to open camera");
                 this.Debug(ex.ToString());
@@ -159,10 +189,13 @@ namespace Rb.Forms.Barcode.Droid
         {
             try {
                 barcodeDecoder.CancelDecoding();
+                Element.BarcodeDecoder = false;
+
                 cameraControl.ReleaseCamera();
                 autoFocus.Enabled = false;
 
                 BarcodeScannerRenderer.reuseCamera = false;
+                Element.OnCameraReleased();
             } catch (Exception ex) {
                 this.Debug("Unable to release camera");
                 this.Debug(ex.ToString());
@@ -184,12 +217,16 @@ namespace Rb.Forms.Barcode.Droid
             if (cameraControl.AutoFocusMode) {
                 cameraControl.AutoFocus(autoFocus);
             }
+
+            Element.PreviewActive = true;
         }
 
         private void haltPreview()
         {
             autoFocus.Enabled = false;
             cameraControl.HaltPreview();
+
+            Element.PreviewActive = false;
         }
     }
 }
