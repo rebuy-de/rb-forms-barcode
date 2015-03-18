@@ -23,7 +23,10 @@ namespace Rb.Forms.Barcode.Pcl
         public String Barcode
         {
             get { return (String) GetValue(BarcodeProperty); }
-            set { SetValue(BarcodeProperty, value); OnBarcodeRead(value); }
+            set {
+                SetValue(BarcodeProperty, value);
+                OnBarcodeDecoded(value);
+            }
         }
 
         /// <summary>
@@ -67,12 +70,12 @@ namespace Rb.Forms.Barcode.Pcl
         /// <summary>
         /// Occurs only when the barcode text changes.
         /// </summary>
-        public event EventHandler<BarcodeFoundEventArgs> BarcodeChanged;
+        public event EventHandler<BarcodeEventArgs> BarcodeChanged;
 
         /// <summary>
         /// Occurs every time when a barcode is decoded from the preview, even if the value is the same as the previews one.
         /// </summary>
-        public event EventHandler<BarcodeReadEventArgs> BarcodeDecoded;
+        public event EventHandler<BarcodeEventArgs> BarcodeDecoded;
 
         /// <summary>
         /// Occurs as soon as the surfaces starts previewing.
@@ -109,14 +112,14 @@ namespace Rb.Forms.Barcode.Pcl
             Debug.WriteLine("[ScannerView] OnBarcodeChanged [{0}]", newBarcode, null);
             var b = (BarcodeScanner) bindable;
 
-            b.BarcodeChanged.Raise(b, new BarcodeFoundEventArgs(newBarcode));
+            b.BarcodeChanged.Raise(b, new BarcodeEventArgs(newBarcode));
         }
 
-        private void OnBarcodeRead(String barcode)
+        private void OnBarcodeDecoded(String barcode)
         {
-            Debug.WriteLine("[ScannerView] OnBarcodeRead [{0}]", barcode, null);
+            Debug.WriteLine("[ScannerView] OnBarcodeDecoded [{0}]", barcode, null);
 
-            BarcodeDecoded.Raise(this, new BarcodeReadEventArgs(barcode));
+            BarcodeDecoded.Raise(this, new BarcodeEventArgs(barcode));
         }
 
         private static void OnPreviewActiveChanged(BindableObject bindable, bool oldState, bool newState)

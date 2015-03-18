@@ -16,7 +16,6 @@ namespace Rb.Forms.Barcode.Pcl.Extensions
             if (handler != null)  {
                 handler(sender, args);
             }
-
         }
     }
 }

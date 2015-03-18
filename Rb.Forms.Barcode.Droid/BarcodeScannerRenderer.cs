@@ -12,6 +12,7 @@ using Rb.Forms.Barcode.Droid.Decoder;
 using Rb.Forms.Barcode.Droid.Logger;
 
 using Android.Views;
+using System.Threading.Tasks;
 
 [assembly: ExportRenderer(typeof(BarcodeScanner), typeof(BarcodeScannerRenderer))]
 namespace Rb.Forms.Barcode.Droid
@@ -32,6 +33,10 @@ namespace Rb.Forms.Barcode.Droid
 
         public void SurfaceCreated(ISurfaceHolder holder)
         {
+            if (!Element.IsEnabled) {
+                return;
+            }
+
             this.Debug("SurfaceCreated");
 
             if (cameraControl.CameraOpen) {
@@ -44,6 +49,10 @@ namespace Rb.Forms.Barcode.Droid
 
         public void SurfaceChanged(ISurfaceHolder holder, global::Android.Graphics.Format format, int width, int height)
         {
+            if (!Element.IsEnabled) {
+                return;
+            }
+
             this.Debug("SurfaceChanged");
 
             try {

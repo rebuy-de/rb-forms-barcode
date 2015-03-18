@@ -48,7 +48,6 @@ namespace Rb.Forms.Barcode.Droid.Camera
                 var whiteBalance = determineWhiteBalance(camera);
                 this.Debug("White balance [{0}]", whiteBalance);
                 parameters.WhiteBalance = whiteBalance;
-
             }
 
             camera.SetParameters(parameters);
