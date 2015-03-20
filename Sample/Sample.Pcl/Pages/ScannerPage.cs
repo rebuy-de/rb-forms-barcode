@@ -1,6 +1,9 @@
 ﻿using System;
 using Rb.Forms.Barcode.Pcl;
 using Xamarin.Forms;
+using System.Diagnostics;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace Sample.Pcl.Pages
 {
@@ -34,9 +37,13 @@ namespace Sample.Pcl.Pages
             /**
              * Event that gets executed as soon as a barcode is detected.
              */
-            barcodeScanner.BarcodeFound += (object sender, BarcodeFoundEventArgs e) => {
+            barcodeScanner.BarcodeChanged += (object sender, BarcodeEventArgs e) => {
                 flashScreenAsync(sender, e);
                 result.Text = String.Format("Last Barcode: {0}", e.Barcode);
+            };
+            
+            barcodeScanner.BarcodeDecoded += (sender, e) => {
+                Debug.WriteLine("Decoded barcode [{0}]", e.Barcode);
             };
 
             /**
@@ -50,9 +57,7 @@ namespace Sample.Pcl.Pages
 
         private View createViewLayout()
         {
-            /**
-             * Add the scanner itself to the view.
-             */
+
             addExpandingViewToRelativeLayout(barcodeScanner);
 
             /**
@@ -66,8 +71,8 @@ namespace Sample.Pcl.Pages
             relativeLayout.Children.Add(
                 zeLine,
                 widthConstraint: Constraint.RelativeToParent ((parent) => { return parent.Width - 100; }),
-                yConstraint: Constraint.RelativeToParent ((parent) => { return parent.Height / 2; }),
-                xConstraint: Constraint.RelativeToParent ((parent) => { return 50; })
+                xConstraint: Constraint.RelativeToParent ((parent) => { return 50; }),
+                yConstraint: Constraint.RelativeToParent ((parent) => { return parent.Height / 2; })
             );
 
             /**
@@ -92,10 +97,14 @@ namespace Sample.Pcl.Pages
                 XAlign = TextAlignment.Center
             });
 
+
             relativeLayout.Children.Add(
                 stackLayout,
                 Constraint.RelativeToParent ((parent) => { return 0; })
             );
+
+
+            addControlsToRelativeLayout();
 
             return relativeLayout;
         }
@@ -120,6 +129,40 @@ namespace Sample.Pcl.Pages
                 view,
                 widthConstraint: Constraint.RelativeToParent ((parent) => { return parent.Width; }),
                 heightConstraint: Constraint.RelativeToParent ((parent) => { return parent.Height; })
+            );
+        }
+
+        private void addControlsToRelativeLayout()
+        {
+            var controls = new StackLayout {
+                Orientation = StackOrientation.Horizontal
+            };
+
+            var preview = new Button {
+                Text = "Toggle preview",
+                FontSize = 12
+            };
+
+            var decoder = new Button {
+                Text = "Toggle decoder",
+                FontSize = 12
+            };
+
+            preview.Clicked += (sender, e) => {
+                barcodeScanner.PreviewActive = !barcodeScanner.PreviewActive;
+            };
+
+            decoder.Clicked += (sender, e) => {
+                barcodeScanner.BarcodeDecoder = !barcodeScanner.BarcodeDecoder;
+            };
+
+            controls.Children.Add(preview);
+            controls.Children.Add(decoder);
+
+            relativeLayout.Children.Add(
+                controls,
+                widthConstraint: Constraint.RelativeToParent ((parent) => { return parent.Width; }),
+                yConstraint: Constraint.RelativeToParent ((parent) => { return parent.Height - 60; })
             );
         }
 

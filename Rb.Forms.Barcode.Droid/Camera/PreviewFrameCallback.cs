@@ -32,7 +32,7 @@ namespace Rb.Forms.Barcode.Droid.Camera
             var barcode = await decoder;
 
             if (!string.IsNullOrWhiteSpace(barcode)) {
-                scanner.RaiseBarcodeFoundEvent(barcode);
+                scanner.Barcode = barcode;
             }
         }
     }

@@ -51,9 +51,16 @@ You can enable or disable the scanner and preview using the `BarcodeScanner.IsEn
 
 What | Type | Description
 ---- | ---- | -----------
-`BarcodeScanner.BarcodeFound` | EventHandler | The event gets raised when a barcode was found and decoded. Use this to start of your custom logic.
-`BarcodeScanner.IsEnabled` | Property | If `true` opens the camera and starts the preview. If `false` stops the preview and releases the camera.
-`BarcodeScanner.Barcode` | Property | A bindable property that holds the value of the last found barcode.
+`BarcodeScanner.BarcodeChanged` | EventHandler | Raised only when the barcode text changes.
+`BarcodeScanner.BarcodeDecoded` | EventHandler | Raised every time when a barcode is decoded from the preview, even if the value is the same as the previews one.
+`BarcodeScanner.PreviewActivated` | EventHandler | Raised after the preview image gets active.
+`BarcodeScanner.PreviewDeactivated` | EventHandler | Raised after the preview image gets deactivated.
+`BarcodeScanner.CameraOpened` | EventHandler | Raised after the camera was obtained.
+`BarcodeScanner.CameraReleased` | EventHandler | Raised after the camera was released.
+`BarcodeScanner.Barcode` | Property | Holds the value of the last found barcode.
+`BarcodeScanner.IsEnabled` | Property | If `true` opens the camera and activates the preview. `false` deactivates the preview and releases the camera.
+`BarcodeScanner.PreviewActive` | Property | If `true` the preview image gets updated. `false` no preview for you!
+`BarcodeScanner.BarcodeDecoder` | Property | If `true` the decoder is active and tries to decode barcodes out of the image. `false` turns the decoder off, the preview is still active but barcodes will not be decoded.
 
 ### Debugging
 
