@@ -71,8 +71,10 @@ namespace Sample.Pcl.Pages
 
         private void gotoScanner(Object sender, EventArgs e)
         {
-            Detail.Navigation.PopToRootAsync();
-            Detail.Navigation.PushAsync(new ScannerPage());
+//            Detail.Navigation.PopToRootAsync();
+//            Detail.Navigation.PushAsync(new ScannerPage());
+
+            Detail.Navigation.PushAndRemovePrevious(new ScannerPage(), 1);
             IsPresented = false;
         }
 

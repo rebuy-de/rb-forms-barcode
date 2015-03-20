@@ -22,7 +22,7 @@ namespace Rb.Forms.Barcode.Droid.Camera
             }
         }
 
-        public AutoFocusCallback(CameraControl cameraControl)
+        public AutoFocusCallback(ScannerCamera cameraControl)
         {
             timer = new Timer() {
                 Interval = 400,

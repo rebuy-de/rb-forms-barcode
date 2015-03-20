@@ -4,6 +4,7 @@ using Xamarin.Forms;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Threading;
+using Sample.Pcl;
 
 namespace Sample.Pcl.Pages
 {
@@ -102,7 +103,6 @@ namespace Sample.Pcl.Pages
                 stackLayout,
                 Constraint.RelativeToParent ((parent) => { return 0; })
             );
-
 
             addControlsToRelativeLayout();
 

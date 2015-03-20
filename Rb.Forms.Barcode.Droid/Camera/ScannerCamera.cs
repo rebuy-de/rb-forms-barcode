@@ -9,11 +9,10 @@ using AndroidCamera = Android.Hardware.Camera;
 #pragma warning disable 618
 namespace Rb.Forms.Barcode.Droid.Camera
 {
-    public class CameraControl : ILog
+    public class ScannerCamera : ILog
     {
         private AndroidCamera camera;
-        private bool previewState = false;
-        private static readonly CameraControl instance = new CameraControl();
+        private static readonly ScannerCamera instance = new ScannerCamera();
         private readonly CameraConfigurator configurator = new CameraConfigurator();
 
         public bool CameraOpen {
@@ -28,13 +27,13 @@ namespace Rb.Forms.Barcode.Droid.Camera
             }
         }
 
-        static CameraControl()
+        static ScannerCamera()
         {}
 
-        private CameraControl()
+        private ScannerCamera()
         {}
 
-        public static CameraControl Instance
+        public static ScannerCamera Instance
         {
             get
             {
@@ -59,7 +58,6 @@ namespace Rb.Forms.Barcode.Droid.Camera
             this.Debug("AssignPreview");
             try {
                 camera.SetPreviewDisplay(holder);
-                previewState = false;
             } catch (Exception ex) {
                 this.Debug(ex.Message);
                 this.Debug(ex.StackTrace.ToString());
@@ -76,42 +74,30 @@ namespace Rb.Forms.Barcode.Droid.Camera
 
         public void StartPreview(AndroidCamera.IPreviewCallback previewCallback) 
         {
-            if (previewState) {
-                return;
-            }
-
             this.Debug("StartPreview");
-
-            camera.StopPreview();
 
             configurator.Configure(camera);
 
             camera.SetDisplayOrientation(90);
             camera.SetPreviewCallback(previewCallback);
 
-            camera.CancelAutoFocus();
             camera.StartPreview();
-
-            previewState = true;
         }
 
         public void HaltPreview() 
         {
-            if (!previewState) {
-                return;
-            }
-
             this.Debug("HaltPreview");
 
             camera.CancelAutoFocus();
 
             camera.StopPreview();
             camera.SetPreviewCallback(null);
-            previewState = false;
         }
 
         public void AutoFocus(AndroidCamera.IAutoFocusCallback previewCallback)
         {
+            camera.CancelAutoFocus();
+
             if (CameraOpen) {
                 camera.AutoFocus(previewCallback);
             }

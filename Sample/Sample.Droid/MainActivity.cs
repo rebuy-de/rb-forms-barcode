@@ -5,10 +5,11 @@ using Android.OS;
 using Sample.Pcl;
 using Xamarin.Forms.Platform.Android;
 using Rb.Forms.Barcode.Droid;
+using Android.Content.PM;
 
 namespace Sample.Droid
 {
-    [Activity(Label = "Sample.Android", MainLauncher = true)]
+    [Activity(Label = "Sample.Android", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     public class MainActivity : FormsApplicationActivity
     {
         protected override void OnCreate(Bundle bundle)
