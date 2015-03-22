@@ -12,7 +12,15 @@ namespace Sample.Pcl.Pages
     {
         private readonly BarcodeScanner barcodeScanner = new BarcodeScanner();
 
-        private readonly BoxView zeLine = new BoxView() { Color = Color.Red, HeightRequest = 1 };
+        private ActivityIndicator loader = new ActivityIndicator {
+            IsRunning = true
+        };
+
+        private readonly BoxView zeLine = new BoxView() {
+            Color = Color.Red,
+            HeightRequest = 1,
+            IsVisible = false
+        };
 
         private readonly Label result = new Label {
             TextColor = Color.Red,
@@ -38,7 +46,7 @@ namespace Sample.Pcl.Pages
             /**
              * Event that gets executed as soon as a barcode is detected.
              */
-            barcodeScanner.BarcodeChanged += (object sender, BarcodeEventArgs e) => {
+            barcodeScanner.BarcodeChanged += (sender, e) => {
                 flashScreenAsync(sender, e);
                 result.Text = String.Format("Last Barcode: {0}", e.Barcode);
             };
@@ -46,6 +54,11 @@ namespace Sample.Pcl.Pages
             barcodeScanner.BarcodeDecoded += (sender, e) => {
                 Debug.WriteLine("Decoded barcode [{0}]", e.Barcode);
             };
+
+            barcodeScanner.PreviewActivated += (sender, e) => Device.BeginInvokeOnMainThread(() => {
+                loader.IsRunning = false;
+                zeLine.IsVisible = true;
+            });
 
             /**
              * So that we can release the camera when turning off phone or switching apps.
@@ -67,13 +80,23 @@ namespace Sample.Pcl.Pages
             addExpandingViewToRelativeLayout(new BoxView() { Color = Color.Transparent});
 
             /**
+             * Loading animation.
+             */
+            relativeLayout.Children.Add(
+                loader,
+                widthConstraint: Constraint.RelativeToParent ((parent) => parent.Width - 100),
+                xConstraint: Constraint.RelativeToParent ((parent) => 50),
+                yConstraint: Constraint.RelativeToParent ((parent) => (parent.Height / 2) - ( loader.Height / 2))
+            );
+
+            /**
              * Awesome barcode scanner line.
              */
             relativeLayout.Children.Add(
                 zeLine,
-                widthConstraint: Constraint.RelativeToParent ((parent) => { return parent.Width - 100; }),
-                xConstraint: Constraint.RelativeToParent ((parent) => { return 50; }),
-                yConstraint: Constraint.RelativeToParent ((parent) => { return parent.Height / 2; })
+                widthConstraint: Constraint.RelativeToParent ((parent) => parent.Width - 100),
+                xConstraint: Constraint.RelativeToParent ((parent) => 50),
+                yConstraint: Constraint.RelativeToParent ((parent) => parent.Height / 2)
             );
 
             /**
@@ -81,8 +104,8 @@ namespace Sample.Pcl.Pages
              */
             relativeLayout.Children.Add(
                 result,
-                widthConstraint: Constraint.RelativeToParent ((parent) => { return parent.Width; }),
-                yConstraint: Constraint.RelativeToView (zeLine, (parent, sibling) => { return sibling.Y + 10; })
+                widthConstraint: Constraint.RelativeToParent ((parent) => parent.Width),
+                yConstraint: Constraint.RelativeToView (zeLine, (parent, sibling) => sibling.Y + 10)
             );
 
             /**
@@ -101,7 +124,7 @@ namespace Sample.Pcl.Pages
 
             relativeLayout.Children.Add(
                 stackLayout,
-                Constraint.RelativeToParent ((parent) => { return 0; })
+                Constraint.RelativeToParent ((parent) => 0)
             );
 
             addControlsToRelativeLayout();
@@ -127,8 +150,8 @@ namespace Sample.Pcl.Pages
         {
             relativeLayout.Children.Add(
                 view,
-                widthConstraint: Constraint.RelativeToParent ((parent) => { return parent.Width; }),
-                heightConstraint: Constraint.RelativeToParent ((parent) => { return parent.Height; })
+                widthConstraint: Constraint.RelativeToParent ((parent) => parent.Width),
+                heightConstraint: Constraint.RelativeToParent ((parent) => parent.Height)
             );
         }
 
@@ -161,8 +184,8 @@ namespace Sample.Pcl.Pages
 
             relativeLayout.Children.Add(
                 controls,
-                widthConstraint: Constraint.RelativeToParent ((parent) => { return parent.Width; }),
-                yConstraint: Constraint.RelativeToParent ((parent) => { return parent.Height - 60; })
+                widthConstraint: Constraint.RelativeToParent ((parent) => parent.Width),
+                yConstraint: Constraint.RelativeToParent ((parent) => parent.Height - 60)
             );
         }
 

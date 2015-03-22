@@ -25,17 +25,20 @@ namespace Rb.Forms.Barcode.Droid
         private PreviewFrameCallback previewFrameCallback;
         private CameraService scannerService;
 
+        /// <summary>
+        /// Checks the surface for validity so its safe to work with it.
+        /// </summary>
+        /// <value><c>true</c> if this instance has valid surface; otherwise, <c>false</c>.</value>
         private bool HasValidSurface {
             get {
                 return Control.Holder.Surface.IsValid;
             }
         }
 
-
         private ViewStates Visibility { get; set; }
 
         /// <summary>
-        /// 
+        /// Indicates that the currently open camera should be reused to prevent unexpected camera shutdowns.
         /// </summary>
         /// <value><c>true</c> if keep camera; otherwise, <c>false</c>.</value>
         private static bool KeepCamera { get; set; }
@@ -136,7 +139,6 @@ namespace Rb.Forms.Barcode.Droid
                 } 
 
                 if (!Element.IsEnabled) {
-                    Element.PreviewActive = false;
                     scannerService.ReleaseCamera();
                 }
             }

@@ -5,9 +5,10 @@ using Rb.Forms.Barcode.Droid.Logger;
 
 using Android.Hardware;
 using AndroidCamera = Android.Hardware.Camera;
+using Rb.Forms.Barcode.Droid.Camera;
 
 #pragma warning disable 618
-namespace Rb.Forms.Barcode.Droid.Camera
+namespace Rb.Forms.Barcode.Droid.View
 {
     public class AutoFocusCallback : Java.Lang.Object, AndroidCamera.IAutoFocusCallback, ILog
     {

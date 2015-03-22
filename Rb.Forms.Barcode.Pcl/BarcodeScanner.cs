@@ -35,7 +35,7 @@ namespace Rb.Forms.Barcode.Pcl
         /// </summary>
         public static readonly BindableProperty PreviewActiveProperty =
             BindableProperty.Create<BarcodeScanner, bool>(
-                p => p.PreviewActive, default(bool), BindingMode.TwoWay, propertyChanged: OnPreviewActiveChanged
+                p => p.PreviewActive, default(bool), BindingMode.TwoWay
             );
 
         /// <summary>
@@ -122,19 +122,14 @@ namespace Rb.Forms.Barcode.Pcl
             BarcodeDecoded.Raise(this, new BarcodeEventArgs(barcode));
         }
 
-        private static void OnPreviewActiveChanged(BindableObject bindable, bool oldState, bool newState)
+        public void OnPreviewActivated()
         {
-            var b = (BarcodeScanner) bindable;
+            PreviewActivated.Raise(this, EventArgs.Empty);
+        }
 
-            Debug.WriteLine("[ScannerView] OnPreviewActiveChanged to [{0}]", newState);
-
-            if (newState) {
-                b.PreviewActivated.Raise(b, new EventArgs());
-            }
-
-            if (!newState) {
-                b.PreviewDeactivated.Raise(b, new EventArgs());
-            }
+        public void OnPreviewDeactivated()
+        {
+            PreviewDeactivated.Raise(this, EventArgs.Empty);
         }
     }   
 }

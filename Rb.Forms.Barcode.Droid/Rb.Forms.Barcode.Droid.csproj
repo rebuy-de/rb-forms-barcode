@@ -63,14 +63,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Resources\Resource.designer.cs" />
-    <Compile Include="Camera\AutoFocusCallback.cs" />
     <Compile Include="Camera\CameraConfigurator.cs" />
-    <Compile Include="Camera\PreviewFrameCallback.cs" />
     <Compile Include="Decoder\BarcodeDecoder.cs" />
     <Compile Include="Logger\Log.cs" />
     <Compile Include="BarcodeScannerRenderer.cs" />
     <Compile Include="Camera\ScannerCamera.cs" />
     <Compile Include="View\CameraService.cs" />
+    <Compile Include="View\PreviewFrameCallback.cs" />
+    <Compile Include="View\AutoFocusCallback.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />

@@ -4,6 +4,7 @@ using Rb.Forms.Barcode.Pcl.Logger;
 using Rb.Forms.Barcode.Droid.Camera;
 using Rb.Forms.Barcode.Droid.Logger;
 using Android.Views;
+using Xamarin.Forms;
 
 namespace Rb.Forms.Barcode.Droid.View
 {
@@ -26,6 +27,7 @@ namespace Rb.Forms.Barcode.Droid.View
             try {
                 scannerCamera.OpenCamera();
                 scannerCamera.AssignPreview(holder);
+
                 renderer.OnCameraOpened();
 
                 renderer.PreviewActive = true;
@@ -39,8 +41,11 @@ namespace Rb.Forms.Barcode.Droid.View
         {
             autoFocus.Enabled = false;
 
+            renderer.PreviewActive = false;
+
             try {
                 scannerCamera.ReleaseCamera();
+
                 renderer.OnCameraReleased();
             } catch (Exception ex) {
                 this.Debug("Unable to release camera");
@@ -58,6 +63,8 @@ namespace Rb.Forms.Barcode.Droid.View
                     scannerCamera.AutoFocus(autoFocus);
                 }
 
+                renderer.OnPreviewActivated();
+
             } catch (Exception ex) {
                 this.Debug("Unable to start preview.");
                 this.Debug(ex.ToString());
@@ -68,6 +75,8 @@ namespace Rb.Forms.Barcode.Droid.View
         {
             autoFocus.Enabled = false;
             scannerCamera.HaltPreview();
+
+            renderer.OnPreviewDeactivated();
         }
     }
 }
