@@ -5,9 +5,10 @@ using Rb.Forms.Barcode.Droid.Logger;
 
 using Android.Hardware;
 using AndroidCamera = Android.Hardware.Camera;
+using Rb.Forms.Barcode.Droid.Camera;
 
 #pragma warning disable 618
-namespace Rb.Forms.Barcode.Droid.Camera
+namespace Rb.Forms.Barcode.Droid.View
 {
     public class AutoFocusCallback : Java.Lang.Object, AndroidCamera.IAutoFocusCallback, ILog
     {
@@ -22,7 +23,7 @@ namespace Rb.Forms.Barcode.Droid.Camera
             }
         }
 
-        public AutoFocusCallback(CameraControl cameraControl)
+        public AutoFocusCallback(ScannerCamera scannerCamera)
         {
             timer = new Timer() {
                 Interval = 400,
@@ -33,18 +34,18 @@ namespace Rb.Forms.Barcode.Droid.Camera
             timer.Elapsed += (s, e) => {
                 if (timer.Enabled) {
 
-                    if (!cameraControl.CameraOpen) {
+                    if (!scannerCamera.CameraOpen) {
                         timer.Stop();
                         return;
                     }
 
-                    if (!cameraControl.AutoFocusMode) {
+                    if (!scannerCamera.AutoFocusMode) {
                         timer.Stop();
                         return;
                     }
 
                     this.Debug("Autofocusing");
-                    cameraControl.AutoFocus(this);
+                    scannerCamera.AutoFocus(this);
                 }
             };
 

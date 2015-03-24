@@ -7,7 +7,7 @@ using Rb.Forms.Barcode.Droid.Decoder;
 using AndroidCamera = Android.Hardware.Camera;
 
 #pragma warning disable 618
-namespace Rb.Forms.Barcode.Droid.Camera
+namespace Rb.Forms.Barcode.Droid.View
 {
     public class PreviewFrameCallback : Java.Lang.Object, AndroidCamera.IPreviewCallback, ILog
     {
