@@ -40,7 +40,6 @@ namespace Rb.Forms.Barcode.Droid.View
         public void ReleaseCamera()
         {
             autoFocus.Enabled = false;
-
             renderer.PreviewActive = false;
 
             try {

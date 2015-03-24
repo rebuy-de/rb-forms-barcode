@@ -23,7 +23,7 @@ namespace Rb.Forms.Barcode.Droid.View
             }
         }
 
-        public AutoFocusCallback(ScannerCamera cameraControl)
+        public AutoFocusCallback(ScannerCamera scannerCamera)
         {
             timer = new Timer() {
                 Interval = 400,
@@ -34,18 +34,18 @@ namespace Rb.Forms.Barcode.Droid.View
             timer.Elapsed += (s, e) => {
                 if (timer.Enabled) {
 
-                    if (!cameraControl.CameraOpen) {
+                    if (!scannerCamera.CameraOpen) {
                         timer.Stop();
                         return;
                     }
 
-                    if (!cameraControl.AutoFocusMode) {
+                    if (!scannerCamera.AutoFocusMode) {
                         timer.Stop();
                         return;
                     }
 
                     this.Debug("Autofocusing");
-                    cameraControl.AutoFocus(this);
+                    scannerCamera.AutoFocus(this);
                 }
             };
 

@@ -14,7 +14,6 @@ namespace Sample.Pcl
             await stack.PushAsync(page);
 
             for (int i = startAt; i < c; i++) {
-
                 stack.RemovePage(stack.NavigationStack[startAt]);
             }
         }
