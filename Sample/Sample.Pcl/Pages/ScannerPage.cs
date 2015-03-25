@@ -71,7 +71,6 @@ namespace Sample.Pcl.Pages
 
         private View createViewLayout()
         {
-
             addExpandingViewToRelativeLayout(barcodeScanner);
 
             /**

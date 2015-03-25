@@ -29,8 +29,6 @@ namespace Rb.Forms.Barcode.Droid.View
                 scannerCamera.AssignPreview(holder);
 
                 renderer.OnCameraOpened();
-
-                renderer.PreviewActive = true;
             } catch (Exception ex) {
                 this.Debug("Unable to open camera");
                 this.Debug(ex.ToString());
@@ -40,9 +38,9 @@ namespace Rb.Forms.Barcode.Droid.View
         public void ReleaseCamera()
         {
             autoFocus.Enabled = false;
-            renderer.PreviewActive = false;
 
             try {
+                HaltPreview();
                 scannerCamera.ReleaseCamera();
 
                 renderer.OnCameraReleased();
