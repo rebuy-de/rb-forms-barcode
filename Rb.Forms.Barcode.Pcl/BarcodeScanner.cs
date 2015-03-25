@@ -35,7 +35,7 @@ namespace Rb.Forms.Barcode.Pcl
         /// </summary>
         public static readonly BindableProperty PreviewActiveProperty =
             BindableProperty.Create<BarcodeScanner, bool>(
-                p => p.PreviewActive, default(bool), BindingMode.TwoWay
+                p => p.PreviewActive, true, BindingMode.TwoWay
             );
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace Rb.Forms.Barcode.Pcl
         /// </summary>
         public static readonly BindableProperty BarcodeDecoderProperty =
             BindableProperty.Create<BarcodeScanner, bool>(
-                p => p.BarcodeDecoder, default(bool), BindingMode.TwoWay
+                p => p.BarcodeDecoder, true, BindingMode.TwoWay
             );
 
         /// <summary>

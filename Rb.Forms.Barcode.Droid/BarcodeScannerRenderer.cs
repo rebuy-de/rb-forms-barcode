@@ -114,12 +114,18 @@ namespace Rb.Forms.Barcode.Droid
             scannerService = new CameraService(Element, scannerCamera);
             previewFrameCallback = new PreviewFrameCallback(barcodeDecoder, Element);
 
-            Element.CameraOpened += (sender, args) => {
-                Element.BarcodeDecoder = true;
+            Element.CameraOpened += async (sender, args) => {
+                if (Element.BarcodeDecoder) {
+                    barcodeDecoder.RefreshToken();
+                }
+
+                if (Element.PreviewActive) {
+                    await Task.Run(() => scannerService.StartPreview(previewFrameCallback));
+                }
             };
 
             Element.CameraReleased += (sender, args) => {
-                Element.BarcodeDecoder = false;
+                barcodeDecoder.CancelDecoding();
                 BarcodeScannerRenderer.KeepCamera = false;
             };
         }
@@ -170,7 +176,7 @@ namespace Rb.Forms.Barcode.Droid
             }
         }
 
-        protected override void OnVisibilityChanged(global::Android.Views.View view, ViewStates visibility)
+        protected async override void OnVisibilityChanged(global::Android.Views.View view, ViewStates visibility)
         {
             base.OnVisibilityChanged(view, visibility);
 
@@ -180,8 +186,12 @@ namespace Rb.Forms.Barcode.Droid
                 return;
             }
 
+            if (visibility == ViewStates.Visible) {
+                await Task.Run(() => scannerService.StartPreview(previewFrameCallback));
+            }
+
             if (visibility == ViewStates.Gone && !BarcodeScannerRenderer.KeepCamera) {
-                Element.PreviewActive = false;
+                scannerService.HaltPreview();
             }
 
             Visibility = visibility;
