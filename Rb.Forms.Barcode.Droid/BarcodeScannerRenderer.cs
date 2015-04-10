@@ -19,8 +19,10 @@ namespace Rb.Forms.Barcode.Droid
 {
     public class BarcodeScannerRenderer : ViewRenderer<BarcodeScanner, SurfaceView>, ISurfaceHolderCallback, ILog
     {
+        private static RbConfig config = new RbConfig();
+
         private readonly ScannerCamera scannerCamera = ScannerCamera.Instance;
-        private readonly BarcodeDecoder barcodeDecoder = new BarcodeDecoder();
+        private readonly BarcodeDecoder barcodeDecoder = new BarcodeDecoder(config);
 
         private PreviewFrameCallback previewFrameCallback;
         private CameraService scannerService;
@@ -45,6 +47,11 @@ namespace Rb.Forms.Barcode.Droid
 
         public static void Init()
         {
+        }
+
+        public static void Init(RbConfig config)
+        {
+            BarcodeScannerRenderer.config = config;
         }
 
         public async void SurfaceCreated(ISurfaceHolder holder)
@@ -111,7 +118,7 @@ namespace Rb.Forms.Barcode.Droid
             surfaceView.Holder.AddCallback(this);
             SetNativeControl(surfaceView);
 
-            scannerService = new CameraService(Element, scannerCamera);
+            scannerService = new CameraService(Element, scannerCamera, config);
             previewFrameCallback = new PreviewFrameCallback(barcodeDecoder, Element);
 
             Element.CameraOpened += async (sender, args) => {

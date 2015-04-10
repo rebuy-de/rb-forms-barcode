@@ -14,11 +14,15 @@ namespace Rb.Forms.Barcode.Droid.View
 
         private readonly ScannerCamera scannerCamera;
         private readonly AutoFocusCallback autoFocus;
+        private readonly RbOptions options;
+        private readonly CameraConfigurator cameraConfigurator;
 
-        public CameraService(BarcodeScanner renderer, ScannerCamera scannerCamera)
+        public CameraService(BarcodeScanner renderer, ScannerCamera scannerCamera, RbOptions options)
         {
+            this.options = options;
             this.renderer = renderer;
             this.scannerCamera = scannerCamera;
+            this.cameraConfigurator = new CameraConfigurator(options);
             this.autoFocus = new AutoFocusCallback(scannerCamera);
         }
 
@@ -54,6 +58,7 @@ namespace Rb.Forms.Barcode.Droid.View
         public void StartPreview(PreviewFrameCallback previewFrameCallback)
         {
             try {
+                cameraConfigurator.Configure(scannerCamera.OpenCamera());
                 scannerCamera.StartPreview(previewFrameCallback);
 
                 if (scannerCamera.AutoFocusMode) {

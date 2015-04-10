@@ -13,7 +13,6 @@ namespace Rb.Forms.Barcode.Droid.Camera
     {
         private AndroidCamera camera;
         private static readonly ScannerCamera instance = new ScannerCamera();
-        private readonly CameraConfigurator configurator = new CameraConfigurator();
 
         public bool CameraOpen {
             get {
@@ -75,8 +74,6 @@ namespace Rb.Forms.Barcode.Droid.Camera
         public void StartPreview(AndroidCamera.IPreviewCallback previewCallback) 
         {
             this.Debug("StartPreview");
-
-            configurator.Configure(camera);
 
             camera.SetDisplayOrientation(90);
             camera.SetPreviewCallback(previewCallback);
