@@ -62,6 +62,19 @@ What | Type | Description
 `BarcodeScanner.PreviewActive` | Property | If `true` the preview image gets updated. `false` no preview for you!
 `BarcodeScanner.BarcodeDecoder` | Property | If `true` the decoder is active and tries to decode barcodes out of the image. `false` turns the decoder off, the preview is still active but barcodes will not be decoded.
 
+### Configuration
+
+Configuration can be applied by passing a `RbConfig` object to the `BarcodeScannerRenderer.Init()` method. As the available options are platform specific, the configuration has to be done in the according platform solution. The corresponding [Android](Rb.Forms.Barcode.Droid/RbConfig.cs) class documentation should give you a solid understanding of the available options. 
+
+By default most of the options are disabled to ensure the highest device compatibility. 
+
+Simple example:
+
+    var rbConfig = new Rb.Forms.Barcode.Droid.RbConfig {
+        TryHarder = true
+    };
+    BarcodeScannerRenderer.Init(rbConfig);
+
 ### Debugging
 
 Rb.Forms.Barcode provides you with a tremendous amount of debug information, so do not forget to check your application log:

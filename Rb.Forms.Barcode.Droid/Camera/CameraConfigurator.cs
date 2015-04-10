@@ -10,11 +10,11 @@ namespace Rb.Forms.Barcode.Droid.Camera
 {
     public class CameraConfigurator : ILog
     {
-        private readonly RbConfig options;
+        private readonly RbConfig config;
 
-        public CameraConfigurator(RbConfig options)
+        public CameraConfigurator(RbConfig config)
         {
-            this.options = options;
+            this.config = config;
             
         }
 
@@ -33,28 +33,28 @@ namespace Rb.Forms.Barcode.Droid.Camera
             }
 
             if (!isPickyDevice()) {
-                if (options.SceneMode) {
+                if (config.SceneMode) {
                     var sceneMode = determineSceneMode(camera);
                     this.Debug("Scene Mode [{0}]", sceneMode);
                     parameters.SceneMode = sceneMode;
                 }
 
-                if (options.MeteringAreas && parameters.MaxNumMeteringAreas > 0) {
+                if (config.MeteringAreas && parameters.MaxNumMeteringAreas > 0) {
                     this.Debug("Metering area [{0}]", (parameters.MaxNumMeteringAreas > 0).ToString());
                     parameters.MeteringAreas = createAreas();
                 }
 
-                if (options.FocusAreas && parameters.MaxNumFocusAreas > 0) {
+                if (config.FocusAreas && parameters.MaxNumFocusAreas > 0) {
                     this.Debug("Focusing area [{0}]", (parameters.MaxNumFocusAreas > 0).ToString());
                     parameters.FocusAreas = createAreas();
                 }
 
-                if (options.VideoStabilization && parameters.IsVideoStabilizationSupported) {
+                if (config.VideoStabilization && parameters.IsVideoStabilizationSupported) {
                     this.Debug("Video stabilization [{0}]", parameters.IsVideoStabilizationSupported.ToString());
                     parameters.VideoStabilization = true;
                 }
 
-                if (options.WhiteBalance) {
+                if (config.WhiteBalance) {
                     var whiteBalance = determineWhiteBalance(camera);
                     this.Debug("White balance [{0}]", whiteBalance);
                     parameters.WhiteBalance = whiteBalance;
@@ -70,7 +70,7 @@ namespace Rb.Forms.Barcode.Droid.Camera
         {
             var p = camera.GetParameters();
 
-            foreach (var mode in options.FocusModes) {
+            foreach (var mode in config.FocusModes) {
                 if (p.SupportedFocusModes.Contains(mode)) {
                     return mode;
                 }
@@ -112,7 +112,7 @@ namespace Rb.Forms.Barcode.Droid.Camera
 
         private bool isPickyDevice()
         {
-            return options.PickyDeviceDetection && Android.OS.Build.Manufacturer.Contains("samsung");
+            return config.PickyDeviceDetection && Android.OS.Build.Manufacturer.Contains("samsung");
         }
     }
 }
