@@ -14,10 +14,10 @@ namespace Rb.Forms.Barcode.Droid.View
 
         private readonly ScannerCamera scannerCamera;
         private readonly AutoFocusCallback autoFocus;
-        private readonly RbOptions options;
+        private readonly RbConfig options;
         private readonly CameraConfigurator cameraConfigurator;
 
-        public CameraService(BarcodeScanner renderer, ScannerCamera scannerCamera, RbOptions options)
+        public CameraService(BarcodeScanner renderer, ScannerCamera scannerCamera, RbConfig options)
         {
             this.options = options;
             this.renderer = renderer;
