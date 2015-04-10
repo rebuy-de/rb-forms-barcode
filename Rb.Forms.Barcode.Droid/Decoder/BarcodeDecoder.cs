@@ -15,18 +15,25 @@ namespace Rb.Forms.Barcode.Droid.Decoder
         private DateTime lastPreviewScanAnalysis = DateTime.UtcNow;
 
         private IBarcodeReader barcodeReader;
-        private readonly MobileBarcodeScanningOptions options = new MobileBarcodeScanningOptions();
+        private readonly RbConfig config;
 
-        public BarcodeDecoder()
+        public BarcodeDecoder(RbConfig config)
         {
-            options.DelayBetweenAnalyzingFrames = 400;
-            barcodeReader = options.BuildBarcodeReader();
+            this.config = config;
+
+            var zxingNetOptions = new MobileBarcodeScanningOptions {
+                AutoRotate = config.Rotate,
+                TryHarder = config.TryHarder,
+                TryInverted = config.TryInverted
+            };
+
+            barcodeReader = zxingNetOptions.BuildBarcodeReader();
             RefreshToken();
         }
 
         public Task<String> DecodeAsync(byte[] bytes, int width, int height)
         {
-            if (isTaskIncomplete()) {
+            if (!isTaskCompleted()) {
                 return null;
             }
 
@@ -41,7 +48,8 @@ namespace Rb.Forms.Barcode.Droid.Decoder
             lastPreviewScanAnalysis = DateTime.UtcNow;
 
             currentTask = Task.Run(() => {
-                try {   
+                try { 
+
                     var source = new PlanarYUVLuminanceSource(bytes, width, height, 0, 0, width, height, false);
                     var rotated = source.rotateCounterClockwise();
                     var result = barcodeReader.Decode(rotated);
@@ -70,14 +78,14 @@ namespace Rb.Forms.Barcode.Droid.Decoder
             cancellationTokenSource = new CancellationTokenSource();
         }
 
-        private bool isTaskIncomplete()
+        private bool isTaskCompleted()
         {
-            return currentTask != null && !currentTask.IsCompleted;
+            return currentTask == null || currentTask.IsCompleted;
         }
 
         private bool isEnoughTimeElapsedForNextAnalyzing()
         {
-            return (DateTime.UtcNow - lastPreviewScanAnalysis).TotalMilliseconds > options.DelayBetweenAnalyzingFrames;
+            return (DateTime.UtcNow - lastPreviewScanAnalysis).TotalMilliseconds > config.DecoderDelay;
         }
     }
 }

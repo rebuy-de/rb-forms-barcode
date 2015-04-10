@@ -72,6 +72,7 @@
     <Compile Include="View\CameraService.cs" />
     <Compile Include="View\PreviewFrameCallback.cs" />
     <Compile Include="View\AutoFocusCallback.cs" />
+    <Compile Include="RbConfig.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />

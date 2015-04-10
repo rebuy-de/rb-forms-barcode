@@ -10,6 +10,14 @@ namespace Rb.Forms.Barcode.Droid.Camera
 {
     public class CameraConfigurator : ILog
     {
+        private readonly RbConfig options;
+
+        public CameraConfigurator(RbConfig options)
+        {
+            this.options = options;
+            
+        }
+
         public AndroidCamera Configure(AndroidCamera camera)
         {
             var parameters = camera.GetParameters();
@@ -20,34 +28,37 @@ namespace Rb.Forms.Barcode.Droid.Camera
             this.Debug("Focus Mode [{0}]", focusMode);
             parameters.FocusMode = focusMode;
 
-
             if (isPickyDevice()) {
                 this.Debug("Used device is marked as picky. Skipping detailed configuration to ensure function compatibility.");
             }
 
             if (!isPickyDevice()) {
-                var sceneMode = determineSceneMode(camera);
-                this.Debug("Scene Mode [{0}]", sceneMode);
-                parameters.SceneMode = sceneMode;
+                if (options.SceneMode) {
+                    var sceneMode = determineSceneMode(camera);
+                    this.Debug("Scene Mode [{0}]", sceneMode);
+                    parameters.SceneMode = sceneMode;
+                }
 
-                this.Debug("Metering area [{0}]", (parameters.MaxNumMeteringAreas > 0).ToString());
-                if (parameters.MaxNumMeteringAreas > 0) {
+                if (options.MeteringAreas && parameters.MaxNumMeteringAreas > 0) {
+                    this.Debug("Metering area [{0}]", (parameters.MaxNumMeteringAreas > 0).ToString());
                     parameters.MeteringAreas = createAreas();
                 }
 
-                this.Debug("Focusing area [{0}]", (parameters.MaxNumFocusAreas > 0).ToString());
-                if (parameters.MaxNumFocusAreas > 0) {
+                if (options.FocusAreas && parameters.MaxNumFocusAreas > 0) {
+                    this.Debug("Focusing area [{0}]", (parameters.MaxNumFocusAreas > 0).ToString());
                     parameters.FocusAreas = createAreas();
                 }
 
-                this.Debug("Video stabilization [{0}]", parameters.IsVideoStabilizationSupported.ToString());
-                if (parameters.IsVideoStabilizationSupported) {
+                if (options.VideoStabilization && parameters.IsVideoStabilizationSupported) {
+                    this.Debug("Video stabilization [{0}]", parameters.IsVideoStabilizationSupported.ToString());
                     parameters.VideoStabilization = true;
                 }
 
-                var whiteBalance = determineWhiteBalance(camera);
-                this.Debug("White balance [{0}]", whiteBalance);
-                parameters.WhiteBalance = whiteBalance;
+                if (options.WhiteBalance) {
+                    var whiteBalance = determineWhiteBalance(camera);
+                    this.Debug("White balance [{0}]", whiteBalance);
+                    parameters.WhiteBalance = whiteBalance;
+                }
             }
 
             camera.SetParameters(parameters);
@@ -59,16 +70,10 @@ namespace Rb.Forms.Barcode.Droid.Camera
         {
             var p = camera.GetParameters();
 
-            if (p.SupportedFocusModes.Contains(AndroidCamera.Parameters.FocusModeContinuousPicture)) {
-                return AndroidCamera.Parameters.FocusModeContinuousPicture;
-            }
-
-            if (p.SupportedFocusModes.Contains(AndroidCamera.Parameters.FocusModeContinuousVideo)) {
-                return AndroidCamera.Parameters.FocusModeContinuousVideo;
-            }
-
-            if (p.SupportedFocusModes.Contains(AndroidCamera.Parameters.FocusModeAuto)) {
-                return AndroidCamera.Parameters.FocusModeAuto;
+            foreach (var mode in options.FocusModes) {
+                if (p.SupportedFocusModes.Contains(mode)) {
+                    return mode;
+                }
             }
 
             return "";
@@ -107,7 +112,7 @@ namespace Rb.Forms.Barcode.Droid.Camera
 
         private bool isPickyDevice()
         {
-            return Android.OS.Build.Manufacturer.Contains("samsung");
+            return options.PickyDeviceDetection && Android.OS.Build.Manufacturer.Contains("samsung");
         }
     }
 }

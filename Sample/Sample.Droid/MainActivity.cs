@@ -6,6 +6,9 @@ using Sample.Pcl;
 using Xamarin.Forms.Platform.Android;
 using Rb.Forms.Barcode.Droid;
 using Android.Content.PM;
+using System.Collections.Generic;
+
+using AndroidCamera = Android.Hardware.Camera;
 
 namespace Sample.Droid
 {
