@@ -10,9 +10,9 @@ namespace Rb.Forms.Barcode.Droid.Decoder
 {
     public class BarcodeDecoder : ILog
     {
-        private CancellationTokenSource cancellationTokenSource;
-        private Task<String> currentTask;
-        private DateTime lastPreviewScanAnalysis = DateTime.UtcNow;
+        private CancellationTokenSource tokenSource;
+        private Task<String> decodeTask;
+        private DateTime lastAnalysis = DateTime.UtcNow;
 
         private IBarcodeReader barcodeReader;
         private readonly RbConfig config;
@@ -28,64 +28,69 @@ namespace Rb.Forms.Barcode.Droid.Decoder
             };
 
             barcodeReader = zxingNetOptions.BuildBarcodeReader();
-            RefreshToken();
+            EnableDecoding();
         }
 
         public Task<String> DecodeAsync(byte[] bytes, int width, int height)
         {
+            decodeTask = Task.Run(() => {
+                return !CanDecode() ? null : decode(bytes, width, height);
+            }, tokenSource.Token);
+
+            return decodeTask;
+        }
+
+        public void EnableDecoding()
+        {
+            tokenSource = new CancellationTokenSource();
+        }
+
+        public void DisableDecoding()
+        {
+            tokenSource.Cancel();
+        }
+
+        private bool CanDecode()
+        {
             if (!isTaskCompleted()) {
-                return null;
+                return false;
             }
 
             if (!isEnoughTimeElapsedForNextAnalyzing()) {
-                return null;
+                return false;
             }
 
-            if (cancellationTokenSource.IsCancellationRequested) {
-                return null;
-            }
+            lastAnalysis = DateTime.UtcNow;
 
-            lastPreviewScanAnalysis = DateTime.UtcNow;
+            return true;
+        }
 
-            currentTask = Task.Run(() => {
-                try { 
+        private String decode(byte[] bytes, int width, int height)
+        {
+            try { 
+                var source = new PlanarYUVLuminanceSource(bytes, width, height, 0, 0, width, height, false);
+                var rotated = source.rotateCounterClockwise();
+                var result = barcodeReader.Decode(rotated);
 
-                    var source = new PlanarYUVLuminanceSource(bytes, width, height, 0, 0, width, height, false);
-                    var rotated = source.rotateCounterClockwise();
-                    var result = barcodeReader.Decode(rotated);
-
-                    if (null == result) {
-                        return "";
-                    }
-
-                    return result.Text;
-                } catch (Exception ex) {
-                    this.Debug(ex.ToString());
+                if (null == result) {
                     return "";
                 }
-            }, cancellationTokenSource.Token);
 
-            return currentTask;
-        }
-
-        public void CancelDecoding()
-        {
-            cancellationTokenSource.Cancel();
-        }
-
-        public void RefreshToken()
-        {
-            cancellationTokenSource = new CancellationTokenSource();
+                return result.Text;
+            } catch (Exception ex) {
+                this.Debug(ex.ToString());
+                return "";
+            }
         }
 
         private bool isTaskCompleted()
         {
-            return currentTask == null || currentTask.IsCompleted;
+            return decodeTask == null || decodeTask.IsCompleted;
         }
 
         private bool isEnoughTimeElapsedForNextAnalyzing()
         {
-            return (DateTime.UtcNow - lastPreviewScanAnalysis).TotalMilliseconds > config.DecoderDelay;
+            return (DateTime.UtcNow - lastAnalysis).TotalMilliseconds > config.DecoderDelay;
         }
     }
 }

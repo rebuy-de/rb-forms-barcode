@@ -123,7 +123,7 @@ namespace Rb.Forms.Barcode.Droid
 
             Element.CameraOpened += async (sender, args) => {
                 if (Element.BarcodeDecoder) {
-                    barcodeDecoder.RefreshToken();
+                    barcodeDecoder.EnableDecoding();
                 }
 
                 if (Element.PreviewActive) {
@@ -132,7 +132,7 @@ namespace Rb.Forms.Barcode.Droid
             };
 
             Element.CameraReleased += (sender, args) => {
-                barcodeDecoder.CancelDecoding();
+                barcodeDecoder.DisableDecoding();
                 BarcodeScannerRenderer.KeepCamera = false;
             };
         }
@@ -174,11 +174,11 @@ namespace Rb.Forms.Barcode.Droid
                 this.Debug("Decoder state [{0}]", Element.BarcodeDecoder);
 
                 if (Element.BarcodeDecoder) {
-                    barcodeDecoder.RefreshToken();
+                    barcodeDecoder.EnableDecoding();
                 } 
 
                 if (!Element.BarcodeDecoder) {
-                    barcodeDecoder.CancelDecoding();
+                    barcodeDecoder.DisableDecoding();
                 }
             }
         }
