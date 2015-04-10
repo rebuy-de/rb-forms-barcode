@@ -75,10 +75,17 @@ namespace Rb.Forms.Barcode.Droid.View
 
         public void HaltPreview()
         {
-            autoFocus.Enabled = false;
-            scannerCamera.HaltPreview();
+            try {
+                autoFocus.Enabled = false;
+                scannerCamera.HaltPreview();
 
-            renderer.OnPreviewDeactivated();
+                renderer.OnPreviewDeactivated();
+
+            } catch (Exception ex) {
+                this.Debug("Unable to halt preview.");
+                this.Debug(ex.ToString());
+            }
+
         }
     }
 }
