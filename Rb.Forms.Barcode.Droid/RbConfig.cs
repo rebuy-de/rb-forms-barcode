@@ -8,8 +8,6 @@ namespace Rb.Forms.Barcode.Droid
 {
     public class RbConfig
     {
-
-
         private Rectangle barcodeArea = new Rectangle(0, 0, 100, 100);
 
         public enum Quality {
@@ -80,7 +78,7 @@ namespace Rb.Forms.Barcode.Droid
         /// is not within this area no barcode will be found.
         /// 
         /// Calculation of the rectangle boundaries is percentage based.
-        /// Given values shall not exceed the range from 0 to 100.
+        /// Given values must not exceed the range from 0 to 100.
         /// Calculation of the rectangle is based on portrait mode orientation.
         /// The starting point is the lower left corner, x and y being 0.
         /// </summary>
@@ -94,21 +92,10 @@ namespace Rb.Forms.Barcode.Droid
                 return barcodeArea;
             }
             set {
-                if (isOutOfBoundaries(value.X)) {
-                    throw new Rb.Forms.Barcode.Pcl.OutOfBoundsException("X is out of bounds.");
-                }
-
-                if (isOutOfBoundaries(value.Y)) {
-                    throw new Rb.Forms.Barcode.Pcl.OutOfBoundsException("Y is out of bounds.");
-                }
-
-                if (isOutOfBoundaries(value.Width)) {
-                    throw new Rb.Forms.Barcode.Pcl.OutOfBoundsException("Width is out of bounds.");
-                }
-
-                if (isOutOfBoundaries(value.Height)) {
-                    throw new Rb.Forms.Barcode.Pcl.OutOfBoundsException("Height is out of bounds.");
-                }
+                validateBoundaries(value.X, "X");
+                validateBoundaries(value.Y, "Y");
+                validateBoundaries(value.Width, "Width");
+                validateBoundaries(value.Height, "Height");
             }
         }
 
@@ -163,9 +150,11 @@ namespace Rb.Forms.Barcode.Droid
         /// </summary>
         public bool TryInverted = false;
 
-        private bool isOutOfBoundaries(double value)
+        private void validateBoundaries(double value, string type)
         {
-            return value < 0 || value > 100;
+            if (value < 0 || value > 100) {
+                throw new Rb.Forms.Barcode.Pcl.OutOfBoundsException(String.Format("{0} is out of bounds.", type));
+            }
         }
     }
 }
