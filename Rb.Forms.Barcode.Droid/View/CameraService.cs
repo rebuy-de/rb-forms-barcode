@@ -4,7 +4,6 @@ using Rb.Forms.Barcode.Pcl.Logger;
 using Rb.Forms.Barcode.Droid.Camera;
 using Rb.Forms.Barcode.Droid.Logger;
 using Android.Views;
-using Xamarin.Forms;
 
 namespace Rb.Forms.Barcode.Droid.View
 {
@@ -14,15 +13,14 @@ namespace Rb.Forms.Barcode.Droid.View
 
         private readonly ScannerCamera scannerCamera;
         private readonly AutoFocusCallback autoFocus;
-        private readonly RbConfig options;
         private readonly CameraConfigurator cameraConfigurator;
 
-        public CameraService(BarcodeScanner renderer, ScannerCamera scannerCamera, RbConfig options)
+        public CameraService(BarcodeScanner renderer, ScannerCamera scannerCamera, CameraConfigurator configurator)
         {
-            this.options = options;
             this.renderer = renderer;
             this.scannerCamera = scannerCamera;
-            this.cameraConfigurator = new CameraConfigurator(options);
+            this.cameraConfigurator = configurator;
+
             this.autoFocus = new AutoFocusCallback(scannerCamera);
         }
 

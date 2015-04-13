@@ -6,6 +6,12 @@ namespace Rb.Forms.Barcode.Droid
 {
     public class RbConfig
     {
+        public enum Quality {
+            High,
+            Medium,
+            Low
+        };
+
 
         /// <summary>
         /// Enable detection of picky android devices (e.g.: samsung).
@@ -19,10 +25,40 @@ namespace Rb.Forms.Barcode.Droid
         /// Most devices should at least support FocusModeAuto.
         /// </summary>
         public IList<String> FocusModes = new List<string> {
-            AndroidCamera.Parameters.FocusModeContinuousVideo,
             AndroidCamera.Parameters.FocusModeContinuousPicture,
+            AndroidCamera.Parameters.FocusModeContinuousVideo,
             AndroidCamera.Parameters.FocusModeAuto,
         };
+
+        /// <summary>
+        /// Defines the preview resolution quality. This setting has direct impact on the decoder performance.
+        /// 
+        /// * The higher the setting the better and clearer the preview image but the decoder performance gets
+        ///   worse because of the amount of data (pixel) to process.
+        /// * Medium is a trade off between preview quality and performance. (recommended setting)
+        /// * Low preview resolution leads to the best decoder performance but the preview image quality suffers.
+        ///   Please note that the quality may be so low that the barcode is not readable any more.
+        /// 
+        /// The default device dependant preview resolution will be used as fallback.
+        /// </summary>
+        /// <remarks>
+        /// The aspect ratio of the device display is considered when selecting a preview resolution.
+        /// <seealso cref="RbConfig.AspectRatioThreshold" />
+        /// </remarks>
+        public Quality PreviewResolution = Quality.Medium;
+
+        /// <summary>
+        /// Threshold value that controls if a suggested resolution should be discarded when its aspect ratio is
+        /// different than the screen ratio.
+        /// A bigger tolerance level means more resolutions to pick from but can result in distorted preview images.
+        /// <seealso cref="RbConfig.PreviewResolution"/>
+        /// </summary>
+        public double AspectRatioThreshold = 0.15;
+
+        /// <summary>
+        /// Show performance related metrics in the application output.
+        /// </summary>
+        public bool Metrics = false;
 
         /// <summary>
         /// Enable or disable metering area configuration.

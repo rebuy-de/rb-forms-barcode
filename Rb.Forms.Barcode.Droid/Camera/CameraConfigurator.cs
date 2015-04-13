@@ -1,9 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Rb.Forms.Barcode.Pcl.Logger;
 using Rb.Forms.Barcode.Droid.Logger;
 
 using AndroidCamera = Android.Hardware.Camera;
+using Android.Content;
+using Android.Views;
+using Android.Util;
+using Android.Runtime;
+using Android.Graphics;
 
 #pragma warning disable 618
 namespace Rb.Forms.Barcode.Droid.Camera
@@ -11,9 +17,11 @@ namespace Rb.Forms.Barcode.Droid.Camera
     public class CameraConfigurator : ILog
     {
         private readonly RbConfig config;
+        private readonly Context context;
 
-        public CameraConfigurator(RbConfig config)
+        public CameraConfigurator(RbConfig config, Context context)
         {
+            this.context = context;
             this.config = config;
             
         }
@@ -27,6 +35,15 @@ namespace Rb.Forms.Barcode.Droid.Camera
             var focusMode = determineFocusMode(camera);
             this.Debug("Focus Mode [{0}]", focusMode);
             parameters.FocusMode = focusMode;
+
+
+            camera.SetDisplayOrientation(90);
+
+            var resolution = determineResolution(camera);
+            this.Debug("Preview resolution [Width: {0}] x [Height {1}]", resolution.Width, resolution.Height);
+            parameters.SetPreviewSize(resolution.Width, resolution.Height);
+
+            addCallbackBuffers(camera);
 
             if (isPickyDevice()) {
                 this.Debug("Used device is marked as picky. Skipping detailed configuration to ensure function compatibility.");
@@ -77,6 +94,56 @@ namespace Rb.Forms.Barcode.Droid.Camera
             }
 
             return "";
+        }
+
+        private AndroidCamera.Size determineResolution(AndroidCamera camera)
+        {
+            var p = camera.GetParameters();
+            var referenceRatio = getDisplayRatio();
+
+            Func<AndroidCamera.Size, bool> ratioFilter = (r) =>  {
+                var rawr = ((double) r.Width / (double) r.Height) - referenceRatio;
+                return Math.Abs(rawr) <= config.AspectRatioThreshold;
+            };
+
+            var previewSizes = p.SupportedPreviewSizes
+                .Where(ratioFilter)
+                .OrderByDescending(r => r.Width * r.Height)
+                .DefaultIfEmpty(p.PreviewSize);
+
+            switch (config.PreviewResolution) {
+                case RbConfig.Quality.High:
+                    return previewSizes.First();
+
+                case RbConfig.Quality.Low:
+                    return previewSizes.Last();
+
+                case RbConfig.Quality.Medium:
+                default:
+                    var i = (int) Math.Ceiling(previewSizes.Count() / (double) 2) - 1;
+                    return previewSizes.ElementAt(i);
+            }
+        }
+
+        private double getDisplayRatio()
+        {
+            var displayMetrics = new DisplayMetrics();
+
+            var windowManager = context.GetSystemService(Context.WindowService).JavaCast<IWindowManager>();
+            windowManager.DefaultDisplay.GetMetrics(displayMetrics);
+
+            return (double) displayMetrics.HeightPixels / (double) displayMetrics.WidthPixels;
+        }
+
+        private void addCallbackBuffers(AndroidCamera camera)
+        {
+            var p = camera.GetParameters();
+
+            var buffersize = p.PreviewSize.Width * p.PreviewSize.Height * ImageFormat.GetBitsPerPixel(p.PreviewFormat) / 8;
+
+            for (int i = 0; i <= 3; i++) {
+                camera.AddCallbackBuffer(new byte[buffersize]);
+            }
         }
 
         private string determineSceneMode(AndroidCamera camera)

@@ -5,6 +5,8 @@ using Rb.Forms.Barcode.Pcl.Logger;
 using Rb.Forms.Barcode.Droid.Logger;
 using ZXing;
 using ZXing.Mobile;
+using Android.Graphics;
+using System.Diagnostics;
 
 namespace Rb.Forms.Barcode.Droid.Decoder
 {
@@ -16,6 +18,8 @@ namespace Rb.Forms.Barcode.Droid.Decoder
 
         private IBarcodeReader barcodeReader;
         private readonly RbConfig config;
+        private Stopwatch stopwatch;
+
 
         public BarcodeDecoder(RbConfig config)
         {
@@ -28,6 +32,12 @@ namespace Rb.Forms.Barcode.Droid.Decoder
             };
 
             barcodeReader = zxingNetOptions.BuildBarcodeReader();
+
+
+            if (config.Metrics) {
+                stopwatch = new Stopwatch();
+            }
+
             EnableDecoding();
         }
 
@@ -68,9 +78,17 @@ namespace Rb.Forms.Barcode.Droid.Decoder
         private String decode(byte[] bytes, int width, int height)
         {
             try { 
-                var source = new PlanarYUVLuminanceSource(bytes, width, height, 0, 0, width, height, false);
-                var rotated = source.rotateCounterClockwise();
-                var result = barcodeReader.Decode(rotated);
+
+                if (config.Metrics) {
+                    stopwatch.Restart();
+                }
+                var source = new PlanarYUVLuminanceSource(bytes, width, height, 0, 0, width, height, false).rotateCounterClockwise();
+                var result = barcodeReader.Decode(source);
+
+                if (config.Metrics) {
+                    stopwatch.Stop();
+                    this.Debug("[Metric] Time to decode [{0} MS]", stopwatch.ElapsedMilliseconds);
+                }
 
                 if (null == result) {
                     return "";

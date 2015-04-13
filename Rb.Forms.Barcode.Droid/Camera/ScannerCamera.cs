@@ -75,8 +75,7 @@ namespace Rb.Forms.Barcode.Droid.Camera
         {
             this.Debug("StartPreview");
 
-            camera.SetDisplayOrientation(90);
-            camera.SetPreviewCallback(previewCallback);
+            camera.SetPreviewCallbackWithBuffer(previewCallback);
 
             camera.StartPreview();
         }
@@ -88,7 +87,7 @@ namespace Rb.Forms.Barcode.Droid.Camera
             camera.CancelAutoFocus();
 
             camera.StopPreview();
-            camera.SetPreviewCallback(null);
+            camera.SetPreviewCallbackWithBuffer(null);
         }
 
         public void AutoFocus(AndroidCamera.IAutoFocusCallback previewCallback)
