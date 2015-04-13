@@ -5,6 +5,7 @@ using Rb.Forms.Barcode.Droid.Logger;
 using Android.Views;
 using Android.Hardware;
 using AndroidCamera = Android.Hardware.Camera;
+using ApxLabs.FastAndroidCamera;
 
 #pragma warning disable 618
 namespace Rb.Forms.Barcode.Droid.Camera
@@ -66,11 +67,11 @@ namespace Rb.Forms.Barcode.Droid.Camera
             camera = null;
         }
 
-        public void StartPreview(AndroidCamera.IPreviewCallback previewCallback) 
+        public void StartPreview(INonMarshalingPreviewCallback previewCallback) 
         {
             this.Debug("StartPreview");
 
-            camera.SetPreviewCallbackWithBuffer(previewCallback);
+            camera.SetNonMarshalingPreviewCallback(previewCallback);
 
             camera.StartPreview();
         }
@@ -82,7 +83,7 @@ namespace Rb.Forms.Barcode.Droid.Camera
             camera.CancelAutoFocus();
 
             camera.StopPreview();
-            camera.SetPreviewCallbackWithBuffer(null);
+            camera.SetNonMarshalingPreviewCallback(null);
         }
 
         public void AutoFocus(AndroidCamera.IAutoFocusCallback previewCallback)

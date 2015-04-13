@@ -88,6 +88,10 @@
       <Project>{677C433A-8C1F-466F-91CA-1181FDF29795}</Project>
       <Name>Rb.Forms.Barcode.Pcl</Name>
     </ProjectReference>
+    <ProjectReference Include="..\FastAndroidCamera\FastAndroidCamera.csproj">
+      <Project>{B544C08C-7F75-4B68-91F5-3B0AFE17937B}</Project>
+      <Name>FastAndroidCamera</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="View\" />
