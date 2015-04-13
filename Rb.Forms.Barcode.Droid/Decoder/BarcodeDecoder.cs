@@ -85,7 +85,13 @@ namespace Rb.Forms.Barcode.Droid.Decoder
                 if (config.Metrics) {
                     stopwatch.Restart();
                 }
-                var source = new PlanarYUVLuminanceSource(bytes, width, height, 0, 0, width, height, false).rotateCounterClockwise();
+
+                LuminanceSource source = new PlanarYUVLuminanceSource(bytes, width, height, 0, 0, width, height, false);
+
+                if (!config.Rotate) {
+                    source = source.rotateCounterClockwise();
+                }
+
                 var result = barcodeReader.Decode(source);
 
                 if (config.Metrics) {
