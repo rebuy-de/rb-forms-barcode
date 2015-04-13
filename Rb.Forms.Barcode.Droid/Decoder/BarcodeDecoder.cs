@@ -5,9 +5,7 @@ using Rb.Forms.Barcode.Pcl.Logger;
 using Rb.Forms.Barcode.Droid.Logger;
 using ZXing;
 using ZXing.Mobile;
-using Android.Graphics;
 using System.Diagnostics;
-using Xamarin.Forms;
 
 namespace Rb.Forms.Barcode.Droid.Decoder
 {

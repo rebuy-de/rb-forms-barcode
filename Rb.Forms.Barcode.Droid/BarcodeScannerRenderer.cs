@@ -195,7 +195,7 @@ namespace Rb.Forms.Barcode.Droid
                 return;
             }
 
-            if (visibility == ViewStates.Visible) {
+            if (visibility == ViewStates.Visible && scannerCamera.CameraOpen) {
                 await Task.Run(() => scannerService.StartPreview(previewFrameCallback));
             }
 
