@@ -7,6 +7,7 @@ using ZXing;
 using ZXing.Mobile;
 using Android.Graphics;
 using System.Diagnostics;
+using Xamarin.Forms;
 
 namespace Rb.Forms.Barcode.Droid.Decoder
 {
@@ -86,7 +87,12 @@ namespace Rb.Forms.Barcode.Droid.Decoder
                     stopwatch.Restart();
                 }
 
-                LuminanceSource source = new PlanarYUVLuminanceSource(bytes, width, height, 0, 0, width, height, false);
+                var aLeft = percentageToAbsolute(width, config.BarcodeArea.X);
+                var aTop = percentageToAbsolute(height, config.BarcodeArea.Y);
+                var aWidth = percentageToAbsolute(width, config.BarcodeArea.Width);
+                var aHeight = percentageToAbsolute(height, config.BarcodeArea.Height);
+
+                LuminanceSource source = new PlanarYUVLuminanceSource(bytes, width, height, aLeft, aTop, aWidth, aHeight, false);
 
                 if (!config.Rotate) {
                     source = source.rotateCounterClockwise();
@@ -108,6 +114,11 @@ namespace Rb.Forms.Barcode.Droid.Decoder
                 this.Debug(ex.ToString());
                 return "";
             }
+        }
+
+        private int percentageToAbsolute(int value, double percentage)
+        {
+            return (int) Math.Floor((value / 100.0) * percentage);
         }
 
         private bool isTaskCompleted()

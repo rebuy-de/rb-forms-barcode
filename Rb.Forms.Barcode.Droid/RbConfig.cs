@@ -2,11 +2,16 @@
 using System.Collections.Generic;
 using AndroidCamera = Android.Hardware.Camera;
 using ZXing;
+using Xamarin.Forms;
 
 namespace Rb.Forms.Barcode.Droid
 {
     public class RbConfig
     {
+
+
+        private Rectangle barcodeArea = new Rectangle(0, 0, 100, 100);
+
         public enum Quality {
             High,
             Medium,
@@ -70,6 +75,44 @@ namespace Rb.Forms.Barcode.Droid
         public bool Metrics = false;
 
         /// <summary>
+        /// Rectangle area where the decoder should look for a barcode on the preview image. Increases the chance to
+        /// find a barcode and has positive effect on decoder speed (less pixels to scan). If the image of the barcode
+        /// is not within this area no barcode will be found.
+        /// 
+        /// Calculation of the rectangle boundaries is percentage based.
+        /// Given values shall not exceed the range from 0 to 100.
+        /// Calculation of the rectangle is based on portrait mode orientation.
+        /// The starting point is the lower left corner, x and y being 0.
+        /// </summary>
+        /// <example> 
+        /// Image: width = 1280, height = 720
+        /// Rectangle: x = 33, y = 0, width = 33, height = 100
+        /// Result: x = 422px, y = 0, 422px, 720px
+        /// </example>
+        public Rectangle BarcodeArea {
+            get {
+                return barcodeArea;
+            }
+            set {
+                if (isOutOfBoundaries(value.X)) {
+                    throw new Rb.Forms.Barcode.Pcl.OutOfBoundsException("X is out of bounds.");
+                }
+
+                if (isOutOfBoundaries(value.Y)) {
+                    throw new Rb.Forms.Barcode.Pcl.OutOfBoundsException("Y is out of bounds.");
+                }
+
+                if (isOutOfBoundaries(value.Width)) {
+                    throw new Rb.Forms.Barcode.Pcl.OutOfBoundsException("Width is out of bounds.");
+                }
+
+                if (isOutOfBoundaries(value.Height)) {
+                    throw new Rb.Forms.Barcode.Pcl.OutOfBoundsException("Height is out of bounds.");
+                }
+            }
+        }
+
+        /// <summary>
         /// Enable or disable metering area configuration.
         /// If false no metering areas will be set even if the device claims to support it.
         /// </summary>
@@ -119,6 +162,11 @@ namespace Rb.Forms.Barcode.Droid
         /// Inverted image colors when the first pass yields no barcode.
         /// </summary>
         public bool TryInverted = false;
+
+        private bool isOutOfBoundaries(double value)
+        {
+            return value < 0 || value > 100;
+        }
     }
 }
 

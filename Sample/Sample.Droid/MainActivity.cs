@@ -6,6 +6,7 @@ using Sample.Pcl;
 using Xamarin.Forms.Platform.Android;
 using Rb.Forms.Barcode.Droid;
 using Android.Content.PM;
+using Xamarin.Forms;
 
 namespace Sample.Droid
 {
@@ -15,7 +16,7 @@ namespace Sample.Droid
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
-            Xamarin.Forms.Forms.Init(this, bundle);
+            Forms.Init(this, bundle);
 
             var config = new RbConfig {
                 Metrics = true
