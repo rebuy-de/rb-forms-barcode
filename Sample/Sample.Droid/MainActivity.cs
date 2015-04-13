@@ -17,7 +17,11 @@ namespace Sample.Droid
             base.OnCreate(bundle);
             Xamarin.Forms.Forms.Init(this, bundle);
 
-            BarcodeScannerRenderer.Init();
+            var config = new RbConfig {
+                Metrics = true
+            };
+
+            BarcodeScannerRenderer.Init(config);
 
             LoadApplication(new App());
         }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using AndroidCamera = Android.Hardware.Camera;
+using ZXing;
 
 namespace Rb.Forms.Barcode.Droid
 {
@@ -54,6 +55,14 @@ namespace Rb.Forms.Barcode.Droid
         /// <seealso cref="RbConfig.PreviewResolution"/>
         /// </summary>
         public double AspectRatioThreshold = 0.15;
+
+        /// <summary>
+        /// List of barcode types the decoder should look out for.
+        /// Its recommended to narrow the list down to increase decoder performance.
+        /// If no format is specified all available formats will be registered.
+        /// <seealso cref="ZXing.BarcodeFormat"/>
+        /// </summary>
+        public IList<BarcodeFormat> Barcodes = new List<BarcodeFormat>();
 
         /// <summary>
         /// Show performance related metrics in the application output.

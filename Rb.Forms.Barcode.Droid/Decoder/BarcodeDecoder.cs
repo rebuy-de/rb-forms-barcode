@@ -28,11 +28,14 @@ namespace Rb.Forms.Barcode.Droid.Decoder
             var zxingNetOptions = new MobileBarcodeScanningOptions {
                 AutoRotate = config.Rotate,
                 TryHarder = config.TryHarder,
-                TryInverted = config.TryInverted
+                TryInverted = config.TryInverted,
             };
 
-            barcodeReader = zxingNetOptions.BuildBarcodeReader();
+            foreach (var format in config.Barcodes) {
+                zxingNetOptions.PossibleFormats.Add(format);
+            }
 
+            barcodeReader = zxingNetOptions.BuildBarcodeReader();
 
             if (config.Metrics) {
                 stopwatch = new Stopwatch();
