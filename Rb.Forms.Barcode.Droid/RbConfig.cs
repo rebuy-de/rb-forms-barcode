@@ -1,11 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using AndroidCamera = Android.Hardware.Camera;
+using ZXing;
+using Xamarin.Forms;
 
 namespace Rb.Forms.Barcode.Droid
 {
     public class RbConfig
     {
+        private Rectangle barcodeArea = new Rectangle(0, 0, 100, 100);
+
+        public enum Quality {
+            High,
+            Medium,
+            Low
+        };
+
 
         /// <summary>
         /// Enable detection of picky android devices (e.g.: samsung).
@@ -19,10 +29,75 @@ namespace Rb.Forms.Barcode.Droid
         /// Most devices should at least support FocusModeAuto.
         /// </summary>
         public IList<String> FocusModes = new List<string> {
-            AndroidCamera.Parameters.FocusModeContinuousVideo,
             AndroidCamera.Parameters.FocusModeContinuousPicture,
+            AndroidCamera.Parameters.FocusModeContinuousVideo,
             AndroidCamera.Parameters.FocusModeAuto,
         };
+
+        /// <summary>
+        /// Defines the preview resolution quality. This setting has direct impact on the decoder performance.
+        /// 
+        /// * The higher the setting the better and clearer the preview image but the decoder performance gets
+        ///   worse because of the amount of data (pixel) to process.
+        /// * Medium is a trade off between preview quality and performance. (recommended setting)
+        /// * Low preview resolution leads to the best decoder performance but the preview image quality suffers.
+        ///   Please note that the quality may be so low that the barcode is not readable any more.
+        /// 
+        /// The default device dependant preview resolution will be used as fallback.
+        /// </summary>
+        /// <remarks>
+        /// The aspect ratio of the device display is considered when selecting a preview resolution.
+        /// <seealso cref="RbConfig.AspectRatioThreshold" />
+        /// </remarks>
+        public Quality PreviewResolution = Quality.Medium;
+
+        /// <summary>
+        /// Threshold value that controls if a suggested resolution should be discarded when its aspect ratio is
+        /// different than the screen ratio.
+        /// A bigger tolerance level means more resolutions to pick from but can result in distorted preview images.
+        /// <seealso cref="RbConfig.PreviewResolution"/>
+        /// </summary>
+        public double AspectRatioThreshold = 0.15;
+
+        /// <summary>
+        /// List of barcode types the decoder should look out for.
+        /// Its recommended to narrow the list down to increase decoder performance.
+        /// If no format is specified all available formats will be registered.
+        /// <seealso cref="ZXing.BarcodeFormat"/>
+        /// </summary>
+        public IList<BarcodeFormat> Barcodes = new List<BarcodeFormat>();
+
+        /// <summary>
+        /// Show performance related metrics in the application output.
+        /// </summary>
+        public bool Metrics = false;
+
+        /// <summary>
+        /// Rectangle area where the decoder should look for a barcode on the preview image. Increases the chance to
+        /// find a barcode and has positive effect on decoder speed (less pixels to scan). If the image of the barcode
+        /// is not within this area no barcode will be found.
+        /// 
+        /// Calculation of the rectangle boundaries is percentage based.
+        /// Given values must not exceed the range from 0 to 100.
+        /// Calculation of the rectangle is based on portrait mode orientation.
+        /// The starting point is the lower left corner, x and y being 0.
+        /// </summary>
+        /// <example> 
+        /// Image: width = 1280, height = 720
+        /// Rectangle: x = 33, y = 0, width = 33, height = 100
+        /// Result: x = 422px, y = 0, 422px, 720px
+        /// </example>
+        public Rectangle BarcodeArea {
+            get {
+                return barcodeArea;
+            }
+            set {
+                validateBoundaries(value.X, "X");
+                validateBoundaries(value.Y, "Y");
+                validateBoundaries(value.Width, "Width");
+                validateBoundaries(value.Height, "Height");
+            }
+        }
 
         /// <summary>
         /// Enable or disable metering area configuration.
@@ -74,6 +149,13 @@ namespace Rb.Forms.Barcode.Droid
         /// Inverted image colors when the first pass yields no barcode.
         /// </summary>
         public bool TryInverted = false;
+
+        private void validateBoundaries(double value, string type)
+        {
+            if (value < 0 || value > 100) {
+                throw new Rb.Forms.Barcode.Pcl.OutOfBoundsException(String.Format("{0} is out of bounds.", type));
+            }
+        }
     }
 }
 

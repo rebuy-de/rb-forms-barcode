@@ -5,6 +5,9 @@ using Rb.Forms.Barcode.Pcl.Logger;
 using Rb.Forms.Barcode.Droid.Logger;
 using ZXing;
 using ZXing.Mobile;
+using Android.Graphics;
+using System.Diagnostics;
+using Xamarin.Forms;
 
 namespace Rb.Forms.Barcode.Droid.Decoder
 {
@@ -16,6 +19,8 @@ namespace Rb.Forms.Barcode.Droid.Decoder
 
         private IBarcodeReader barcodeReader;
         private readonly RbConfig config;
+        private Stopwatch stopwatch;
+
 
         public BarcodeDecoder(RbConfig config)
         {
@@ -24,10 +29,19 @@ namespace Rb.Forms.Barcode.Droid.Decoder
             var zxingNetOptions = new MobileBarcodeScanningOptions {
                 AutoRotate = config.Rotate,
                 TryHarder = config.TryHarder,
-                TryInverted = config.TryInverted
+                TryInverted = config.TryInverted,
             };
 
+            foreach (var format in config.Barcodes) {
+                zxingNetOptions.PossibleFormats.Add(format);
+            }
+
             barcodeReader = zxingNetOptions.BuildBarcodeReader();
+
+            if (config.Metrics) {
+                stopwatch = new Stopwatch();
+            }
+
             EnableDecoding();
         }
 
@@ -68,9 +82,28 @@ namespace Rb.Forms.Barcode.Droid.Decoder
         private String decode(byte[] bytes, int width, int height)
         {
             try { 
-                var source = new PlanarYUVLuminanceSource(bytes, width, height, 0, 0, width, height, false);
-                var rotated = source.rotateCounterClockwise();
-                var result = barcodeReader.Decode(rotated);
+
+                if (config.Metrics) {
+                    stopwatch.Restart();
+                }
+
+                var aLeft = percentageToAbsolute(width, config.BarcodeArea.X);
+                var aTop = percentageToAbsolute(height, config.BarcodeArea.Y);
+                var aWidth = percentageToAbsolute(width, config.BarcodeArea.Width);
+                var aHeight = percentageToAbsolute(height, config.BarcodeArea.Height);
+
+                LuminanceSource source = new PlanarYUVLuminanceSource(bytes, width, height, aLeft, aTop, aWidth, aHeight, false);
+
+                if (!config.Rotate) {
+                    source = source.rotateCounterClockwise();
+                }
+
+                var result = barcodeReader.Decode(source);
+
+                if (config.Metrics) {
+                    stopwatch.Stop();
+                    this.Debug("[Metric] Time to decode [{0} MS]", stopwatch.ElapsedMilliseconds);
+                }
 
                 if (null == result) {
                     return "";
@@ -81,6 +114,11 @@ namespace Rb.Forms.Barcode.Droid.Decoder
                 this.Debug(ex.ToString());
                 return "";
             }
+        }
+
+        private int percentageToAbsolute(int value, double percentage)
+        {
+            return (int) Math.Floor((value / 100.0) * percentage);
         }
 
         private bool isTaskCompleted()

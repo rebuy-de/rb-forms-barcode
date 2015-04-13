@@ -24,6 +24,7 @@ namespace Rb.Forms.Barcode.Droid
         private readonly ScannerCamera scannerCamera = ScannerCamera.Instance;
         private readonly BarcodeDecoder barcodeDecoder = new BarcodeDecoder(config);
 
+        private CameraConfigurator configurator;
         private PreviewFrameCallback previewFrameCallback;
         private CameraService scannerService;
 
@@ -118,7 +119,8 @@ namespace Rb.Forms.Barcode.Droid
             surfaceView.Holder.AddCallback(this);
             SetNativeControl(surfaceView);
 
-            scannerService = new CameraService(Element, scannerCamera, config);
+            configurator = new CameraConfigurator(config, Context);
+            scannerService = new CameraService(Element, scannerCamera, configurator);
             previewFrameCallback = new PreviewFrameCallback(barcodeDecoder, Element);
 
             Element.CameraOpened += async (sender, args) => {
