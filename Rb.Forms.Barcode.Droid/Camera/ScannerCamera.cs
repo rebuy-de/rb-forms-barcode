@@ -53,14 +53,9 @@ namespace Rb.Forms.Barcode.Droid.Camera
 
         public void AssignPreview(ISurfaceHolder holder)
         {
-
             this.Debug("AssignPreview");
-            try {
-                camera.SetPreviewDisplay(holder);
-            } catch (Exception ex) {
-                this.Debug(ex.Message);
-                this.Debug(ex.StackTrace.ToString());
-            }
+
+            camera.SetPreviewDisplay(holder);
         }
 
         public void ReleaseCamera()
