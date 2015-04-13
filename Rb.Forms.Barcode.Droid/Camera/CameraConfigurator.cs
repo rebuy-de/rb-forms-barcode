@@ -32,18 +32,22 @@ namespace Rb.Forms.Barcode.Droid.Camera
 
             camera.CancelAutoFocus();
 
-            var focusMode = determineFocusMode(camera);
+            var focusMode = determineFocusMode(parameters);
             this.Debug("Focus Mode [{0}]", focusMode);
             parameters.FocusMode = focusMode;
 
 
             camera.SetDisplayOrientation(90);
 
-            var resolution = determineResolution(camera);
+            var resolution = determineResolution(parameters);
             this.Debug("Preview resolution [Width: {0}] x [Height {1}]", resolution.Width, resolution.Height);
             parameters.SetPreviewSize(resolution.Width, resolution.Height);
 
-            addCallbackBuffers(camera);
+            var buffersize = calculateBufferSize(parameters);
+
+            for (int i = 0; i <= 3; i++) {
+                camera.AddCallbackBuffer(new byte[buffersize]);
+            }
 
             if (isPickyDevice()) {
                 this.Debug("Used device is marked as picky. Skipping detailed configuration to ensure function compatibility.");
@@ -51,7 +55,7 @@ namespace Rb.Forms.Barcode.Droid.Camera
 
             if (!isPickyDevice()) {
                 if (config.SceneMode) {
-                    var sceneMode = determineSceneMode(camera);
+                    var sceneMode = determineSceneMode(parameters);
                     this.Debug("Scene Mode [{0}]", sceneMode);
                     parameters.SceneMode = sceneMode;
                 }
@@ -72,7 +76,7 @@ namespace Rb.Forms.Barcode.Droid.Camera
                 }
 
                 if (config.WhiteBalance) {
-                    var whiteBalance = determineWhiteBalance(camera);
+                    var whiteBalance = determineWhiteBalance(parameters);
                     this.Debug("White balance [{0}]", whiteBalance);
                     parameters.WhiteBalance = whiteBalance;
                 }
@@ -83,10 +87,8 @@ namespace Rb.Forms.Barcode.Droid.Camera
             return camera;
         }
 
-        private string determineFocusMode(AndroidCamera camera)
+        private string determineFocusMode(AndroidCamera.Parameters p)
         {
-            var p = camera.GetParameters();
-
             foreach (var mode in config.FocusModes) {
                 if (p.SupportedFocusModes.Contains(mode)) {
                     return mode;
@@ -96,9 +98,8 @@ namespace Rb.Forms.Barcode.Droid.Camera
             return "";
         }
 
-        private AndroidCamera.Size determineResolution(AndroidCamera camera)
+        private AndroidCamera.Size determineResolution(AndroidCamera.Parameters parameters)
         {
-            var p = camera.GetParameters();
             var referenceRatio = getDisplayRatio();
 
             Func<AndroidCamera.Size, bool> ratioFilter = (r) =>  {
@@ -106,10 +107,10 @@ namespace Rb.Forms.Barcode.Droid.Camera
                 return Math.Abs(rawr) <= config.AspectRatioThreshold;
             };
 
-            var previewSizes = p.SupportedPreviewSizes
+            var previewSizes = parameters.SupportedPreviewSizes
                 .Where(ratioFilter)
                 .OrderByDescending(r => r.Width * r.Height)
-                .DefaultIfEmpty(p.PreviewSize);
+                .DefaultIfEmpty(parameters.PreviewSize);
 
             switch (config.PreviewResolution) {
                 case RbConfig.Quality.High:
@@ -120,7 +121,7 @@ namespace Rb.Forms.Barcode.Droid.Camera
 
                 case RbConfig.Quality.Medium:
                 default:
-                    var i = (int) Math.Ceiling(previewSizes.Count() / (double) 2) - 1;
+                    var i = (int) Math.Ceiling(previewSizes.Count() / 2.0) - 1;
                     return previewSizes.ElementAt(i);
             }
         }
@@ -135,33 +136,23 @@ namespace Rb.Forms.Barcode.Droid.Camera
             return (double) displayMetrics.HeightPixels / (double) displayMetrics.WidthPixels;
         }
 
-        private void addCallbackBuffers(AndroidCamera camera)
+        private int calculateBufferSize(AndroidCamera.Parameters parameters)
         {
-            var p = camera.GetParameters();
-
-            var buffersize = p.PreviewSize.Width * p.PreviewSize.Height * ImageFormat.GetBitsPerPixel(p.PreviewFormat) / 8;
-
-            for (int i = 0; i <= 3; i++) {
-                camera.AddCallbackBuffer(new byte[buffersize]);
-            }
+            return parameters.PreviewSize.Width * parameters.PreviewSize.Height * ImageFormat.GetBitsPerPixel(parameters.PreviewFormat) / 8;
         }
 
-        private string determineSceneMode(AndroidCamera camera)
+        private string determineSceneMode(AndroidCamera.Parameters parameters)
         {
-            var p = camera.GetParameters();
-
-            if (p.SupportedSceneModes.Contains(AndroidCamera.Parameters.SceneModeBarcode)) {
+            if (parameters.SupportedSceneModes.Contains(AndroidCamera.Parameters.SceneModeBarcode)) {
                 return AndroidCamera.Parameters.SceneModeBarcode;
             }
 
             return AndroidCamera.Parameters.SceneModeAuto;
         }
 
-        private string determineWhiteBalance(AndroidCamera camera)
+        private string determineWhiteBalance(AndroidCamera.Parameters parameters)
         {
-            var p = camera.GetParameters();
-
-            if (p.SupportedWhiteBalance.Contains(AndroidCamera.Parameters.WhiteBalanceAuto)) {
+            if (parameters.SupportedWhiteBalance.Contains(AndroidCamera.Parameters.WhiteBalanceAuto)) {
                 return AndroidCamera.Parameters.WhiteBalanceAuto;
             }
 
@@ -170,7 +161,7 @@ namespace Rb.Forms.Barcode.Droid.Camera
 
         private List<AndroidCamera.Area> createAreas()
         {
-            var area = new AndroidCamera.Area(new global::Android.Graphics.Rect(-1000, -400, 1000, 400), 1000);
+            var area = new AndroidCamera.Area(new Rect(-1000, -400, 1000, 400), 1000);
 
             return new List<AndroidCamera.Area>() {
                 area
