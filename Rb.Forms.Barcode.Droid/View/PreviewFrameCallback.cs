@@ -29,10 +29,7 @@ namespace Rb.Forms.Barcode.Droid.View
             var buffer = new FastJavaByteArray(data);
             var previewSize = camera.GetParameters().PreviewSize;
 
-            var bytes = new byte[buffer.Count];
-            buffer.CopyTo(bytes, 0);
-
-            var decoder = barcodeDecoder.DecodeAsync(bytes, previewSize.Width, previewSize.Height);
+            var decoder = barcodeDecoder.DecodeAsync(buffer, previewSize.Width, previewSize.Height);
 
             if (null == decoder) {
                 camera.AddCallbackBuffer(buffer);

@@ -30,7 +30,6 @@ namespace Rb.Forms.Barcode.Droid.View
                 var camera = scannerCamera.OpenCamera();
 
                 scannerCamera.AssignPreview(holder);
-                cameraConfigurator.Configure(camera);
 
                 renderer.OnCameraOpened();
             } catch (Exception ex) {
@@ -59,6 +58,7 @@ namespace Rb.Forms.Barcode.Droid.View
         public void StartPreview(PreviewFrameCallback previewFrameCallback)
         {
             try {
+                cameraConfigurator.Configure(scannerCamera.OpenCamera());
                 scannerCamera.StartPreview(previewFrameCallback);
 
                 if (scannerCamera.AutoFocusMode) {
