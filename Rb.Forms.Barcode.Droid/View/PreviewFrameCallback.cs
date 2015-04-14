@@ -1,11 +1,9 @@
 using System;
 using Rb.Forms.Barcode.Pcl;
 using Rb.Forms.Barcode.Pcl.Logger;
-using Rb.Forms.Barcode.Droid.Logger;
 using Rb.Forms.Barcode.Droid.Decoder;
 
 using AndroidCamera = Android.Hardware.Camera;
-using ZXing;
 using ApxLabs.FastAndroidCamera;
 
 #pragma warning disable 618
