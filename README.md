@@ -19,8 +19,8 @@ We are very eager about your beta feedback, so do not hesitate to create an issu
 * Continues scanning!
 * Fully Xamarin.Forms compatible. Add elements on top and adapt it to your needs.
 * PCL based as far as possible.
-* Bindable properties and events.
-* Android support.
+* Lots of configuration options, bindable properties and events.
+* Android support using callback buffers and FastAndroidCamera for best possible performance.
 * No crashing, hanging or blocking the camera. ;)
 
 ## Setup
@@ -44,8 +44,6 @@ BarcodeScannerRenderer.Init();
 2. Register an EventHandler for the `BarcodeScanner.BarcodeFound` event.
 
 The scanning kicks in as soon as the element is visible on screen and stops when the view is not visible or the page holding the element gets removed from the stack.
-
-You can enable or disable the scanner and preview using the `BarcodeScanner.IsEnabled` property.
 
 ### Bindable properties and events
 
