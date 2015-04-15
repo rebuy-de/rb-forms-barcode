@@ -199,7 +199,7 @@ namespace Rb.Forms.Barcode.Droid
                 await Task.Run(() => scannerService.StartPreview(previewFrameCallback));
             }
 
-            if (visibility == ViewStates.Gone && !BarcodeScannerRenderer.KeepCamera) {
+            if (visibility == ViewStates.Gone && !BarcodeScannerRenderer.KeepCamera && scannerCamera.CameraOpen) {
                 scannerService.HaltPreview();
             }
 

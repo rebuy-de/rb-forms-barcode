@@ -6,6 +6,7 @@ using Rb.Forms.Barcode.Droid.Logger;
 using ZXing;
 using ZXing.Mobile;
 using System.Diagnostics;
+using ApxLabs.FastAndroidCamera;
 
 namespace Rb.Forms.Barcode.Droid.Decoder
 {
@@ -43,10 +44,10 @@ namespace Rb.Forms.Barcode.Droid.Decoder
             EnableDecoding();
         }
 
-        public Task<String> DecodeAsync(byte[] bytes, int width, int height)
+        public Task<String> DecodeAsync(FastJavaByteArray buffer, int width, int height)
         {
             decodeTask = Task.Run(() => {
-                return !CanDecode() ? null : decode(bytes, width, height);
+                return !CanDecode() ? null : decode(buffer, width, height);
             }, tokenSource.Token);
 
             return decodeTask;
@@ -77,9 +78,12 @@ namespace Rb.Forms.Barcode.Droid.Decoder
             return true;
         }
 
-        private String decode(byte[] bytes, int width, int height)
+        private String decode(FastJavaByteArray buffer, int width, int height)
         {
             try { 
+
+                var bytes = new byte[buffer.Count];
+                buffer.CopyTo(bytes, 0);
 
                 if (config.Metrics) {
                     stopwatch.Restart();

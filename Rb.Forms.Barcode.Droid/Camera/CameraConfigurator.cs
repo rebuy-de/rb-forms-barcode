@@ -10,6 +10,7 @@ using Android.Views;
 using Android.Util;
 using Android.Runtime;
 using Android.Graphics;
+using ApxLabs.FastAndroidCamera;
 
 #pragma warning disable 618
 namespace Rb.Forms.Barcode.Droid.Camera
@@ -46,7 +47,7 @@ namespace Rb.Forms.Barcode.Droid.Camera
             var buffersize = calculateBufferSize(parameters);
 
             for (int i = 0; i <= 3; i++) {
-                camera.AddCallbackBuffer(new byte[buffersize]);
+                camera.AddCallbackBuffer(new FastJavaByteArray(buffersize));
             }
 
             if (isPickyDevice()) {
