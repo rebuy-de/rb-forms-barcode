@@ -11,6 +11,7 @@ using Android.Util;
 using Android.Runtime;
 using Android.Graphics;
 using ApxLabs.FastAndroidCamera;
+using Java.Util;
 
 #pragma warning disable 618
 namespace Rb.Forms.Barcode.Droid.Camera
@@ -19,6 +20,7 @@ namespace Rb.Forms.Barcode.Droid.Camera
     {
         private readonly RbConfig config;
         private readonly Context context;
+        private IList<FastJavaByteArray> buffers = new List<FastJavaByteArray>();
 
         public CameraConfigurator(RbConfig config, Context context)
         {
@@ -44,10 +46,17 @@ namespace Rb.Forms.Barcode.Droid.Camera
             this.Debug("Preview resolution [Width: {0}] x [Height {1}]", resolution.Width, resolution.Height);
             parameters.SetPreviewSize(resolution.Width, resolution.Height);
 
-            var buffersize = calculateBufferSize(parameters);
 
-            for (int i = 0; i <= 3; i++) {
-                camera.AddCallbackBuffer(new FastJavaByteArray(buffersize));
+            if (buffers.Count == 0) {
+                var buffersize = calculateBufferSize(parameters);
+
+                for (int i = 0; i <= 3; i++) {
+                    buffers.Add(new FastJavaByteArray(buffersize));
+                }
+            }
+
+            foreach (var buffer in buffers) {
+                camera.AddCallbackBuffer(buffer);
             }
 
             if (isPickyDevice()) {
