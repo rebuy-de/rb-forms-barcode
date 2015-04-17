@@ -11,12 +11,11 @@ using Android.Util;
 using Android.Runtime;
 using Android.Graphics;
 using ApxLabs.FastAndroidCamera;
-using Java.Util;
 
 #pragma warning disable 618
 namespace Rb.Forms.Barcode.Droid.Camera
 {
-    public class CameraConfigurator : ILog
+    public class CameraConfigurator : ILog, IDisposable
     {
         private readonly RbConfig config;
         private readonly Context context;
@@ -27,6 +26,17 @@ namespace Rb.Forms.Barcode.Droid.Camera
             this.context = context;
             this.config = config;
             
+        }
+
+        ~CameraConfigurator()
+        {
+            Dispose(false);
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         public AndroidCamera Configure(AndroidCamera camera)
@@ -181,6 +191,20 @@ namespace Rb.Forms.Barcode.Droid.Camera
         private bool isPickyDevice()
         {
             return config.PickyDeviceDetection && Android.OS.Build.Manufacturer.Contains("samsung");
+        }
+
+        private void clearBuffers()
+        {
+            foreach (var buffer in buffers) {
+                buffer.Dispose();
+            }
+
+            buffers = new List<FastJavaByteArray>();
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            clearBuffers();
         }
     }
 }

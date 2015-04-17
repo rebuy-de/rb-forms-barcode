@@ -14,6 +14,7 @@ namespace Rb.Forms.Barcode.Droid.View
 
         private readonly BarcodeDecoder barcodeDecoder;
         private readonly BarcodeScanner scanner;
+        private FastJavaByteArray buffer;
 
         public PreviewFrameCallback(BarcodeDecoder decoder, BarcodeScanner scanner)
         {
@@ -23,8 +24,12 @@ namespace Rb.Forms.Barcode.Droid.View
 
         async public void OnPreviewFrame(IntPtr data, AndroidCamera camera)
         {
+            if (buffer != null) {
+                buffer.Dispose();
+                buffer = null;
+            }
 
-            var buffer = new FastJavaByteArray(data);
+            buffer = new FastJavaByteArray(data);
             var previewSize = camera.GetParameters().PreviewSize;
 
             var decoder = barcodeDecoder.DecodeAsync(buffer, previewSize.Width, previewSize.Height);
@@ -41,6 +46,7 @@ namespace Rb.Forms.Barcode.Droid.View
                 scanner.Barcode = barcode;
             }
         }
+
     }
 }
 #pragma warning restore 618

@@ -22,7 +22,7 @@ namespace Rb.Forms.Barcode.Droid
         private static RbConfig config = new RbConfig();
 
         private readonly ScannerCamera scannerCamera = ScannerCamera.Instance;
-        private readonly BarcodeDecoder barcodeDecoder = new BarcodeDecoder(config);
+        private BarcodeDecoder barcodeDecoder = new BarcodeDecoder(config);
 
         private CameraConfigurator configurator;
         private PreviewFrameCallback previewFrameCallback;
@@ -210,9 +210,11 @@ namespace Rb.Forms.Barcode.Droid
         {
             this.Debug("Disposing");
 
-            if (disposing) {
-                BarcodeScannerRenderer.KeepCamera = false;
-            }
+            BarcodeScannerRenderer.KeepCamera = false;
+            configurator.Dispose();
+            previewFrameCallback.Dispose();
+            scannerService = null;
+            barcodeDecoder = null;
 
             base.Dispose(disposing);
         }
