@@ -111,6 +111,10 @@ namespace Rb.Forms.Barcode.Droid.Decoder
                     return "";
                 }
 
+                if (result.BarcodeFormat == BarcodeFormat.UPC_A) {
+                    return result.Text.PadLeft(13, '0');
+                }
+
                 return result.Text;
             } catch (Exception ex) {
                 this.Debug(ex.ToString());
