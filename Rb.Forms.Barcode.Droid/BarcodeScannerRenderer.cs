@@ -90,8 +90,6 @@ namespace Rb.Forms.Barcode.Droid
             if (!HasValidSurface) {
                 return;
             }
-
-            Element.PreviewActive = true;
         }
 
         public void SurfaceDestroyed(ISurfaceHolder holder)
