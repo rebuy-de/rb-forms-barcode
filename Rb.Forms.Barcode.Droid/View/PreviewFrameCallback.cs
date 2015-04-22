@@ -47,6 +47,12 @@ namespace Rb.Forms.Barcode.Droid.View
             }
         }
 
+        public void Dispose()
+        {
+            buffer.Dispose();
+            base.Dispose();
+        }
+
     }
 }
 #pragma warning restore 618

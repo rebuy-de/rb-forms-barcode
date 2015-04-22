@@ -26,9 +26,13 @@ namespace Sample.Droid
 		
 		public static void UpdateIdValues()
 		{
+			global::Xamarin.Forms.Platform.Resource.String.ApplicationName = global::Sample.Droid.Resource.String.ApplicationName;
+			global::Xamarin.Forms.Platform.Resource.String.Hello = global::Sample.Droid.Resource.String.Hello;
 			global::Rb.Forms.Barcode.Droid.Resource.Id.contentFrame = global::Sample.Droid.Resource.Id.contentFrame;
 			global::Rb.Forms.Barcode.Droid.Resource.Layout.zxingscanneractivitylayout = global::Sample.Droid.Resource.Layout.zxingscanneractivitylayout;
 			global::Rb.Forms.Barcode.Droid.Resource.Layout.zxingscannerfragmentlayout = global::Sample.Droid.Resource.Layout.zxingscannerfragmentlayout;
+			global::Rb.Forms.Barcode.Droid.Resource.String.ApplicationName = global::Sample.Droid.Resource.String.ApplicationName;
+			global::Rb.Forms.Barcode.Droid.Resource.String.Hello = global::Sample.Droid.Resource.String.Hello;
 			global::Rb.Forms.Barcode.Droid.Resource.String.library_name = global::Sample.Droid.Resource.String.library_name;
 		}
 		
@@ -106,10 +110,16 @@ namespace Sample.Droid
 		{
 			
 			// aapt resource value: 0x7f040002
-			public const int app_name = 2130968578;
+			public const int ApplicationName = 2130968578;
 			
 			// aapt resource value: 0x7f040001
-			public const int hello = 2130968577;
+			public const int Hello = 2130968577;
+			
+			// aapt resource value: 0x7f040004
+			public const int app_name = 2130968580;
+			
+			// aapt resource value: 0x7f040003
+			public const int hello = 2130968579;
 			
 			// aapt resource value: 0x7f040000
 			public const int library_name = 2130968576;
