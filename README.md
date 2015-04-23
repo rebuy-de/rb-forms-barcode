@@ -6,7 +6,7 @@ Rb.Forms.Barcode is a Xamarin.Forms view for scanning barcodes.
 
 While the decoding capabilities are powered by ZXing.Net.Mobile, the plugin is written from the ground up with PCL in mind and full Xamarin.Forms support.
 
-It provides **continues scanning**, aims to give high control to the user  combined with high stability.
+It provides **continuous scanning**, aims to give high control to the user  combined with high stability.
 
 [Available via Nuget](https://www.nuget.org/packages/Rb.Forms.Barcode), full of awesomeness and also unicorns.
 
@@ -16,7 +16,7 @@ We are very eager about your beta feedback, so do not hesitate to create an issu
 
 ### Features
 
-* Continues scanning!
+* Continuous scanning!
 * Fully Xamarin.Forms compatible. Add elements on top and adapt it to your needs.
 * PCL based as far as possible.
 * Lots of configuration options, bindable properties and events.
