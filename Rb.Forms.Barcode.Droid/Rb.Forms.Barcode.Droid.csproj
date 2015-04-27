@@ -14,7 +14,7 @@
     <AndroidUseLatestPlatformSdk>True</AndroidUseLatestPlatformSdk>
     <AssemblyName>Rb.Forms.Barcode.Droid</AssemblyName>
     <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
-    <ReleaseVersion>0.3.0-beta</ReleaseVersion>
+    <ReleaseVersion>0.3.5-beta</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>

@@ -3,7 +3,7 @@
   <metadata>
     <id>Rb.Forms.Barcode</id>
     <title>Barcode scanner plugin for Xamarin.Forms</title>
-    <version>0.3.4-beta</version>
+    <version>0.3.5-beta</version>
     <authors>Ota Mares</authors>
     <owners>reBuy reCommerce GmbH</owners>
     <licenseUrl>https://github.com/rebuy-de/rb-forms-barcode/blob/master/LICENSE</licenseUrl>
@@ -14,8 +14,11 @@ Please check the website for further details.
 
 Beta notice: Currently only android is supported.</description>
     <summary>Rb.Forms.Barcode is a Xamarin.Forms view for scanning barcodes.</summary>
-    <releaseNotes>0.3.4-beta:
-* Fixed> Surface changed does not start preview anymore.
+    <releaseNotes>0.3.5-beta:
+* Fixed: Prevent dispose if object is null.
+
+0.3.4-beta:
+* Fixed: Surface changed does not start preview anymore.
 * Improved: Dispose all buffers.
 * Improved: Update to Xamarin.Forms to 1.4.2.6355 version.
 
