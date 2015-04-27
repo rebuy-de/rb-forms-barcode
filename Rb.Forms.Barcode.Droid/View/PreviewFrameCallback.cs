@@ -25,7 +25,7 @@ namespace Rb.Forms.Barcode.Droid.View
         async public void OnPreviewFrame(IntPtr data, AndroidCamera camera)
         {
             if (buffer != null) {
-                buffer.Dispose();
+                buffer?.Dispose();
                 buffer = null;
             }
 
@@ -49,7 +49,7 @@ namespace Rb.Forms.Barcode.Droid.View
 
         public void Dispose()
         {
-            buffer.Dispose();
+            buffer?.Dispose();
             base.Dispose();
         }
 
