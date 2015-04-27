@@ -196,7 +196,7 @@ namespace Rb.Forms.Barcode.Droid.Camera
         private void clearBuffers()
         {
             foreach (var buffer in buffers) {
-                buffer.Dispose();
+                buffer?.Dispose();
             }
 
             buffers = new List<FastJavaByteArray>();

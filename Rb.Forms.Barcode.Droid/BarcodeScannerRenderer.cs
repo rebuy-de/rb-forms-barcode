@@ -209,8 +209,8 @@ namespace Rb.Forms.Barcode.Droid
             this.Debug("Disposing");
 
             BarcodeScannerRenderer.KeepCamera = false;
-            configurator.Dispose();
-            previewFrameCallback.Dispose();
+            configurator?.Dispose();
+            previewFrameCallback?.Dispose();
             scannerService = null;
             barcodeDecoder = null;
 
