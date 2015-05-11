@@ -3,11 +3,72 @@
 using Xamarin.Forms;
 using System.Diagnostics;
 using Rb.Forms.Barcode.Pcl.Extensions;
+using System.Windows.Input;
 
 namespace Rb.Forms.Barcode.Pcl
 {
     public class BarcodeScanner : View
-   {
+    {     
+        /// <summary>
+        /// Command property gets called only when the barcode text changes.
+        /// </summary>
+        public static BindableProperty BarcodeChangedCommandProperty = BindableProperty.Create(
+            propertyName: "BarcodeChangedCommand",
+            returnType: typeof(ICommand),
+            declaringType: typeof(BarcodeScanner),
+            defaultValue: null
+        );
+
+        /// <summary>
+        /// Command property gets called every time when a barcode is decoded from the preview, even if the value is the same as the previews one.
+        /// </summary>
+        public static BindableProperty BarcodeDecodedCommandProperty = BindableProperty.Create(
+            propertyName: "BarcodeDecodedCommand",
+            returnType: typeof(ICommand),
+            declaringType: typeof(BarcodeScanner),
+            defaultValue: null
+        );
+
+        /// <summary>
+        /// Command property gets called as soon as the surfaces starts previewing.
+        /// </summary>
+        public static BindableProperty PreviewActivatedCommandProperty = BindableProperty.Create(
+            propertyName: "PreviewActivatedCommand",
+            returnType: typeof(ICommand),
+            declaringType: typeof(BarcodeScanner),
+            defaultValue: null
+        );
+
+        /// <summary>
+        /// Command property gets called when the surfaces stops previewing.
+        /// </summary>
+        public static BindableProperty PreviewDeactivatedCommandProperty = BindableProperty.Create(
+            propertyName: "PreviewDeactivatedCommand",
+            returnType: typeof(ICommand),
+            declaringType: typeof(BarcodeScanner),
+            defaultValue: null
+        );
+
+        /// <summary>
+        /// Command property gets called after the camera was opened.
+        /// </summary>
+        public static BindableProperty CameraOpenedCommandProperty = BindableProperty.Create(
+            propertyName: "CameraOpenedCommand",
+            returnType: typeof(ICommand),
+            declaringType: typeof(BarcodeScanner),
+            defaultValue: null
+        );
+
+        /// <summary>
+        /// Command property gets called after the camera was released.
+        /// </summary>
+        public static BindableProperty CameraReleasedCommandProperty = BindableProperty.Create(
+            propertyName: "CameraReleasedCommand",
+            returnType: typeof(ICommand),
+            declaringType: typeof(BarcodeScanner),
+            defaultValue: null
+        );
+
         /// <summary>
         /// OneWay source to target binding for the current barcode.
         /// </summary>
@@ -58,6 +119,54 @@ namespace Rb.Forms.Barcode.Pcl
             );
 
         /// <summary>
+        /// Command gets called only when the barcode text changes.
+        /// </summary>
+        public ICommand BarcodeChangedCommand {
+            get { return (ICommand) GetValue(BarcodeChangedCommandProperty); }
+            set { SetValue(BarcodeChangedCommandProperty, value); }
+        }
+
+        /// <summary>
+        /// Command gets called every time when a barcode is decoded from the preview, even if the value is the same as the previews one.
+        /// </summary>
+        public ICommand BarcodeDecodedCommand {
+            get { return (ICommand) GetValue(BarcodeDecodedCommandProperty); }
+            set { SetValue(BarcodeDecodedCommandProperty, value); }
+        }
+
+        /// <summary>
+        /// Command gets called as soon as the surfaces starts previewing.
+        /// </summary>
+        public ICommand PreviewActivatedCommand {
+            get { return (ICommand) GetValue(PreviewActivatedCommandProperty); }
+            set { SetValue(PreviewActivatedCommandProperty, value); }
+        }
+
+        /// <summary>
+        /// Command gets called when the surfaces stops previewing.
+        /// </summary>
+        public ICommand PreviewDeactivatedCommand {
+            get { return (ICommand) GetValue(PreviewDeactivatedCommandProperty); }
+            set { SetValue(PreviewDeactivatedCommandProperty, value); }
+        }
+
+        /// <summary>
+        /// Command gets called after the camera was opened.
+        /// </summary>
+        public ICommand CameraOpenedCommand {
+            get { return (ICommand) GetValue(CameraOpenedCommandProperty); }
+            set { SetValue(CameraOpenedCommandProperty, value); }
+        }
+
+        /// <summary>
+        /// Command gets called after the camera was released.
+        /// </summary>
+        public ICommand CameraReleasedCommand {
+            get { return (ICommand) GetValue(CameraReleasedCommandProperty); }
+            set { SetValue(CameraReleasedCommandProperty, value); }
+        }
+
+        /// <summary>
         /// Gets or controlls the decoder state.
         /// </summary>
         /// <value>The barcode.</value>
@@ -99,11 +208,13 @@ namespace Rb.Forms.Barcode.Pcl
 
         public void OnCameraOpened()
         {
+            CameraOpenedCommand.Raise();
             CameraOpened.Raise(this, EventArgs.Empty);
         }
 
         public void OnCameraReleased()
         {
+            CameraReleasedCommand.Raise();
             CameraReleased.Raise(this, EventArgs.Empty);
         }
 
@@ -111,7 +222,7 @@ namespace Rb.Forms.Barcode.Pcl
         {
             Debug.WriteLine("[ScannerView] OnBarcodeChanged [{0}]", newBarcode, null);
             var b = (BarcodeScanner) bindable;
-
+            b.BarcodeChangedCommand.Raise(newBarcode);
             b.BarcodeChanged.Raise(b, new BarcodeEventArgs(newBarcode));
         }
 
@@ -119,16 +230,19 @@ namespace Rb.Forms.Barcode.Pcl
         {
             Debug.WriteLine("[ScannerView] OnBarcodeDecoded [{0}]", barcode, null);
 
+            BarcodeDecodedCommand.Raise(barcode);
             BarcodeDecoded.Raise(this, new BarcodeEventArgs(barcode));
         }
 
         public void OnPreviewActivated()
         {
+            PreviewActivatedCommand.Raise();
             PreviewActivated.Raise(this, EventArgs.Empty);
         }
 
         public void OnPreviewDeactivated()
         {
+            PreviewDeactivatedCommand.Raise();
             PreviewDeactivated.Raise(this, EventArgs.Empty);
         }
     }   
