@@ -5,6 +5,7 @@ using Rb.Forms.Barcode.Droid.Decoder;
 
 using AndroidCamera = Android.Hardware.Camera;
 using ApxLabs.FastAndroidCamera;
+using System.Threading.Tasks;
 
 #pragma warning disable 618
 namespace Rb.Forms.Barcode.Droid.View
@@ -31,7 +32,6 @@ namespace Rb.Forms.Barcode.Droid.View
 
             buffer = new FastJavaByteArray(data);
             var previewSize = camera.GetParameters().PreviewSize;
-
             var decoder = barcodeDecoder.DecodeAsync(buffer, previewSize.Width, previewSize.Height);
 
             if (null == decoder) {
@@ -39,7 +39,14 @@ namespace Rb.Forms.Barcode.Droid.View
                 return;
             }
 
-            var barcode = await decoder;
+            String barcode;
+
+            try {
+                barcode = await decoder;
+            } catch (TaskCanceledException) {
+                barcode = null;
+            }
+
             camera.AddCallbackBuffer(buffer);
 
             if (!string.IsNullOrWhiteSpace(barcode)) {
