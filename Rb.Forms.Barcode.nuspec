@@ -3,7 +3,7 @@
   <metadata>
     <id>Rb.Forms.Barcode</id>
     <title>Barcode scanner plugin for Xamarin.Forms</title>
-    <version>0.4.0-beta</version>
+    <version>0.4.1-beta</version>
     <authors>Ota Mares</authors>
     <owners>reBuy reCommerce GmbH</owners>
     <licenseUrl>https://github.com/rebuy-de/rb-forms-barcode/blob/master/LICENSE</licenseUrl>
@@ -14,13 +14,17 @@ Please check the website for further details.
 
 Beta notice: Currently only android is supported.</description>
     <summary>Rb.Forms.Barcode is a Xamarin.Forms view for scanning barcodes.</summary>
-    <releaseNotes>0.4.0-beta:
+    <releaseNotes>0.4.1-beta:
+* Fixed: Handle TaskCanceledException
+* Improved: Updated to Xamarin.Forms 1.4.3
+
+0.4.0-beta:
 * New: Add every event as command
 </releaseNotes>
     <tags>barcode scanner scanning scan zxing xamarin xamarin.forms rebuy unicorns</tags>
     <dependencies>
         <group>
-            <dependency id="Xamarin.Forms" version="1.4.1.6349" />
+            <dependency id="Xamarin.Forms" version="1.4.3.6376" />
         </group>
 
         <group targetFramework="MonoAndroid10">
