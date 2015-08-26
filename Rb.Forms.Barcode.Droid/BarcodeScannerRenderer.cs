@@ -72,7 +72,7 @@ namespace Rb.Forms.Barcode.Droid
                 scannerService.HaltPreview();
             }
 
-            await Task.Run(() => scannerService.OpenCamera(holder));
+            await Task.Run(() => scannerService?.OpenCamera(holder));
         }
 
         public void SurfaceChanged(ISurfaceHolder holder, global::Android.Graphics.Format format, int width, int height)
@@ -127,7 +127,7 @@ namespace Rb.Forms.Barcode.Droid
                 }
 
                 if (Element.PreviewActive) {
-                    await Task.Run(() => scannerService.StartPreview(previewFrameCallback));
+                    await Task.Run(() => scannerService?.StartPreview(previewFrameCallback));
                 }
             };
 
@@ -148,7 +148,7 @@ namespace Rb.Forms.Barcode.Droid
                 this.Debug("Enabled [{0}]", Element.IsEnabled);
 
                 if (Element.IsEnabled && HasValidSurface) {
-                    await Task.Run(() => scannerService.OpenCamera(Control.Holder));
+                    await Task.Run(() => scannerService?.OpenCamera(Control.Holder));
                 } 
 
                 if (!Element.IsEnabled) {
@@ -161,7 +161,7 @@ namespace Rb.Forms.Barcode.Droid
                 this.Debug("ScannerActive [{0}]", Element.PreviewActive);
 
                 if (Element.PreviewActive) {
-                    await Task.Run(() => scannerService.StartPreview(previewFrameCallback));
+                    await Task.Run(() => scannerService?.StartPreview(previewFrameCallback));
                 } 
 
                 if (!Element.PreviewActive) {
@@ -194,7 +194,7 @@ namespace Rb.Forms.Barcode.Droid
             }
 
             if (visibility == ViewStates.Visible && scannerCamera.CameraOpen) {
-                await Task.Run(() => scannerService.StartPreview(previewFrameCallback));
+                await Task.Run(() => scannerService?.StartPreview(previewFrameCallback));
             }
 
             if (visibility == ViewStates.Gone && !BarcodeScannerRenderer.KeepCamera && scannerCamera.CameraOpen) {
