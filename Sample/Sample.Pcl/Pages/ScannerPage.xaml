@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="Sample.Pcl.Pages.ScannerPage"
+    xmlns:viewModels="clr-namespace:Sample.Pcl.Model;assembly=Sample.Pcl"
+    xmlns:viewConverter="clr-namespace:Sample.Pcl.ViewConverter;assembly=Sample.Pcl"
+    xmlns:rbBarcode="clr-namespace:Rb.Forms.Barcode.Pcl;assembly=Rb.Forms.Barcode.Pcl">
+
+    <ContentPage.BindingContext>
+        <viewModels:ScannerViewModel />
+    </ContentPage.BindingContext>
+
+    <RelativeLayout>
+        <rbBarcode:BarcodeScanner x:Name="barcodeScanner"
+            RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
+            RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}"
+            PreviewActivatedCommand="{Binding PreviewActivatedCommand}"
+            BarcodeChangedCommand="{Binding BarcodeChangedCommand}"
+            BarcodeDecodedCommand="{Binding BarcodeDecodedCommand}"
+            PreviewActive="{Binding Preview}"
+            BarcodeDecoder="{Binding Decoder}"
+        />
+
+        <BoxView Color="Transparent"
+            RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
+            RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}"
+        />
+
+        <BoxView x:Name="flash" Color="White" Opacity="0"
+            RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
+            RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}"
+        />
+
+        <ActivityIndicator IsRunning="{Binding Initialized, Converter={viewConverter:InverseBoolConverter}}"
+            RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.5, Constant=-25}"
+            RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.5, Constant=-25}"
+        />
+
+        <BoxView Color="Red" HeightRequest="1" IsVisible="{Binding Initialized}"
+            RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.1}"
+            RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.5, Constant=-1}"
+            RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.8}"
+        />
+
+        <Label TextColor="Red" FontSize="17" XAlign="Center" 
+            Text="{Binding Barcode}"
+            RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0}"
+            RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.5, Constant=20}"
+            RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
+        />
+
+        <StackLayout 
+            RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Factor=0}"
+            Padding="20"
+        >
+            <Label XAlign="Center">Hold the scanner above a barcode, wait for the autofocus and see its magic!</Label>
+        </StackLayout>
+
+
+        <StackLayout Orientation="Horizontal"
+            RelativeLayout.XConstraint="{ConstraintExpression Type=Constant, Constant=5}"
+            RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1, Constant=-60}"
+        >
+            <Button FontSize="12" Text="Toggle preview"
+                Command="{Binding TogglePreviewCommand}"
+            />
+
+            <Button FontSize="12" Text="Toggle decoder"
+                Command="{Binding ToggleDecoderCommand}"
+            />
+        </StackLayout>
+    </RelativeLayout>
+</ContentPage>
