@@ -13,6 +13,9 @@ using Rb.Forms.Barcode.Droid.Logger;
 using Android.Views;
 using System.Threading.Tasks;
 using Rb.Forms.Barcode.Droid.View;
+using Android.Gms.Vision.Barcodes;
+using Android.Gms.Vision;
+using System.Reflection;
 
 [assembly: ExportRenderer(typeof(BarcodeScanner), typeof(BarcodeScannerRenderer))]
 namespace Rb.Forms.Barcode.Droid
@@ -40,11 +43,20 @@ namespace Rb.Forms.Barcode.Droid
 
         private ViewStates Visibility { get; set; }
 
+        private CameraSource cameraSource;
+
         /// <summary>
         /// Indicates that the currently open camera should be reused to prevent unexpected camera shutdowns.
         /// </summary>
         /// <value><c>true</c> if keep camera; otherwise, <c>false</c>.</value>
         private static bool KeepCamera { get; set; }
+
+        public BarcodeScannerRenderer()
+        {
+
+
+//            new BarcodeTrackerFactory();
+        }
 
         public static void Init()
         {
@@ -69,10 +81,31 @@ namespace Rb.Forms.Barcode.Droid
 
             if (scannerCamera.CameraOpen) {
                 BarcodeScannerRenderer.KeepCamera = true;
-                scannerService.HaltPreview();
+//                scannerService.HaltPreview();
             }
 
-            await Task.Run(() => scannerService?.OpenCamera(holder));
+            cameraSource.Start(holder);
+            confCamera();
+//            await Task.Run(() => scannerService?.OpenCamera(holder));
+        }
+
+        public void confCamera()
+        {
+
+            var fields = cameraSource.Class.GetDeclaredFields();
+//            var foo = cameraSource.Class.Fiel("foobar");
+
+
+            foreach (var field in fields) {
+//                var test = field.Type.CanonicalName;
+//                var foo = field.Type.CanonicalName == "android.hardware.Camera";
+                if (field.Type.CanonicalName == "android.hardware.Camera") {
+                    field.Accessible = true;
+
+                    var cam = (Android.Hardware.Camera)field.Get(cameraSource);
+                    configurator.Configure(cam);
+                }
+            }
         }
 
         public void SurfaceChanged(ISurfaceHolder holder, global::Android.Graphics.Format format, int width, int height)
@@ -100,8 +133,9 @@ namespace Rb.Forms.Barcode.Droid
                 return;
             }
 
-            Element.IsEnabled = false;
+//            Element.IsEnabled = false;
         }
+
 
         protected override void OnElementChanged(ElementChangedEventArgs<BarcodeScanner> e)
         {
@@ -117,22 +151,34 @@ namespace Rb.Forms.Barcode.Droid
             surfaceView.Holder.AddCallback(this);
             SetNativeControl(surfaceView);
 
+            var barcodeDetector = new BarcodeDetector.Builder(Context).Build();
+            var barcodeFactory = new BarcodeTrackerFactory();
+            barcodeDetector.SetProcessor(new MultiProcessor.Builder(barcodeFactory).Build());
+
+            if (!barcodeDetector.IsOperational) {
+                return;
+            }
+
+            cameraSource = new CameraSource.Builder(Context, barcodeDetector)
+                .SetFacing(CameraFacing.Back)
+                .Build();
+
             configurator = new CameraConfigurator(config, Context);
-            scannerService = new CameraService(Element, scannerCamera, configurator);
-            previewFrameCallback = new PreviewFrameCallback(barcodeDecoder, Element);
+//            scannerService = new CameraService(Element, scannerCamera, configurator);
+//            previewFrameCallback = new PreviewFrameCallback(barcodeDecoder, Element);
 
             Element.CameraOpened += async (sender, args) => {
                 if (Element.BarcodeDecoder) {
-                    barcodeDecoder.EnableDecoding();
+//                    barcodeDecoder.EnableDecoding();
                 }
 
                 if (Element.PreviewActive) {
-                    await Task.Run(() => scannerService?.StartPreview(previewFrameCallback));
+//                    await Task.Run(() => scannerService?.StartPreview(previewFrameCallback));
                 }
             };
 
             Element.CameraReleased += (sender, args) => {
-                barcodeDecoder.DisableDecoding();
+//                barcodeDecoder.DisableDecoding();
                 BarcodeScannerRenderer.KeepCamera = false;
             };
         }
@@ -142,66 +188,66 @@ namespace Rb.Forms.Barcode.Droid
             base.OnElementPropertyChanged(sender, e);
 
             this.Debug("OnElementPropertyChanged");
-
-            if (e.PropertyName == BarcodeScanner.IsEnabledProperty.PropertyName) 
-            {
-                this.Debug("Enabled [{0}]", Element.IsEnabled);
-
-                if (Element.IsEnabled && HasValidSurface) {
-                    await Task.Run(() => scannerService?.OpenCamera(Control.Holder));
-                } 
-
-                if (!Element.IsEnabled) {
-                    scannerService.ReleaseCamera();
-                }
-            }
-
-            if (e.PropertyName == BarcodeScanner.PreviewActiveProperty.PropertyName) 
-            {
-                this.Debug("ScannerActive [{0}]", Element.PreviewActive);
-
-                if (Element.PreviewActive) {
-                    await Task.Run(() => scannerService?.StartPreview(previewFrameCallback));
-                } 
-
-                if (!Element.PreviewActive) {
-                    scannerService.HaltPreview();
-                }
-            }
-
-            if (e.PropertyName == BarcodeScanner.BarcodeDecoderProperty.PropertyName) 
-            {
-                this.Debug("Decoder state [{0}]", Element.BarcodeDecoder);
-
-                if (Element.BarcodeDecoder) {
-                    barcodeDecoder.EnableDecoding();
-                } 
-
-                if (!Element.BarcodeDecoder) {
-                    barcodeDecoder.DisableDecoding();
-                }
-            }
+//
+//            if (e.PropertyName == BarcodeScanner.IsEnabledProperty.PropertyName) 
+//            {
+//                this.Debug("Enabled [{0}]", Element.IsEnabled);
+//
+//                if (Element.IsEnabled && HasValidSurface) {
+//                    await Task.Run(() => scannerService?.OpenCamera(Control.Holder));
+//                } 
+//
+//                if (!Element.IsEnabled) {
+//                    scannerService.ReleaseCamera();
+//                }
+//            }
+//
+//            if (e.PropertyName == BarcodeScanner.PreviewActiveProperty.PropertyName) 
+//            {
+//                this.Debug("ScannerActive [{0}]", Element.PreviewActive);
+//
+//                if (Element.PreviewActive) {
+//                    await Task.Run(() => scannerService?.StartPreview(previewFrameCallback));
+//                } 
+//
+//                if (!Element.PreviewActive) {
+//                    scannerService.HaltPreview();
+//                }
+//            }
+//
+//            if (e.PropertyName == BarcodeScanner.BarcodeDecoderProperty.PropertyName) 
+//            {
+//                this.Debug("Decoder state [{0}]", Element.BarcodeDecoder);
+//
+//                if (Element.BarcodeDecoder) {
+//                    barcodeDecoder.EnableDecoding();
+//                } 
+//
+//                if (!Element.BarcodeDecoder) {
+//                    barcodeDecoder.DisableDecoding();
+//                }
+//            }
         }
 
         protected async override void OnVisibilityChanged(global::Android.Views.View view, ViewStates visibility)
         {
             base.OnVisibilityChanged(view, visibility);
 
-            this.Debug("OnVisibilityChanged [{0}]", visibility.ToString());
-
-            if (Visibility == visibility) {
-                return;
-            }
-
-            if (visibility == ViewStates.Visible && scannerCamera.CameraOpen) {
-                await Task.Run(() => scannerService?.StartPreview(previewFrameCallback));
-            }
-
-            if (visibility == ViewStates.Gone && !BarcodeScannerRenderer.KeepCamera && scannerCamera.CameraOpen) {
-                scannerService.HaltPreview();
-            }
-
-            Visibility = visibility;
+//            this.Debug("OnVisibilityChanged [{0}]", visibility.ToString());
+//
+//            if (Visibility == visibility) {
+//                return;
+//            }
+//
+//            if (visibility == ViewStates.Visible && scannerCamera.CameraOpen) {
+//                await Task.Run(() => scannerService?.StartPreview(previewFrameCallback));
+//            }
+//
+//            if (visibility == ViewStates.Gone && !BarcodeScannerRenderer.KeepCamera && scannerCamera.CameraOpen) {
+//                scannerService.HaltPreview();
+//            }
+//
+//            Visibility = visibility;
         }
 
         protected override void Dispose(bool disposing)

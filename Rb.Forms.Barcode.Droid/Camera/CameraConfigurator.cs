@@ -57,17 +57,17 @@ namespace Rb.Forms.Barcode.Droid.Camera
             parameters.SetPreviewSize(resolution.Width, resolution.Height);
 
 
-            if (buffers.Count == 0) {
-                var buffersize = calculateBufferSize(parameters);
+//            if (buffers.Count == 0) {
+//                var buffersize = calculateBufferSize(parameters);
+//
+//                for (int i = 0; i <= 3; i++) {
+//                    buffers.Add(new FastJavaByteArray(buffersize));
+//                }
+//            }
 
-                for (int i = 0; i <= 3; i++) {
-                    buffers.Add(new FastJavaByteArray(buffersize));
-                }
-            }
-
-            foreach (var buffer in buffers) {
-                camera.AddCallbackBuffer(buffer);
-            }
+//            foreach (var buffer in buffers) {
+//                camera.AddCallbackBuffer(buffer);
+//            }
 
             if (isPickyDevice()) {
                 this.Debug("Used device is marked as picky. Skipping detailed configuration to ensure function compatibility.");
