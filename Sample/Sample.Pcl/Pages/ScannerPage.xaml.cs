@@ -18,7 +18,7 @@ namespace Sample.Pcl.Pages
             MessagingCenter.Subscribe<App>(this, App.MessageOnSleep, disableScanner);
             MessagingCenter.Subscribe<App>(this, App.MessageOnResume, enableScanner);
 
-//            barcodeScanner.BarcodeChanged += animateFlash;
+            barcodeScanner.BarcodeChanged += animateFlash;
         }
 
         protected override void OnAppearing()
@@ -62,8 +62,10 @@ namespace Sample.Pcl.Pages
 
         private async void animateFlash(object sender, BarcodeEventArgs e)
         {
-            await flash.FadeTo(1, 150, Easing.CubicIn);
-            await flash.FadeTo(0, 150, Easing.CubicOut);            
+            Device.BeginInvokeOnMainThread(async () => {
+                await flash.FadeTo(1, 150, Easing.CubicInOut);
+                flash.Opacity = 0;
+            });      
         }
 
         /**
@@ -79,7 +81,7 @@ namespace Sample.Pcl.Pages
             MessagingCenter.Unsubscribe<App>(this, App.MessageOnSleep);
             MessagingCenter.Unsubscribe<App>(this, App.MessageOnResume);
 
-//            barcodeScanner.BarcodeChanged -= animateFlash;
+            barcodeScanner.BarcodeChanged -= animateFlash;
         }
     }
 }

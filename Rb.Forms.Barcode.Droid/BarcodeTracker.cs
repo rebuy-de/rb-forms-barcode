@@ -41,7 +41,7 @@ namespace Rb.Forms.Barcode.Droid
 
         public override void OnUpdate(Detector.Detections detections, Java.Lang.Object item)
         {
-            barcodeScanner.Barcode = createResult(item);
+            barcodeScanner.Barcode = barcodeScanner.Barcode;
         }
 
         private RebuyBarcode createResult(Java.Lang.Object item)
