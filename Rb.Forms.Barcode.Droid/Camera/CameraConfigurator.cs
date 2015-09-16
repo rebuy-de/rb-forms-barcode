@@ -40,11 +40,11 @@ namespace Rb.Forms.Barcode.Droid.Camera
 
             camera.SetDisplayOrientation(90);
 
-            if (isPickyDevice()) {
-                this.Debug("Used device is marked as picky. Skipping detailed configuration to ensure function compatibility.");
+            if (config.CompatibilityMode) {
+                this.Debug("Compatibility mode enabled. Skipping advanced configuration to ensure highest compatibility.");
             }
 
-            if (!isPickyDevice()) {
+            if (!config.CompatibilityMode) {
                 if (config.SceneMode) {
                     var sceneMode = determineSceneMode(parameters);
                     this.Debug("Scene Mode [{0}]", sceneMode);
@@ -112,11 +112,6 @@ namespace Rb.Forms.Barcode.Droid.Camera
             return new List<AndroidCamera.Area>() {
                 area
             };
-        }
-
-        private bool isPickyDevice()
-        {
-            return config.PickyDeviceDetection && Android.OS.Build.Manufacturer.Contains("samsung");
         }
     }
 }
