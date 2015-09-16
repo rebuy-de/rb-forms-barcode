@@ -4,32 +4,39 @@ using Rb.Forms.Barcode.Pcl.Logger;
 using Rb.Forms.Barcode.Droid.Camera;
 using Rb.Forms.Barcode.Droid.Logger;
 using Android.Views;
+using Android.Gms.Vision;
 
 namespace Rb.Forms.Barcode.Droid.View
 {
     public class CameraService : ILog
     {
         private readonly BarcodeScanner renderer;
+        private readonly CameraSource cameraSource;
 
-        private readonly ScannerCamera scannerCamera;
         private readonly AutoFocusCallback autoFocus;
         private readonly CameraConfigurator cameraConfigurator;
 
-        public CameraService(BarcodeScanner renderer, ScannerCamera scannerCamera, CameraConfigurator configurator)
+        private bool started = false;
+        private bool configured = false;
+
+        public CameraService(BarcodeScanner renderer, CameraSource cameraSource, CameraConfigurator configurator)
         {
             this.renderer = renderer;
-            this.scannerCamera = scannerCamera;
+            this.cameraSource = cameraSource;
             this.cameraConfigurator = configurator;
 
-            this.autoFocus = new AutoFocusCallback(scannerCamera);
+            this.autoFocus = new AutoFocusCallback(cameraSource.GetCamera());
         }
 
         public void OpenCamera(ISurfaceHolder holder)
         {
             try {
-                var camera = scannerCamera.OpenCamera();
+                if (started) {
+                    cameraSource.Stop();
+                }
 
-                scannerCamera.AssignPreview(holder);
+                cameraSource.Start(holder);
+                started = true;
 
                 renderer.OnCameraOpened();
             } catch (Exception ex) {
@@ -42,10 +49,10 @@ namespace Rb.Forms.Barcode.Droid.View
         {
             autoFocus.Enabled = false;
 
-            HaltPreview();
-
             try {
-                scannerCamera.ReleaseCamera();
+                cameraSource?.Release();
+                started = false;
+                configured = false;
 
                 renderer.OnCameraReleased();
             } catch (Exception ex) {
@@ -55,18 +62,25 @@ namespace Rb.Forms.Barcode.Droid.View
 
         }
 
-        public void StartPreview(PreviewFrameCallback previewFrameCallback)
+        public void StartPreview(ISurfaceHolder holder)
         {
             try {
-                cameraConfigurator.Configure(scannerCamera.OpenCamera());
-                scannerCamera.StartPreview(previewFrameCallback);
-
-                if (scannerCamera.AutoFocusMode) {
-                    scannerCamera.AutoFocus(autoFocus);
+                if (!started) {
+                    OpenCamera(holder);
+                    return;
                 }
 
-                renderer.OnPreviewActivated();
+                if (!configured) {
+                    cameraConfigurator.Configure(cameraSource);
 
+                    if (cameraSource.AutoFocusModeEnabled()) {
+                        cameraSource.AutoFocus(autoFocus);
+                    }
+
+                    configured = true;
+
+                    renderer.OnPreviewActivated();
+                }
             } catch (Exception ex) {
                 this.Debug("Unable to start preview.");
                 this.Debug(ex.ToString());
@@ -77,7 +91,9 @@ namespace Rb.Forms.Barcode.Droid.View
         {
             try {
                 autoFocus.Enabled = false;
-                scannerCamera.HaltPreview();
+                cameraSource?.Stop();
+                started = false;
+                configured = false;
 
                 renderer.OnPreviewDeactivated();
 

@@ -1,35 +1,21 @@
 ﻿using System;
-using Android.Gms.Vision.Barcodes;
+using Android.Gms.Vision;
+using Rb.Forms.Barcode.Pcl;
 
 namespace Rb.Forms.Barcode.Droid
 {
-    public class BarcodeTrackerFactory : Java.Lang.Object, Android.Gms.Vision.MultiProcessor.IFactory
+    public class BarcodeTrackerFactory : Java.Lang.Object, MultiProcessor.IFactory
     {
-        public Android.Gms.Vision.Tracker Create(Java.Lang.Object barcode)
-        {
-            return new MyBarcodeTracker();
+        private readonly BarcodeScanner barcodeScanner;
 
+        public BarcodeTrackerFactory(BarcodeScanner barcodeScanner)
+        {
+            this.barcodeScanner = barcodeScanner;
         }
 
-//        private GraphicOverlay mGraphicOverlay;
-//
-//        BarcodeTrackerFactory(GraphicOverlay graphicOverlay) {
-//            mGraphicOverlay = graphicOverlay;
-//        }
-
-    }
-
-    class MyBarcodeTracker : Android.Gms.Vision.Tracker {
-
-        public override void OnNewItem(int idValue, Java.Lang.Object item)
+        public Tracker Create(Java.Lang.Object barcode)
         {
-            base.OnNewItem(idValue, item);
-        }
-
-        public override void OnUpdate(Android.Gms.Vision.Detector.Detections detections, Java.Lang.Object item)
-        {
-            base.OnUpdate(detections, item);
+            return new BarcodeTracker(barcodeScanner);
         }
     }
 }
-

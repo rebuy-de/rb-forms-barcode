@@ -6,40 +6,29 @@ using Rb.Forms.Barcode.Droid.Logger;
 
 using AndroidCamera = Android.Hardware.Camera;
 using Android.Content;
-using Android.Views;
-using Android.Util;
-using Android.Runtime;
 using Android.Graphics;
-using ApxLabs.FastAndroidCamera;
+using Android.Gms.Vision;
 
 #pragma warning disable 618
 namespace Rb.Forms.Barcode.Droid.Camera
 {
-    public class CameraConfigurator : ILog, IDisposable
+    public class CameraConfigurator : ILog
     {
-        private readonly RbConfig config;
+        private readonly Configuration config;
         private readonly Context context;
-        private IList<FastJavaByteArray> buffers = new List<FastJavaByteArray>();
 
-        public CameraConfigurator(RbConfig config, Context context)
+        public CameraConfigurator(Configuration config, Context context)
         {
             this.context = context;
             this.config = config;
-            
         }
 
-        ~CameraConfigurator()
+        public void Configure(CameraSource cameraSource)
         {
-            Dispose(false);
+            Configure(cameraSource.GetCamera());
         }
 
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        public AndroidCamera Configure(AndroidCamera camera)
+        public void Configure(AndroidCamera camera)
         {
             var parameters = camera.GetParameters();
 
@@ -49,25 +38,7 @@ namespace Rb.Forms.Barcode.Droid.Camera
             this.Debug("Focus Mode [{0}]", focusMode);
             parameters.FocusMode = focusMode;
 
-
             camera.SetDisplayOrientation(90);
-
-            var resolution = determineResolution(parameters);
-            this.Debug("Preview resolution [Width: {0}] x [Height {1}]", resolution.Width, resolution.Height);
-            parameters.SetPreviewSize(resolution.Width, resolution.Height);
-
-
-//            if (buffers.Count == 0) {
-//                var buffersize = calculateBufferSize(parameters);
-//
-//                for (int i = 0; i <= 3; i++) {
-//                    buffers.Add(new FastJavaByteArray(buffersize));
-//                }
-//            }
-
-//            foreach (var buffer in buffers) {
-//                camera.AddCallbackBuffer(buffer);
-//            }
 
             if (isPickyDevice()) {
                 this.Debug("Used device is marked as picky. Skipping detailed configuration to ensure function compatibility.");
@@ -103,8 +74,6 @@ namespace Rb.Forms.Barcode.Droid.Camera
             }
 
             camera.SetParameters(parameters);
-
-            return camera;
         }
 
         private string determineFocusMode(AndroidCamera.Parameters p)
@@ -116,49 +85,6 @@ namespace Rb.Forms.Barcode.Droid.Camera
             }
 
             return "";
-        }
-
-        private AndroidCamera.Size determineResolution(AndroidCamera.Parameters parameters)
-        {
-            var referenceRatio = getDisplayRatio();
-
-            Func<AndroidCamera.Size, bool> ratioFilter = (r) =>  {
-                var rawr = ((double) r.Width / (double) r.Height) - referenceRatio;
-                return Math.Abs(rawr) <= config.AspectRatioThreshold;
-            };
-
-            var previewSizes = parameters.SupportedPreviewSizes
-                .Where(ratioFilter)
-                .OrderByDescending(r => r.Width * r.Height)
-                .DefaultIfEmpty(parameters.PreviewSize);
-
-            switch (config.PreviewResolution) {
-                case RbConfig.Quality.High:
-                    return previewSizes.First();
-
-                case RbConfig.Quality.Low:
-                    return previewSizes.Last();
-
-                case RbConfig.Quality.Medium:
-                default:
-                    var i = (int) Math.Ceiling(previewSizes.Count() / 2.0) - 1;
-                    return previewSizes.ElementAt(i);
-            }
-        }
-
-        private double getDisplayRatio()
-        {
-            var displayMetrics = new DisplayMetrics();
-
-            var windowManager = context.GetSystemService(Context.WindowService).JavaCast<IWindowManager>();
-            windowManager.DefaultDisplay.GetMetrics(displayMetrics);
-
-            return (double) displayMetrics.HeightPixels / (double) displayMetrics.WidthPixels;
-        }
-
-        private int calculateBufferSize(AndroidCamera.Parameters parameters)
-        {
-            return parameters.PreviewSize.Width * parameters.PreviewSize.Height * ImageFormat.GetBitsPerPixel(parameters.PreviewFormat) / 8;
         }
 
         private string determineSceneMode(AndroidCamera.Parameters parameters)
@@ -191,20 +117,6 @@ namespace Rb.Forms.Barcode.Droid.Camera
         private bool isPickyDevice()
         {
             return config.PickyDeviceDetection && Android.OS.Build.Manufacturer.Contains("samsung");
-        }
-
-        private void clearBuffers()
-        {
-            foreach (var buffer in buffers) {
-                buffer?.Dispose();
-            }
-
-            buffers = new List<FastJavaByteArray>();
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            clearBuffers();
         }
     }
 }

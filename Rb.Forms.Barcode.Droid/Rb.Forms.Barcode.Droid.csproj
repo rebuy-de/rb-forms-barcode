@@ -55,34 +55,28 @@
     <Reference Include="Xamarin.Forms.Platform">
       <HintPath>..\packages\Xamarin.Forms.1.4.4.6392\lib\MonoAndroid10\Xamarin.Forms.Platform.dll</HintPath>
     </Reference>
-    <Reference Include="zxing.portable">
-      <HintPath>..\packages\ZXing.Net.Mobile.1.5.1.0\lib\MonoAndroid403\zxing.portable.dll</HintPath>
-    </Reference>
-    <Reference Include="ZXingNetMobile">
-      <HintPath>..\packages\ZXing.Net.Mobile.1.5.1.0\lib\MonoAndroid403\ZXingNetMobile.dll</HintPath>
-    </Reference>
     <Reference Include="Xamarin.Android.Support.v4">
-      <HintPath>..\packages\Xamarin.Android.Support.v4.23.0.0.0-rc1\lib\MonoAndroid403\Xamarin.Android.Support.v4.dll</HintPath>
+      <HintPath>..\packages\Xamarin.Android.Support.v4.23.0.1.0-rc2\lib\MonoAndroid403\Xamarin.Android.Support.v4.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.GooglePlayServices.Base">
-      <HintPath>..\packages\Xamarin.GooglePlayServices.Base.26.0.0.0-rc2\lib\MonoAndroid41\Xamarin.GooglePlayServices.Base.dll</HintPath>
+      <HintPath>..\packages\Xamarin.GooglePlayServices.Base.26.0.0.0-rc4\lib\MonoAndroid41\Xamarin.GooglePlayServices.Base.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.GooglePlayServices.Vision">
-      <HintPath>..\packages\Xamarin.GooglePlayServices.Vision.26.0.0.0-rc2\lib\MonoAndroid41\Xamarin.GooglePlayServices.Vision.dll</HintPath>
+      <HintPath>..\packages\Xamarin.GooglePlayServices.Vision.26.0.0.0-rc4\lib\MonoAndroid41\Xamarin.GooglePlayServices.Vision.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Camera\CameraConfigurator.cs" />
-    <Compile Include="Decoder\BarcodeDecoder.cs" />
     <Compile Include="Logger\Log.cs" />
     <Compile Include="BarcodeScannerRenderer.cs" />
-    <Compile Include="Camera\ScannerCamera.cs" />
     <Compile Include="View\CameraService.cs" />
-    <Compile Include="View\PreviewFrameCallback.cs" />
     <Compile Include="View\AutoFocusCallback.cs" />
-    <Compile Include="RbConfig.cs" />
     <Compile Include="BarcodeTrackerFactory.cs" />
+    <Compile Include="Configuration.cs" />
+    <Compile Include="Camera\CameraServiceFactory.cs" />
+    <Compile Include="Camera\CameraSourceExtensions.cs" />
+    <Compile Include="BarcodeTracker.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -97,10 +91,6 @@
     <ProjectReference Include="..\Rb.Forms.Barcode.Pcl\Rb.Forms.Barcode.Pcl.csproj">
       <Project>{677C433A-8C1F-466F-91CA-1181FDF29795}</Project>
       <Name>Rb.Forms.Barcode.Pcl</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\FastAndroidCamera\FastAndroidCamera.csproj">
-      <Project>{B544C08C-7F75-4B68-91F5-3B0AFE17937B}</Project>
-      <Name>FastAndroidCamera</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

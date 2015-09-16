@@ -15,7 +15,7 @@
     <AndroidUseLatestPlatformSdk>False</AndroidUseLatestPlatformSdk>
     <AssemblyName>Sample.Droid</AssemblyName>
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
-    <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v5.1</TargetFrameworkVersion>
     <ReleaseVersion>0.4.2-beta</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -58,17 +58,17 @@
     <Reference Include="Xamarin.Forms.Platform">
       <HintPath>..\..\packages\Xamarin.Forms.1.4.4.6392\lib\MonoAndroid10\Xamarin.Forms.Platform.dll</HintPath>
     </Reference>
-    <Reference Include="Xamarin.Android.Support.v4">
-      <HintPath>..\..\packages\Xamarin.Android.Support.v4.23.0.0.0-rc1\lib\MonoAndroid403\Xamarin.Android.Support.v4.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.GooglePlayServices.Base">
-      <HintPath>..\..\packages\Xamarin.GooglePlayServices.Base.26.0.0.0-rc2\lib\MonoAndroid41\Xamarin.GooglePlayServices.Base.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.GooglePlayServices.Vision">
-      <HintPath>..\..\packages\Xamarin.GooglePlayServices.Vision.26.0.0.0-rc2\lib\MonoAndroid41\Xamarin.GooglePlayServices.Vision.dll</HintPath>
-    </Reference>
     <Reference Include="Xamarin.Android.Support.v7.AppCompat">
       <HintPath>..\..\packages\Xamarin.Android.Support.v7.AppCompat.23.0.0.0-rc1\lib\MonoAndroid403\Xamarin.Android.Support.v7.AppCompat.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Android.Support.v4">
+      <HintPath>..\..\packages\Xamarin.Android.Support.v4.23.0.0.0-rc2\lib\MonoAndroid403\Xamarin.Android.Support.v4.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.GooglePlayServices.Base">
+      <HintPath>..\..\packages\Xamarin.GooglePlayServices.Base.26.0.0.0-rc3\lib\MonoAndroid41\Xamarin.GooglePlayServices.Base.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.GooglePlayServices.Vision">
+      <HintPath>..\..\packages\Xamarin.GooglePlayServices.Vision.26.0.0.0-rc3\lib\MonoAndroid41\Xamarin.GooglePlayServices.Vision.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -100,6 +100,10 @@
   <Import Project="..\packages\Xamarin.Forms.1.3.4.6332\build\portable-win+net45+wp80+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets" Condition="Exists('..\packages\Xamarin.Forms.1.3.4.6332\build\portable-win+net45+wp80+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets')" />
   <Import Project="..\..\packages\Xamarin.Forms.1.4.4.6392\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets" Condition="Exists('..\..\packages\Xamarin.Forms.1.4.4.6392\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets')" />
   <ItemGroup>
+    <ProjectReference Include="..\Sample.Pcl\Sample.Pcl.csproj">
+      <Project>{E42FC234-D813-44BE-873F-E5DD3C77B45D}</Project>
+      <Name>Sample.Pcl</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Rb.Forms.Barcode.Droid\Rb.Forms.Barcode.Droid.csproj">
       <Project>{F5DC210F-379A-44CA-8FEA-0F4586240525}</Project>
       <Name>Rb.Forms.Barcode.Droid</Name>
@@ -107,10 +111,6 @@
     <ProjectReference Include="..\..\Rb.Forms.Barcode.Pcl\Rb.Forms.Barcode.Pcl.csproj">
       <Project>{677C433A-8C1F-466F-91CA-1181FDF29795}</Project>
       <Name>Rb.Forms.Barcode.Pcl</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Sample.Pcl\Sample.Pcl.csproj">
-      <Project>{E42FC234-D813-44BE-873F-E5DD3C77B45D}</Project>
-      <Name>Sample.Pcl</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -15,7 +15,7 @@ namespace Sample.Pcl.Pages
 
         private void gotoScannerPage(Object sender, EventArgs e)
         {
-            Detail.Navigation.PushAndRemovePrevious(new ScannerPage(), 1);
+            Detail.Navigation.PushAndRemovePrevious(ScannerPageControl.Instance.CreateScannerPage(), 1);
             IsPresented = false;
         }
 

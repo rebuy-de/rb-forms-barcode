@@ -7,6 +7,8 @@ using Xamarin.Forms.Platform.Android;
 using Rb.Forms.Barcode.Droid;
 using Android.Content.PM;
 using Xamarin.Forms;
+using AndroidCamera = Android.Hardware.Camera;
+using System.Collections.Generic;
 
 namespace Sample.Droid
 {
@@ -18,8 +20,7 @@ namespace Sample.Droid
             base.OnCreate(bundle);
             Forms.Init(this, bundle);
 
-            var config = new RbConfig {
-                Metrics = true
+            var config = new Configuration {
             };
 
             BarcodeScannerRenderer.Init(config);

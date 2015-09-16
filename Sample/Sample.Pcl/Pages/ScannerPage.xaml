@@ -66,8 +66,8 @@
                 Command="{Binding TogglePreviewCommand}"
             />
 
-            <Button FontSize="12" Text="Toggle decoder"
-                Command="{Binding ToggleDecoderCommand}"
+            <Button FontSize="12" Text="Goto third page"
+                Clicked="gotoThirdPage"
             />
         </StackLayout>
     </RelativeLayout>

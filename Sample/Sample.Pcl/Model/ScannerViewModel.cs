@@ -4,6 +4,7 @@ using System.Windows.Input;
 using Xamarin.Forms;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using Rb.Forms.Barcode.Pcl;
 
 namespace Sample.Pcl.Model
 {
@@ -57,20 +58,20 @@ namespace Sample.Pcl.Model
         public ScannerViewModel()
         {
             PreviewActivatedCommand = new Command(() => { Initialized = true; });
-            BarcodeChangedCommand = new Command(updateBarcode);
-            BarcodeDecodedCommand = new Command(logBarcode);
+            BarcodeChangedCommand = new Command<Barcode>(updateBarcode);
+            BarcodeDecodedCommand = new Command<Barcode>(logBarcode);
             TogglePreviewCommand = new Command(() => { Preview = !Preview; });
             ToggleDecoderCommand = new Command(() => { Decoder = !Decoder; });
         }
 
-        private void logBarcode(object barcode)
+        private void logBarcode(Barcode barcode)
         {
-            Debug.WriteLine("Decoded barcode [{0}]", barcode);   
+            Debug.WriteLine("Decoded barcode [{0} - {1}]", barcode.Result, barcode.Format);
         }
 
-        private void updateBarcode(object barcode)
+        private void updateBarcode(Barcode barcode)
         {
-            Barcode = String.Format("Last Barcode: {0}", barcode);
+            Barcode = String.Format("Last Barcode: [{0} - {1}]", barcode.Result, barcode.Format);
         }
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = "")
