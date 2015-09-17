@@ -103,6 +103,11 @@ namespace Rb.Forms.Barcode.Droid.View
             }
 
         }
+
+        public void SetTorch(bool state) 
+        {
+            cameraConfigurator.SetTorch(cameraSource.GetCamera(), state);
+        }
     }
 }
 

@@ -13,6 +13,7 @@ namespace Sample.Pcl.Model
         private String barcode = "";
         private bool initialized = false;
         private bool preview = true;
+        private bool torch = false;
         private bool decoder = true;
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -21,6 +22,7 @@ namespace Sample.Pcl.Model
         public ICommand BarcodeChangedCommand { get; private set; }
         public ICommand BarcodeDecodedCommand { get; private set; }
         public ICommand TogglePreviewCommand { get; private set; }
+        public ICommand ToggleTorchCommand { get; private set; }
         public ICommand ToggleDecoderCommand { get; private set; }
 
         public String Barcode {
@@ -47,6 +49,15 @@ namespace Sample.Pcl.Model
             }
         }
 
+        public bool Torch {
+            get { return torch; }
+            set {
+                torch = value;
+                OnPropertyChanged();
+            }
+        }
+
+
         public bool Decoder {
             get { return decoder; }
             set {
@@ -61,6 +72,7 @@ namespace Sample.Pcl.Model
             BarcodeChangedCommand = new Command<Barcode>(updateBarcode);
             BarcodeDecodedCommand = new Command<Barcode>(logBarcode);
             TogglePreviewCommand = new Command(() => { Preview = !Preview; });
+            ToggleTorchCommand = new Command(() => { Torch = !Torch; });
             ToggleDecoderCommand = new Command(() => { Decoder = !Decoder; });
         }
 

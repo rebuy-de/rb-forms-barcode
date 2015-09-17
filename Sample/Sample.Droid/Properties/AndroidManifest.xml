@@ -2,13 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1" android:versionName="1.0" package="Sample.Android">
 	<uses-sdk android:minSdkVersion="16" android:targetSdkVersion="22" />
 	<application android:label="Sample.Android">
-
-       <meta-data
-        android:name="com.google.android.gms.vision.DEPENDENCIES"
-        android:value="barcode" />
+		<meta-data android:name="com.google.android.gms.vision.DEPENDENCIES" android:value="barcode" />
 	</application>
-
-    <uses-feature android:name="android.hardware.camera" />
+	<uses-feature android:name="android.hardware.camera" />
 	<uses-permission android:name="android.permission.CAMERA" />
-
+	<uses-permission android:name="android.permission.FLASHLIGHT" />
 </manifest>

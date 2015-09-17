@@ -19,6 +19,7 @@
             BarcodeChangedCommand="{Binding BarcodeChangedCommand}"
             BarcodeDecodedCommand="{Binding BarcodeDecodedCommand}"
             PreviewActive="{Binding Preview}"
+            Torch="{Binding Torch}"
             BarcodeDecoder="{Binding Decoder}"
         />
 
@@ -64,6 +65,10 @@
         >
             <Button FontSize="12" Text="Toggle preview"
                 Command="{Binding TogglePreviewCommand}"
+            />
+
+            <Button FontSize="12" Text="Toggle torch"
+                Command="{Binding ToggleTorchCommand}"
             />
 
             <Button FontSize="12" Text="Goto third page"

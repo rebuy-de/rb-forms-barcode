@@ -107,7 +107,6 @@ namespace Rb.Forms.Barcode.Pcl
         /// <summary>
         /// Gets or controlls the current preview state.
         /// </summary>
-        /// <value>The barcode.</value>
         public bool PreviewActive
         {
             get { return (bool) GetValue(PreviewActiveProperty); }
@@ -124,6 +123,36 @@ namespace Rb.Forms.Barcode.Pcl
                 defaultValue: true,
                 defaultBindingMode: BindingMode.TwoWay
             );
+
+        /// <summary>
+        /// Gets or controlls the decoder state.
+        /// </summary>
+        /// <value>The barcode.</value>
+        public bool BarcodeDecoder
+        {
+            get { return (bool) GetValue(BarcodeDecoderProperty); }
+            set { SetValue(BarcodeDecoderProperty, value); }
+        }
+
+        /// <summary>
+        /// TwoWay binding to control the scanner preview and decoder state.
+        /// If set to true the preview is active, false deactivates the preview image.
+        /// </summary>
+        public static readonly BindableProperty TorchProperty =
+            BindableProperty.Create<BarcodeScanner, bool>(
+                getter: view => view.Torch,
+                defaultValue: false,
+                defaultBindingMode: BindingMode.TwoWay
+            );
+
+        /// <summary>
+        /// Gets or controlls the current preview state.
+        /// </summary>
+        public bool Torch
+        {
+            get { return (bool) GetValue(TorchProperty); }
+            set { SetValue(TorchProperty, value); }
+        }
 
         /// <summary>
         /// Command gets called only when the barcode text changes.
@@ -171,16 +200,6 @@ namespace Rb.Forms.Barcode.Pcl
         public ICommand CameraReleasedCommand {
             get { return (ICommand) GetValue(CameraReleasedCommandProperty); }
             set { SetValue(CameraReleasedCommandProperty, value); }
-        }
-
-        /// <summary>
-        /// Gets or controlls the decoder state.
-        /// </summary>
-        /// <value>The barcode.</value>
-        public bool BarcodeDecoder
-        {
-            get { return (bool) GetValue(BarcodeDecoderProperty); }
-            set { SetValue(BarcodeDecoderProperty, value); }
         }
 
         /// <summary>

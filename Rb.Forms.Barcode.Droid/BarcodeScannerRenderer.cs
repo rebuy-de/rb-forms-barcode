@@ -10,6 +10,7 @@ using Rb.Forms.Barcode.Droid.Logger;
 using Android.Views;
 using System.Threading.Tasks;
 using Rb.Forms.Barcode.Droid.View;
+using Android.Content.PM;
 
 [assembly: ExportRenderer(typeof(BarcodeScanner), typeof(BarcodeScannerRenderer))]
 namespace Rb.Forms.Barcode.Droid
@@ -97,8 +98,7 @@ namespace Rb.Forms.Barcode.Droid
 
             this.Debug("OnElementPropertyChanged");
 
-            if (e.PropertyName == BarcodeScanner.IsEnabledProperty.PropertyName) 
-            {
+            if (e.PropertyName == BarcodeScanner.IsEnabledProperty.PropertyName)  {
                 this.Debug("Enabled [{0}]", Element.IsEnabled);
 
                 if (Element.IsEnabled && HasValidSurface) {
@@ -111,8 +111,7 @@ namespace Rb.Forms.Barcode.Droid
                 }
             }
 
-            if (e.PropertyName == BarcodeScanner.PreviewActiveProperty.PropertyName) 
-            {
+            if (e.PropertyName == BarcodeScanner.PreviewActiveProperty.PropertyName) {
                 this.Debug("ScannerActive [{0}]", Element.PreviewActive);
 
                 if (Element.PreviewActive) {
@@ -122,6 +121,23 @@ namespace Rb.Forms.Barcode.Droid
                 if (!Element.PreviewActive) {
                     GetCameraService().HaltPreview();
                 }
+            }
+
+            if (e.PropertyName == BarcodeScanner.TorchProperty.PropertyName) {
+
+                if (Permission.Denied == Context.PackageManager.CheckPermission(Android.Manifest.Permission.Flashlight, Context.PackageName)) {
+                    this.Debug("Unable to use flashlight: Android Manifest '{0}' permission not granted.", Android.Manifest.Permission.Flashlight);
+                    return;
+                }
+
+                if (!Context.PackageManager.HasSystemFeature(PackageManager.FeatureCameraFlash)) {
+                    this.Debug("Unable to use flashlight: Device's camera does not support flash.");
+                    return;
+                }
+
+                this.Debug("Torch [{0}]", Element.Torch);
+
+                GetCameraService().SetTorch(Element.Torch);
             }
         }
 

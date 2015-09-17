@@ -35,8 +35,11 @@ namespace Rb.Forms.Barcode.Droid.Camera
             camera.CancelAutoFocus();
 
             var focusMode = determineFocusMode(parameters);
-            this.Debug("Focus Mode [{0}]", focusMode);
-            parameters.FocusMode = focusMode;
+
+            invokeIfAvailable(focusMode, val => {
+                this.Debug("Focus Mode [{0}]", val);
+                parameters.FocusMode = val;
+            });
 
             camera.SetDisplayOrientation(90);
 
@@ -47,8 +50,11 @@ namespace Rb.Forms.Barcode.Droid.Camera
             if (!config.CompatibilityMode) {
                 if (config.SceneMode) {
                     var sceneMode = determineSceneMode(parameters);
-                    this.Debug("Scene Mode [{0}]", sceneMode);
-                    parameters.SceneMode = sceneMode;
+
+                    invokeIfAvailable(sceneMode, val => {
+                        this.Debug("Scene Mode [{0}]", val);
+                        parameters.SceneMode = val;
+                    });
                 }
 
                 if (config.MeteringAreas && parameters.MaxNumMeteringAreas > 0) {
@@ -68,12 +74,29 @@ namespace Rb.Forms.Barcode.Droid.Camera
 
                 if (config.WhiteBalance) {
                     var whiteBalance = determineWhiteBalance(parameters);
-                    this.Debug("White balance [{0}]", whiteBalance);
-                    parameters.WhiteBalance = whiteBalance;
+
+                    invokeIfAvailable(whiteBalance, val => {
+                        this.Debug("White balance [{0}]", val);
+                        parameters.WhiteBalance = val;
+                    });
+
                 }
             }
 
             camera.SetParameters(parameters);
+        }
+
+        public void SetTorch(AndroidCamera camera, bool state) 
+        {
+            var parameters = camera.GetParameters();
+
+            var flashMode = determineFlashMode(parameters, state);
+
+            invokeIfAvailable(flashMode, val => {
+                this.Debug("Flash mode [{0}]", val);
+                parameters.FlashMode = val;
+                camera.SetParameters(parameters);
+            });
         }
 
         private string determineFocusMode(AndroidCamera.Parameters p)
@@ -105,6 +128,23 @@ namespace Rb.Forms.Barcode.Droid.Camera
             return "";
         }
 
+        private string determineFlashMode(AndroidCamera.Parameters p, bool state) 
+        {
+            if (state && p.SupportedFlashModes.Contains(AndroidCamera.Parameters.FlashModeTorch)) {
+                return AndroidCamera.Parameters.FlashModeTorch;
+            }
+
+            if (state && p.SupportedFlashModes.Contains(AndroidCamera.Parameters.FlashModeOn)) {
+                return AndroidCamera.Parameters.FlashModeOn;
+            }
+
+            if (!state && p.SupportedFlashModes.Contains(AndroidCamera.Parameters.FlashModeOff)) {
+                return AndroidCamera.Parameters.FlashModeOff;
+            }
+
+            return "";
+        }
+
         private List<AndroidCamera.Area> createAreas()
         {
             var area = new AndroidCamera.Area(new Rect(-1000, -400, 1000, 400), 1000);
@@ -113,6 +153,17 @@ namespace Rb.Forms.Barcode.Droid.Camera
                 area
             };
         }
+
+        private void invokeIfAvailable(string value, Action<string> cb)
+        {
+            if (string.IsNullOrEmpty(value)) {
+                return;
+            }
+
+            cb.Invoke(value);
+        }
+
+
     }
 }
 #pragma warning restore 618
