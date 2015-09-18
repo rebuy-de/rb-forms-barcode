@@ -29,6 +29,34 @@ namespace Rb.Forms.Barcode.Pcl
             this.Result = result;
             this.Format = format;
         }
+
+        public override bool Equals(object obj)
+        {
+            Barcode barcode = obj as Barcode;
+
+            if (barcode == null) {
+                return false;
+            }
+
+            if (ReferenceEquals(this, barcode)) {
+                return true;
+            }
+
+            if (barcode.GetType() != typeof(Barcode)) {
+                return false;
+            }
+
+            return Format == barcode.Format && Result == barcode.Result;
+        }
+        
+
+        public override int GetHashCode()
+        {
+            unchecked {
+                return Format.GetHashCode() ^ (Result != null ? Result.GetHashCode() : 0);
+            }
+        }
+        
     }
 }
 

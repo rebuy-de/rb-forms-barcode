@@ -2,6 +2,8 @@
 using Android.Gms.Vision;
 using AndroidCamera = Android.Hardware.Camera;
 using Rb.Forms.Barcode.Droid.View;
+using System.Linq;
+
 
 namespace Rb.Forms.Barcode.Droid.Camera
 {
@@ -10,16 +12,12 @@ namespace Rb.Forms.Barcode.Droid.Camera
         public static AndroidCamera GetCamera(this CameraSource cameraSource)
         {
             var fields = cameraSource.Class.GetDeclaredFields();
+            var cameraClass = Java.Lang.Class.FromType(typeof(AndroidCamera));
 
-            foreach (var field in fields) {
-                if (field.Type.CanonicalName == "android.hardware.Camera") {
-                    field.Accessible = true;
+            var field = fields.FirstOrDefault(f => f.Type == cameraClass);
+            field.Accessible = true;
 
-                    return (AndroidCamera) field.Get(cameraSource);
-                }
-            }
-
-            return null;
+            return field.Get(cameraSource) as AndroidCamera;
         }
 
         public static bool AutoFocusModeEnabled(this CameraSource cameraSource)

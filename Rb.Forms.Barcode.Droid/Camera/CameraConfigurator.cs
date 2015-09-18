@@ -23,11 +23,6 @@ namespace Rb.Forms.Barcode.Droid.Camera
             this.config = config;
         }
 
-        public void Configure(CameraSource cameraSource)
-        {
-            Configure(cameraSource.GetCamera());
-        }
-
         public void Configure(AndroidCamera camera)
         {
             var parameters = camera.GetParameters();

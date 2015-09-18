@@ -36,12 +36,22 @@ namespace Rb.Forms.Barcode.Droid
 
         public override void OnNewItem(int idValue, Java.Lang.Object item)
         {
-            barcodeScanner.Barcode = createResult(item);
+            setBarcode(item);
         }
 
         public override void OnUpdate(Detector.Detections detections, Java.Lang.Object item)
         {
-            barcodeScanner.Barcode = barcodeScanner.Barcode;
+            setBarcode(item);
+        }
+
+        private void setBarcode(Java.Lang.Object item)
+        {
+
+            if (!barcodeScanner.BarcodeDecoder) {
+                return;
+            }
+
+            barcodeScanner.Barcode = createResult(item);
         }
 
         private RebuyBarcode createResult(Java.Lang.Object item)
@@ -60,4 +70,3 @@ namespace Rb.Forms.Barcode.Droid
         }
     }
 }
-

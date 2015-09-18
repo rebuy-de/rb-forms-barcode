@@ -71,7 +71,7 @@ namespace Rb.Forms.Barcode.Droid.View
                 }
 
                 if (!configured) {
-                    cameraConfigurator.Configure(cameraSource);
+                    cameraConfigurator.Configure(cameraSource.GetCamera());
 
                     if (cameraSource.AutoFocusModeEnabled()) {
                         cameraSource.AutoFocus(autoFocus);
