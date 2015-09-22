@@ -21,22 +21,39 @@ namespace Rb.Forms.Barcode.Droid
 
         private CameraService cameraService;
 
+        private CameraService CameraService {
+            get {
+                if (null == cameraService) {
+                    var configurator = new CameraConfigurator(config, Context);
+                    var factory = new CameraServiceFactory(configurator);
+                    cameraService = factory.Create(Context, Element);                    
+                }
+
+                return cameraService;
+            }
+        }
+
+        private Lazy<Platform> platform = new Lazy<Platform>(() => new Platform());
+
+        private Platform Platform {
+            get {
+                return platform.Value;
+            }
+        }
+
         /// <summary>
         /// Checks the surface for validity so its safe to work with it.
         /// </summary>
         /// <value><c>true</c> if this instance has valid surface; otherwise, <c>false</c>.</value>
         private bool HasValidSurface {
             get {
-                return Control.Holder.Surface.IsValid;
+                return Control?.Holder.Surface.IsValid == true;
             }
         }
 
-        private ViewStates Visibility { get; set; }
-
-
         public static void Init()
         {
-            BarcodeScannerRenderer.config = new Configuration();
+            Init(new Configuration());
         }
 
         public static void Init(Configuration config)
@@ -56,7 +73,7 @@ namespace Rb.Forms.Barcode.Droid
                 return;
             }
 
-            await Task.Run(() => GetCameraService().OpenCamera(holder));
+            await Task.Run(() => CameraService.OpenCamera(holder));
         }
 
         public void SurfaceChanged(ISurfaceHolder holder, global::Android.Graphics.Format format, int width, int height)
@@ -77,6 +94,16 @@ namespace Rb.Forms.Barcode.Droid
 
             base.OnElementChanged(e);
 
+            if (!Platform.HasCameraPermission) {
+                this.Debug("Unable to setup scanner: Android Manifest '{0}' permission not granted.", Android.Manifest.Permission.Camera);
+                return;
+            }
+
+            if (!Platform.HasCamera) {
+                this.Debug("Unable to setup scanner: Device has no camera.");
+                return;
+            }
+
             if (Control != null) {
                 return;
             }
@@ -87,7 +114,7 @@ namespace Rb.Forms.Barcode.Droid
 
             Element.CameraOpened += async (sender, args) => {
                 if (Element.PreviewActive) {
-                    await Task.Run(() => GetCameraService().StartPreview(Control.Holder));
+                    await Task.Run(() => CameraService.StartPreview(Control.Holder));
                 }
             };
         }
@@ -98,15 +125,19 @@ namespace Rb.Forms.Barcode.Droid
 
             this.Debug("OnElementPropertyChanged");
 
+            if (!HasValidSurface) {
+                return;
+            }
+
             if (e.PropertyName == BarcodeScanner.IsEnabledProperty.PropertyName)  {
                 this.Debug("Enabled [{0}]", Element.IsEnabled);
 
                 if (Element.IsEnabled && HasValidSurface) {
-                    await Task.Run(() => GetCameraService().OpenCamera(Control.Holder));
+                    await Task.Run(() => CameraService.OpenCamera(Control.Holder));
                 } 
 
                 if (!Element.IsEnabled) {
-                    GetCameraService().ReleaseCamera();
+                    CameraService.ReleaseCamera();
                     cameraService = null;
                 }
             }
@@ -115,41 +146,30 @@ namespace Rb.Forms.Barcode.Droid
                 this.Debug("ScannerActive [{0}]", Element.PreviewActive);
 
                 if (Element.PreviewActive) {
-                    await Task.Run(() => GetCameraService().StartPreview(Control.Holder));
+                    await Task.Run(() => CameraService.StartPreview(Control.Holder));
                 } 
 
                 if (!Element.PreviewActive) {
-                    GetCameraService().HaltPreview();
+                    CameraService.HaltPreview();
                 }
             }
 
             if (e.PropertyName == BarcodeScanner.TorchProperty.PropertyName) {
 
-                if (Permission.Denied == Context.PackageManager.CheckPermission(Android.Manifest.Permission.Flashlight, Context.PackageName)) {
+                if (!Platform.HasFlashPermission) {
                     this.Debug("Unable to use flashlight: Android Manifest '{0}' permission not granted.", Android.Manifest.Permission.Flashlight);
                     return;
                 }
 
-                if (!Context.PackageManager.HasSystemFeature(PackageManager.FeatureCameraFlash)) {
+                if (!Platform.HasFlash) {
                     this.Debug("Unable to use flashlight: Device's camera does not support flash.");
                     return;
                 }
 
                 this.Debug("Torch [{0}]", Element.Torch);
 
-                GetCameraService().SetTorch(Element.Torch);
+                CameraService.SetTorch(Element.Torch);
             }
-        }
-
-        protected CameraService GetCameraService()
-        {
-            if (cameraService == null) {
-                var configurator = new CameraConfigurator(config, Context);
-                var factory = new CameraServiceFactory(configurator);
-                cameraService = factory.Create(Context, Element);
-            }
-
-            return cameraService;
         }
 
         protected override void Dispose(bool disposing)
