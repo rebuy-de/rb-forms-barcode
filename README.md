@@ -2,32 +2,28 @@
 
 ## What is this?
 
-Rb.Forms.Barcode is a Xamarin.Forms view for scanning barcodes.
-
-While the decoding capabilities are powered by ZXing.Net.Mobile, the plugin is written from the ground up with PCL in mind and full Xamarin.Forms support.
-
-It provides **continuous scanning**, aims to give high control to the user  combined with high stability.
+Rb.Forms.Barcode is a **Xamarin.Forms view for scanning barcodes**.
+It provides continuous scanning, aims to give high control to the user  combined with high stability.
 
 [Available via Nuget](https://www.nuget.org/packages/Rb.Forms.Barcode), full of awesomeness and also unicorns.
 
-**Please note** that the library is fairly new and only available as beta as we are missing some features like iOS or WindowsPhone support and more detailed controls. Although the android version should be rock solid.
+**Please note** that the library currently supports Android.
 
-We are very eager about your beta feedback, so do not hesitate to create an issue or feel free to improve our code via a contribution.
+We are very eager about your feedback, so do not hesitate to create an issue or feel free to improve our code via a contribution.
 
 ### Features
 
+* Fully Xamarin.Forms compatible. Add elements on top and adapt the ui to your needs.
+* Lots of configuration options, bindable properties and events. E.g. torch control or preview freezing.
 * Continuous scanning!
-* Fully Xamarin.Forms compatible. Add elements on top and adapt it to your needs.
-* PCL based as far as possible.
-* Lots of configuration options, bindable properties and events.
-* Android support using callback buffers and FastAndroidCamera for best possible performance.
-* No crashing, hanging or blocking the camera. ;)
+* Utilizing [Google Play Services Vision API](https://developers.google.com/vision/) on Android for best possible barcode scanning performance.
 
 ## Setup
 
 1. Install the [package via nuget](https://www.nuget.org/packages/Rb.Forms.Barcode) into your PCL and platform specific projects.
-2. Add the registration call `BarcodeScannerRenderer.Init();` to your platform specific Main class.  
-3. Use the new `BarcodeScanner` class in your c# or xaml code.
+2. [Set the appropriate Android permissions](http://developer.android.com/guide/topics/media/camera.html#manifest) to allow your app to access the camera and flash if need be.
+4. Add the registration call `BarcodeScannerRenderer.Init();` to your platform specific Main class. 
+4. Use the `BarcodeScanner` class in your c# or xaml code.
 
 Example implementation of the Init call:
 
@@ -41,11 +37,30 @@ BarcodeScannerRenderer.Init();
 ## Usage
 
 1. Create an instance of the `BarcodeScanner` class. Dont forget to give it a height and width.
-2. Register an EventHandler for the `BarcodeScanner.BarcodeFound` event.
+2. Register an EventHandler for the `BarcodeScanner.BarcodeChanged` event to receive the detected barcodes.
 
-The scanning kicks in as soon as the element is visible on screen and stops when the view is not visible or the page holding the element gets removed from the stack.
+For a hands on experience it is recommended to [take a look at the sample application](#Sample).
+
+### Please note
+
+The scanning starts as soon as the element is visible on screen and stops when the page holding the element gets removed from the stack.
+
+The library tries to handle the basic camera control automagically. This includes starting/halting the preview and more important opening and releasing the camera when navigating to a page or removing it from the stack.
+
+Given the complexity of apps there are a lot of combinations that prevent a reasonable automatic control of the camera. For example when [sleeping](Sample/Sample.Pcl/Pages/ScannerPage.xaml.cs#L18)/[resuming](Sample/Sample.Pcl/Pages/ScannerPage.xaml.cs#L19) the device, when the [page gets disposed](Sample/Sample.Pcl/Pages/ScannerPage.xaml.cs#L74-L76) without notifying the view or another page get pushed onto the stack.
+
+Thats why you should weave in camera control code into the logic of your app by utilizing the offered bindings. Not doing so might lead to bad performance or unexpected camera exceptions.
+
+Do's:
+
+* Disable the preview when you add a page to the navigation stack.
+* Disable the camera when the page gets removed from the stack.
+* Disable the camera when sleeping the device.
+* Ensure that only one instance at at time is active.
 
 ### Bindable properties and events
+
+All events are also available as `Command`s, the appropriate fields are suffixed accordingly. E.g. the command for `BarcodeChanged` event would be `BarcodeChangedCommand`.
 
 What | Type | Description
 ---- | ---- | -----------
@@ -59,56 +74,52 @@ What | Type | Description
 `BarcodeScanner.IsEnabled` | Property | If `true` opens the camera and activates the preview. `false` deactivates the preview and releases the camera.
 `BarcodeScanner.PreviewActive` | Property | If `true` the preview image gets updated. `false` no preview for you!
 `BarcodeScanner.BarcodeDecoder` | Property | If `true` the decoder is active and tries to decode barcodes out of the image. `false` turns the decoder off, the preview is still active but barcodes will not be decoded.
+`BarcodeScanner.Torch` | Property | Controls the camera flashlight if available and accessible. `true` sets the camera to torch mode (always on), `false` turns the flashlight off.
 
-Every event is also provided as `Command`. e.g. `BarcodeChanged` => `BarcodeChangedCommand`
 ### Configuration
 
-Configuration can be applied by passing a `RbConfig` object to the `BarcodeScannerRenderer.Init()` method. As the available options are platform specific, the configuration has to be done in the according platform solution. The corresponding [Android](Rb.Forms.Barcode.Droid/RbConfig.cs) class documentation should give you a solid understanding of the available options. 
+Configuration can be applied by passing a `Configuration` object to the `BarcodeScannerRenderer.Init()` method. As the available options are platform specific, the configuration has to be done in the according platform solution. The corresponding [Android](Rb.Forms.Barcode.Droid/Configuration.cs) class documentation should give you a solid understanding of the available options. 
 
-By default most of the options are disabled to ensure the highest device compatibility. 
+By default the compatibility mode is enabled to ensure the highest device compatibility. 
 
 Simple example:
 
-    var rbConfig = new Rb.Forms.Barcode.Droid.RbConfig {
-        TryHarder = true
+    var config = new Configuration {
+        // Some devices, mostly samsung, stop auto focusing as soon as one of the advanved features is enabled.
+        CompatibilityMode = Build.Manufacturer.Contains("samsung")
     };
-    BarcodeScannerRenderer.Init(rbConfig);
+
+    BarcodeScannerRenderer.Init(config);
 
 ### Debugging
 
-Rb.Forms.Barcode provides you with a tremendous amount of debug information, so do not forget to check your application log:
+Rb.Forms.Barcode provides you with a tremendous amount of debug information, so check your application log if anything goes wrong:
 
 ```
 [Rb.Forms.Barcode] [BarcodeScannerRenderer] OnElementChanged
 [Rb.Forms.Barcode] [BarcodeScannerRenderer] OnElementPropertyChanged
 [Rb.Forms.Barcode] [BarcodeScannerRenderer] SurfaceCreated
-[Rb.Forms.Barcode] [CameraControl] OpenCamera
-[Rb.Forms.Barcode] [CameraControl] AssignPreview
 [Rb.Forms.Barcode] [BarcodeScannerRenderer] SurfaceChanged
-[Rb.Forms.Barcode] [CameraControl] StartPreview
 [Rb.Forms.Barcode] [CameraConfigurator] Focus Mode [continuous-picture]
 [Rb.Forms.Barcode] [CameraConfigurator] Scene Mode [auto]
 [Rb.Forms.Barcode] [CameraConfigurator] Metering area [True]
-[Rb.Forms.Barcode] [CameraConfigurator] Video stabilization [False]
+[Rb.Forms.Barcode] [CameraConfigurator] Focusing area [True]
+[Rb.Forms.Barcode] [CameraConfigurator] Video stabilization [True]
 [Rb.Forms.Barcode] [CameraConfigurator] White balance [auto]
-[Rb.Forms.Barcode] [BarcodeScannerRenderer] OnVisibilityChanged [Gone]
-[Rb.Forms.Barcode] [CameraControl] HaltPreview
+[Rb.Forms.Barcode] [BarcodeScannerRenderer] OnElementPropertyChanged
+[ScannerView] OnBarcodeChanged [886970911399 - UpcA]
+[ScannerView] OnBarcodeDecoded [886970911399 - UpcA]
+Decoded barcode [886970911399 - UpcA]
 [Rb.Forms.Barcode] [BarcodeScannerRenderer] SurfaceDestroyed
-[Rb.Forms.Barcode] [CameraControl] ReleaseCamera
+[Rb.Forms.Barcode] [BarcodeScannerRenderer] OnElementPropertyChanged
+[Rb.Forms.Barcode] [BarcodeScannerRenderer] Enabled [False]
+[Rb.Forms.Barcode] [BarcodeScannerRenderer] OnElementPropertyChanged
 [Rb.Forms.Barcode] [BarcodeScannerRenderer] Disposing
 ```
 
-### A word of warning
-
-The library aims to handle most of the logical usecases automagically. This includes starting/halting the preview and more important opening and releasing the camera.
-
-Given the complexity of apps there are certain scenarios where this is not possible. As example when [sleeping](https://github.com/rebuy-de/rb-forms-barcode/blob/master/Sample/Sample.Pcl/Pages/ScannerPage.cs#L106)/[resuming](https://github.com/rebuy-de/rb-forms-barcode/blob/master/Sample/Sample.Pcl/Pages/ScannerPage.cs#L113) the app or in certain cases when the [page gets disposed](https://github.com/rebuy-de/rb-forms-barcode/blob/master/Sample/Sample.Pcl/Pages/ScannerPage.cs#L135) without notifying the view.
-
-Please ensure that you react on those events and that Rb.Forms.Barcode releases the camera properly, else you might run into issues with the camera not being available for you or other apps on the device because it is already opened!
-
 ## Sample
 
-There is a [full working sample](https://github.com/rebuy-de/rb-forms-barcode/tree/master/Sample) in the github repository that should give you a headstart. The relevant code is included in the PCL part of the project. The sample is part of the project solution.
+There is a [full working sample](Sample/) in the github repository that should give you a headstart. The relevant code is included in the PCL part of the project. The sample is part of the project solution.
 
 ![Android sample](sample.png)
 
