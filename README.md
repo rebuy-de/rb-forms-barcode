@@ -39,7 +39,7 @@ BarcodeScannerRenderer.Init();
 1. Create an instance of the `BarcodeScanner` class. Dont forget to give it a height and width.
 2. Register an EventHandler for the `BarcodeScanner.BarcodeChanged` event to receive the detected barcodes.
 
-For a hands on experience it is recommended to [take a look at the sample application](#Sample).
+For a hands on experience it is recommended to [take a look at the sample application](#sample).
 
 ### Please note
 
@@ -121,7 +121,7 @@ Decoded barcode [886970911399 - UpcA]
 
 There is a [full working sample](Sample/) in the github repository that should give you a headstart. The relevant code is included in the PCL part of the project. The sample is part of the project solution.
 
-![Android sample](sample.png)
+![Android sample](sample.jpg)
 
 ## Whats planed
 
