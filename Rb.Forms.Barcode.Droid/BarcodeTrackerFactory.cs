@@ -1,10 +1,11 @@
 ﻿using System;
 using Android.Gms.Vision;
 using Rb.Forms.Barcode.Pcl;
+using JObject = Java.Lang.Object;
 
 namespace Rb.Forms.Barcode.Droid
 {
-    public class BarcodeTrackerFactory : Java.Lang.Object, MultiProcessor.IFactory
+    public class BarcodeTrackerFactory : JObject, MultiProcessor.IFactory
     {
         private readonly BarcodeScanner barcodeScanner;
 
@@ -13,7 +14,7 @@ namespace Rb.Forms.Barcode.Droid
             this.barcodeScanner = barcodeScanner;
         }
 
-        public Tracker Create(Java.Lang.Object barcode)
+        public Tracker Create(JObject barcode)
         {
             return new BarcodeTracker(barcodeScanner);
         }

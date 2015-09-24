@@ -4,11 +4,12 @@ using Rb.Forms.Barcode.Pcl.Logger;
 using Rb.Forms.Barcode.Droid.Logger;
 using Android.Hardware;
 using AndroidCamera = Android.Hardware.Camera;
+using JObject = Java.Lang.Object;
 
 #pragma warning disable 618
 namespace Rb.Forms.Barcode.Droid.View
 {
-    public class AutoFocusCallback : Java.Lang.Object, AndroidCamera.IAutoFocusCallback, ILog
+    public class AutoFocusCallback : JObject, AndroidCamera.IAutoFocusCallback, ILog
     {
         private Timer timer;
 

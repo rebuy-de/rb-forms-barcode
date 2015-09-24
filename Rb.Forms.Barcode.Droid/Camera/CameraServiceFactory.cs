@@ -33,7 +33,6 @@ namespace Rb.Forms.Barcode.Droid.Camera
             return new CameraSource.Builder(context, barcodeDetector)
                 .SetFacing(CameraFacing.Back)
                 .Build();
-
         }
     }
 }

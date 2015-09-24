@@ -6,6 +6,7 @@ using AndroidBarcode = Android.Gms.Vision.Barcodes.Barcode;
 using RebuyBarcode = Rb.Forms.Barcode.Pcl.Barcode;
 using System.Collections.Generic;
 using Android.Gms.Vision.Barcodes;
+using JObject = Java.Lang.Object;
 
 namespace Rb.Forms.Barcode.Droid
 {
@@ -34,17 +35,17 @@ namespace Rb.Forms.Barcode.Droid
             this.barcodeScanner = barcodeScanner;
         }
 
-        public override void OnNewItem(int idValue, Java.Lang.Object item)
+        public override void OnNewItem(int idValue, JObject item)
         {
             setBarcode(item);
         }
 
-        public override void OnUpdate(Detector.Detections detections, Java.Lang.Object item)
+        public override void OnUpdate(Detector.Detections detections, JObject item)
         {
             setBarcode(item);
         }
 
-        private void setBarcode(Java.Lang.Object item)
+        private void setBarcode(JObject item)
         {
 
             if (!barcodeScanner.BarcodeDecoder) {
@@ -54,7 +55,7 @@ namespace Rb.Forms.Barcode.Droid
             barcodeScanner.Barcode = createResult(item);
         }
 
-        private RebuyBarcode createResult(Java.Lang.Object item)
+        private RebuyBarcode createResult(JObject item)
         {
             var barcode = item.JavaCast<AndroidBarcode>();
             return new RebuyBarcode(barcode.DisplayValue, convertFormat(barcode));

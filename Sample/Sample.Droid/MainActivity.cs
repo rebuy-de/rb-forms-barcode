@@ -21,7 +21,7 @@ namespace Sample.Droid
             Forms.Init(this, bundle);
 
             var config = new Configuration {
-                // Some devices, mostly samsung, stop auto focusing as soon as one of the advanved features is enabled.
+                // Some devices, mostly samsung, stop auto focusing as soon as one of the advanced features is enabled.
                 CompatibilityMode = Build.Manufacturer.Contains("samsung")
             };
 

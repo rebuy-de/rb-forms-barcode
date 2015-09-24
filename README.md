@@ -85,7 +85,7 @@ By default the compatibility mode is enabled to ensure the highest device compat
 Simple example:
 
     var config = new Configuration {
-        // Some devices, mostly samsung, stop auto focusing as soon as one of the advanved features is enabled.
+        // Some devices, mostly samsung, stop auto focusing as soon as one of the advanced features is enabled.
         CompatibilityMode = Build.Manufacturer.Contains("samsung")
     };
 
