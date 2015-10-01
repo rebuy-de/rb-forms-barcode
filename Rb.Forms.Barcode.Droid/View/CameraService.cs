@@ -4,38 +4,39 @@ using Rb.Forms.Barcode.Pcl.Logger;
 using Rb.Forms.Barcode.Droid.Camera;
 using Rb.Forms.Barcode.Droid.Logger;
 using Android.Views;
-using Android.Gms.Vision;
+using System.Drawing;
+using RebuyCameraSource = Com.Rebuy.Play.Services.Vision.CameraSource;
 
 namespace Rb.Forms.Barcode.Droid.View
 {
     public class CameraService : ILog
     {
         private readonly BarcodeScanner renderer;
-        private readonly CameraSource cameraSource;
+        private readonly Com.Rebuy.Play.Services.Vision.CameraSource cameraSource;
 
         private readonly AutoFocusCallback autoFocus;
         private readonly CameraConfigurator cameraConfigurator;
 
         private bool started = false;
-        private bool configured = false;
+        private bool previewActive = false;
 
-        public CameraService(BarcodeScanner renderer, CameraSource cameraSource, CameraConfigurator configurator)
+        public CameraService(BarcodeScanner renderer, RebuyCameraSource cameraSource, CameraConfigurator configurator)
         {
             this.renderer = renderer;
             this.cameraSource = cameraSource;
             this.cameraConfigurator = configurator;
 
-            this.autoFocus = new AutoFocusCallback(cameraSource.GetCamera());
+            this.autoFocus = new AutoFocusCallback(cameraSource.Camera);
         }
 
-        public void OpenCamera(ISurfaceHolder holder)
+        public void OpenCamera()
         {
             try {
                 if (started) {
                     cameraSource.Stop();
                 }
 
-                cameraSource.Start(holder);
+                cameraSource.Open();
                 started = true;
 
                 renderer.OnCameraOpened();
@@ -52,7 +53,7 @@ namespace Rb.Forms.Barcode.Droid.View
             try {
                 cameraSource?.Release();
                 started = false;
-                configured = false;
+                previewActive = false;
 
                 renderer.OnCameraReleased();
             } catch (Exception ex) {
@@ -66,21 +67,21 @@ namespace Rb.Forms.Barcode.Droid.View
         {
             try {
                 if (!started) {
-                    OpenCamera(holder);
+                    OpenCamera();
                     return;
                 }
 
-                if (!configured) {
-                    cameraConfigurator.Configure(cameraSource.GetCamera());
+                if (!previewActive) {
+                    cameraSource?.StartPreview(holder);
 
                     if (cameraSource.AutoFocusModeEnabled()) {
                         cameraSource.AutoFocus(autoFocus);
                     }
 
-                    configured = true;
-
-                    renderer.OnPreviewActivated();
+                    previewActive = true;
                 }
+
+                renderer.OnPreviewActivated();
             } catch (Exception ex) {
                 this.Debug("Unable to start preview.");
                 this.Debug(ex.ToString());
@@ -91,9 +92,8 @@ namespace Rb.Forms.Barcode.Droid.View
         {
             try {
                 autoFocus.Enabled = false;
-                cameraSource?.Stop();
-                started = false;
-                configured = false;
+                cameraSource?.StopPreview();
+                previewActive = false;
 
                 renderer.OnPreviewDeactivated();
 
@@ -101,12 +101,26 @@ namespace Rb.Forms.Barcode.Droid.View
                 this.Debug("Unable to halt preview.");
                 this.Debug(ex.ToString());
             }
-
         }
 
-        public void SetTorch(bool state) 
+        public void StartDecoder()
         {
-            cameraConfigurator.SetTorch(cameraSource.GetCamera(), state);
+            cameraSource?.StartFrameProcessor();
+        }
+
+        public void StopDecoder()
+        {
+            cameraSource?.StopFrameProcessor();
+        }
+
+        public void ToggleTorch(bool state) 
+        {
+            cameraConfigurator.ToggleTorch(cameraSource?.Camera, state);
+        }
+
+        public void SetViewSize(int width, int height)
+        {
+            cameraConfigurator.SetViewSize(new Size(width, height));
         }
     }
 }

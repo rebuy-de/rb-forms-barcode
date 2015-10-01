@@ -5,6 +5,8 @@ using Android.Content;
 using Rb.Forms.Barcode.Pcl;
 using Rb.Forms.Barcode.Droid.Camera;
 using Rb.Forms.Barcode.Droid.View;
+using Com.Rebuy.Play.Services.Vision;
+using RebuyCameraSource = Com.Rebuy.Play.Services.Vision.CameraSource;
 
 namespace Rb.Forms.Barcode.Droid.Camera
 {
@@ -24,15 +26,17 @@ namespace Rb.Forms.Barcode.Droid.Camera
             return new CameraService(barcodeScanner, cs, configurator);
         }
 
-        private CameraSource createCameraSource(Context context, BarcodeScanner barcodeScanner)
+        private RebuyCameraSource createCameraSource(Context context, BarcodeScanner barcodeScanner)
         {
             var barcodeDetector = new BarcodeDetector.Builder(context).Build();
             var barcodeFactory = new BarcodeTrackerFactory(barcodeScanner);
             barcodeDetector.SetProcessor(new MultiProcessor.Builder(barcodeFactory).Build());
 
-            return new CameraSource.Builder(context, barcodeDetector)
-                .SetFacing(CameraFacing.Back)
+            return new RebuyCameraSource.Builder(context, barcodeDetector)
+                .SetFacing(RebuyCameraSource.CameraFacingBack)
+                .SetConfigurator(configurator)
                 .Build();
+
         }
     }
 }

@@ -7,23 +7,37 @@ using Rb.Forms.Barcode.Droid.Logger;
 using AndroidCamera = Android.Hardware.Camera;
 using Android.Content;
 using Android.Graphics;
-using Android.Gms.Vision;
+using JObject = Java.Lang.Object;
+using RebuyCameraSource = Com.Rebuy.Play.Services.Vision.CameraSource;
 
 #pragma warning disable 618
 namespace Rb.Forms.Barcode.Droid.Camera
 {
-    public class CameraConfigurator : ILog
+    public class CameraConfigurator : JObject, ILog, RebuyCameraSource.IConfigurationCallback
     {
-        private readonly Configuration config;
-        private readonly Context context;
+        private Configuration config;
+        private Context context;
+        private System.Drawing.Size viewSize;
 
-        public CameraConfigurator(Configuration config, Context context)
+        public CameraConfigurator SetContext(Context context)
         {
             this.context = context;
-            this.config = config;
+            return this;
         }
 
-        public void Configure(AndroidCamera camera)
+        public CameraConfigurator SetConfiguration(Configuration config)
+        {
+            this.config = config;
+            return this;
+        }
+
+        public CameraConfigurator SetViewSize(System.Drawing.Size viewSize)
+        {
+            this.viewSize = viewSize;
+            return this;
+        }
+
+        public AndroidCamera Configure(AndroidCamera camera)
         {
             var parameters = camera.GetParameters();
 
@@ -36,7 +50,13 @@ namespace Rb.Forms.Barcode.Droid.Camera
                 parameters.FocusMode = val;
             });
 
-            camera.SetDisplayOrientation(90);
+            var preview = determinePreviewResolution(parameters);
+            this.Debug("Preview resolution [Width: {0}] x [Height {1}]", preview.Width, preview.Height);
+            parameters.SetPreviewSize(preview.Width, preview.Height);
+
+            var picture = determinePictureResolution(parameters, preview);
+            this.Debug("Picture resolution [Width: {0}] x [Height {1}]", picture.Width, picture.Height);
+            parameters.SetPictureSize(picture.Width, picture.Height);
 
             if (config.CompatibilityMode) {
                 this.Debug("Compatibility mode enabled. Skipping advanced configuration to ensure highest compatibility.");
@@ -79,9 +99,11 @@ namespace Rb.Forms.Barcode.Droid.Camera
             }
 
             camera.SetParameters(parameters);
+
+            return camera;
         }
 
-        public void SetTorch(AndroidCamera camera, bool state) 
+        public void ToggleTorch(AndroidCamera camera, bool state) 
         {
             var parameters = camera.GetParameters();
 
@@ -158,6 +180,70 @@ namespace Rb.Forms.Barcode.Droid.Camera
             cb.Invoke(value);
         }
 
+        private AndroidCamera.Size determinePreviewResolution(AndroidCamera.Parameters parameters)
+        {
+            var referenceRatio = getViewRatio();
+
+            /**
+             * The aspect ratio between the preview resolution and the actual preview view
+             * is not allowed to expand the configurated aspect ratio threshold.
+             */
+            Func<AndroidCamera.Size, bool> ratioFilter = (r) =>  {
+                var rawr = ((double) r.Width / (double) r.Height) - referenceRatio;
+                return Math.Abs(rawr) <= config.AspectRatioThreshold;
+            };
+
+            /**
+             * Remove all sizes that do not adhere to the desired aspect ratio 
+             * and sort them by size so we can pick according to the desired quality.
+             */
+            var previewSizes = parameters.SupportedPreviewSizes
+                .Where(ratioFilter)
+                .OrderByDescending(p => p.Width * p.Height)
+                .DefaultIfEmpty(parameters.PreviewSize);
+
+            switch (config.PreviewResolution) {
+                case Configuration.Quality.High:
+                    return previewSizes.First();
+
+                case Configuration.Quality.Low:
+                    return previewSizes.Last();
+
+                case Configuration.Quality.Medium:
+                default:
+                    // when working with medium quality we always opt for the higher resolution.
+                    var i = (int) Math.Ceiling(previewSizes.Count() / 2.0) - 1;
+                    return previewSizes.ElementAt(i);
+            }
+        }
+
+        private AndroidCamera.Size determinePictureResolution(AndroidCamera.Parameters parameters, AndroidCamera.Size preview)
+        {
+            /**
+             * The picture aspect ratio has to be as close as possible to the preview ratio.
+             */
+            Func<AndroidCamera.Size, bool> ratioFilter = picture =>  {
+                var rawr = ((double) picture.Width / (double) picture.Height) - ((double) preview.Width / (double) preview.Height);
+                return Math.Abs(rawr) <= 0.1;
+            };
+
+            return parameters.SupportedPictureSizes
+                .Where(ratioFilter)
+                // the picture resolution should not exceed the preview resolution
+                .Where(picture => picture.Width * picture.Height <= preview.Width * preview.Height)
+                .OrderByDescending(r => r.Width * r.Height)
+                .DefaultIfEmpty(parameters.PictureSize)
+                .First();
+        }
+
+        private double getViewRatio()
+        {
+            var ratio =  (double) viewSize.Width / (double) viewSize.Height;
+
+            this.Debug("View [Ratio: {0}] based on [Width: {2}] / [Height {1}]", ratio, viewSize.Height, viewSize.Width);
+
+            return ratio;
+        }
 
     }
 }

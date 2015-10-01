@@ -7,6 +7,12 @@ namespace Rb.Forms.Barcode.Droid
 {
     public class Configuration
     {
+        public enum Quality {
+            High,
+            Medium,
+            Low
+        };
+
         /// <summary>
         /// Enable or disable compatible mode.
         /// If enabled advanced camera features, except focus mode configuration,
@@ -31,6 +37,26 @@ namespace Rb.Forms.Barcode.Droid
         /// If no format is specified all available formats will be registered.
         /// </summary>
         public IList<RebuyBarcode.BarcodeFormat> Barcodes = new List<RebuyBarcode.BarcodeFormat>();
+
+        /// <summary>
+        /// Defines the preview resolution quality. Higher quality allows the detector
+        /// to reaed smaller barcodes at longer distances.
+        /// 
+        /// The default device dependant preview resolution will be used as fallback.
+        /// </summary>
+        /// <remarks>
+        /// The aspect ratio of the barcode view is considered when selecting a preview resolution.
+        /// <seealso cref="Configuration.AspectRatioThreshold" />
+        /// </remarks>
+        public Quality PreviewResolution = Quality.High;
+
+        /// <summary>
+        /// Threshold value that controls if a preview resolution should be discarded when the aspect ratio exceeds
+        /// the view ratio.
+        /// A bigger tolerance level means more resolutions to pick from but can result in distorted preview images.
+        /// <seealso cref="Configuration.PreviewResolution"/>
+        /// </summary>
+        public double AspectRatioThreshold = 0.8;
 
         /// <summary>
         /// Enable or disable metering area configuration.
@@ -76,6 +102,9 @@ namespace Rb.Forms.Barcode.Droid
         /// Advanced device feature, disabled when compatibility mode is turned on.
         /// </remarks>
         public bool WhiteBalance = true;
+
+
+
     }
 }
 

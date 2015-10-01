@@ -93,6 +93,10 @@
       <Project>{677C433A-8C1F-466F-91CA-1181FDF29795}</Project>
       <Name>Rb.Forms.Barcode.Pcl</Name>
     </ProjectReference>
+    <ProjectReference Include="..\CameraSourceBindings\CameraSourceBindings.csproj">
+      <Project>{8B5FB435-D2A0-45B7-BD04-F23D33D8AE10}</Project>
+      <Name>CameraSourceBindings</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="View\" />

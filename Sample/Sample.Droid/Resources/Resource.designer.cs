@@ -75,6 +75,7 @@ namespace Sample.Droid
 			global::Rb.Forms.Barcode.Droid.Resource.Integer.google_play_services_version = global::Sample.Droid.Resource.Integer.google_play_services_version;
 			global::Rb.Forms.Barcode.Droid.Resource.String.ApplicationName = global::Sample.Droid.Resource.String.ApplicationName;
 			global::Rb.Forms.Barcode.Droid.Resource.String.Hello = global::Sample.Droid.Resource.String.Hello;
+			global::Rb.Forms.Barcode.Droid.Resource.String.app_name = global::Sample.Droid.Resource.String.app_name;
 			global::Rb.Forms.Barcode.Droid.Resource.String.auth_google_play_services_client_facebook_display_name = global::Sample.Droid.Resource.String.auth_google_play_services_client_facebook_display_name;
 			global::Rb.Forms.Barcode.Droid.Resource.String.auth_google_play_services_client_google_display_name = global::Sample.Droid.Resource.String.auth_google_play_services_client_google_display_name;
 			global::Rb.Forms.Barcode.Droid.Resource.String.common_android_wear_notification_needs_update_text = global::Sample.Droid.Resource.String.common_android_wear_notification_needs_update_text;
@@ -2042,11 +2043,11 @@ namespace Sample.Droid
 		public partial class String
 		{
 			
-			// aapt resource value: 0x7f050036
-			public const int ApplicationName = 2131034166;
+			// aapt resource value: 0x7f050037
+			public const int ApplicationName = 2131034167;
 			
-			// aapt resource value: 0x7f050035
-			public const int Hello = 2131034165;
+			// aapt resource value: 0x7f050036
+			public const int Hello = 2131034166;
 			
 			// aapt resource value: 0x7f050022
 			public const int abc_action_bar_home_description = 2131034146;
@@ -2099,8 +2100,8 @@ namespace Sample.Droid
 			// aapt resource value: 0x7f050032
 			public const int abc_toolbar_collapse_description = 2131034162;
 			
-			// aapt resource value: 0x7f050038
-			public const int app_name = 2131034168;
+			// aapt resource value: 0x7f050034
+			public const int app_name = 2131034164;
 			
 			// aapt resource value: 0x7f050001
 			public const int auth_google_play_services_client_facebook_display_name = 2131034113;
@@ -2204,11 +2205,11 @@ namespace Sample.Droid
 			// aapt resource value: 0x7f05001d
 			public const int common_signin_button_text_long = 2131034141;
 			
-			// aapt resource value: 0x7f050037
-			public const int hello = 2131034167;
+			// aapt resource value: 0x7f050038
+			public const int hello = 2131034168;
 			
-			// aapt resource value: 0x7f050034
-			public const int library_name = 2131034164;
+			// aapt resource value: 0x7f050035
+			public const int library_name = 2131034165;
 			
 			// aapt resource value: 0x7f050033
 			public const int status_bar_notification_info_overflow = 2131034163;

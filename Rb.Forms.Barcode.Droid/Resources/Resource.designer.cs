@@ -227,11 +227,14 @@ namespace Rb.Forms.Barcode.Droid
 		public partial class String
 		{
 			
+			// aapt resource value: 0x7f030024
+			public static int ApplicationName = 2130903076;
+			
 			// aapt resource value: 0x7f030023
-			public static int ApplicationName = 2130903075;
+			public static int Hello = 2130903075;
 			
 			// aapt resource value: 0x7f030022
-			public static int Hello = 2130903074;
+			public static int app_name = 2130903074;
 			
 			// aapt resource value: 0x7f030001
 			public static int auth_google_play_services_client_facebook_display_name = 2130903041;
@@ -335,8 +338,8 @@ namespace Rb.Forms.Barcode.Droid
 			// aapt resource value: 0x7f03001d
 			public static int common_signin_button_text_long = 2130903069;
 			
-			// aapt resource value: 0x7f030024
-			public static int library_name = 2130903076;
+			// aapt resource value: 0x7f030025
+			public static int library_name = 2130903077;
 			
 			static String()
 			{
