@@ -53,8 +53,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Additions\AboutAdditions.txt" />
-    <None Include="Jars\AboutJars.txt" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -67,5 +65,8 @@
     <LibraryProjectZip Include="..\RebuyCameraSource\RebuyCameraSource\build\outputs\aar\rebuycamerasource-debug.aar">
       <Link>Jars\rebuycamerasource-debug.aar</Link>
     </LibraryProjectZip>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Additions\" />
   </ItemGroup>
 </Project>

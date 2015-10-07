@@ -83,11 +83,8 @@ namespace Rb.Forms.Barcode.Droid
                 return;
             }
 
-            var windowManager = Context.GetSystemService(Android.Content.Context.WindowService).JavaCast<IWindowManager>();
-            var rotation = windowManager.DefaultDisplay.Rotation;
-
-            // landscape mode
-            if ((int) rotation % 2 == 0) {
+            // portrait mode
+            if (height > width) {
                 CameraService.SetViewSize(height, width);
             } else {
                 CameraService.SetViewSize(width, height);
@@ -189,8 +186,7 @@ namespace Rb.Forms.Barcode.Droid
                 CameraService.ToggleTorch(Element.Torch);
             }
 
-            if (e.PropertyName == BarcodeScanner.BarcodeDecoderProperty.PropertyName) 
-            {
+            if (e.PropertyName == BarcodeScanner.BarcodeDecoderProperty.PropertyName) {
                 this.Debug("Decoder state [{0}]", Element.BarcodeDecoder);
 
                 if (Element.BarcodeDecoder) {

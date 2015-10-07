@@ -70,7 +70,6 @@
     <Compile Include="Camera\CameraConfigurator.cs" />
     <Compile Include="Logger\Log.cs" />
     <Compile Include="BarcodeScannerRenderer.cs" />
-    <Compile Include="View\CameraService.cs" />
     <Compile Include="View\AutoFocusCallback.cs" />
     <Compile Include="BarcodeTrackerFactory.cs" />
     <Compile Include="Configuration.cs" />
@@ -78,6 +77,7 @@
     <Compile Include="Camera\CameraSourceExtensions.cs" />
     <Compile Include="BarcodeTracker.cs" />
     <Compile Include="Platform.cs" />
+    <Compile Include="Camera\CameraService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />

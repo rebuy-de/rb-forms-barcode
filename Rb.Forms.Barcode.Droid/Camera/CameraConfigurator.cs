@@ -188,8 +188,9 @@ namespace Rb.Forms.Barcode.Droid.Camera
              * The aspect ratio between the preview resolution and the actual preview view
              * is not allowed to expand the configurated aspect ratio threshold.
              */
-            Func<AndroidCamera.Size, bool> ratioFilter = (r) =>  {
-                var rawr = ((double) r.Width / (double) r.Height) - referenceRatio;
+            Func<AndroidCamera.Size, bool> ratioFilter = preview =>  {
+                var rawr = ((double) preview.Width / (double) preview.Height) - referenceRatio;
+
                 return Math.Abs(rawr) <= config.AspectRatioThreshold;
             };
 
@@ -199,7 +200,7 @@ namespace Rb.Forms.Barcode.Droid.Camera
              */
             var previewSizes = parameters.SupportedPreviewSizes
                 .Where(ratioFilter)
-                .OrderByDescending(p => p.Width * p.Height)
+                .OrderByDescending(preview => preview.Width * preview.Height)
                 .DefaultIfEmpty(parameters.PreviewSize);
 
             switch (config.PreviewResolution) {
@@ -224,6 +225,7 @@ namespace Rb.Forms.Barcode.Droid.Camera
              */
             Func<AndroidCamera.Size, bool> ratioFilter = picture =>  {
                 var rawr = ((double) picture.Width / (double) picture.Height) - ((double) preview.Width / (double) preview.Height);
+
                 return Math.Abs(rawr) <= 0.1;
             };
 

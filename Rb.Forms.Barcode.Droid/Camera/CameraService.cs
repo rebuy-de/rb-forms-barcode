@@ -6,8 +6,9 @@ using Rb.Forms.Barcode.Droid.Logger;
 using Android.Views;
 using System.Drawing;
 using RebuyCameraSource = Com.Rebuy.Play.Services.Vision.CameraSource;
+using Rb.Forms.Barcode.Droid.View;
 
-namespace Rb.Forms.Barcode.Droid.View
+namespace Rb.Forms.Barcode.Droid.Camera
 {
     public class CameraService : ILog
     {

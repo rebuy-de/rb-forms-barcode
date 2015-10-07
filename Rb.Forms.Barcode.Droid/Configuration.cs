@@ -102,9 +102,6 @@ namespace Rb.Forms.Barcode.Droid
         /// Advanced device feature, disabled when compatibility mode is turned on.
         /// </remarks>
         public bool WhiteBalance = true;
-
-
-
     }
 }
 
