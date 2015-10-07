@@ -62,6 +62,9 @@
     <LibraryProjectZip Include="..\RebuyCameraSource\RebuyCameraSource\build\outputs\aar\rebuycamerasource-debug.aar">
       <Link>Jars\rebuycamerasource-debug.aar</Link>
     </LibraryProjectZip>
+    <LibraryProjectZip Include="..\RebuyCameraSource\RebuyCameraSource\build\outputs\aar\rebuycamerasource-release.aar">
+      <Link>Jars\rebuycamerasource-release.aar</Link>
+    </LibraryProjectZip>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Additions\" />
