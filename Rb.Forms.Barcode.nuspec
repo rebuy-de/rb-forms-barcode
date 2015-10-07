@@ -25,11 +25,11 @@ Please note that version 0.5.0-beta contains api breaks and most of the automati
     <tags>barcode scanner scanning scan zxing xamarin xamarin.forms rebuy unicorns</tags>
     <dependencies>
         <group>
-            <dependency id="Xamarin.Forms" version="1.5.0.6446" />
+            <dependency id="Xamarin.Forms" version="1.5.0.6447" />
         </group>
 
         <group targetFramework="MonoAndroid10">
-            <dependency id="Xamarin.GooglePlayServices.Vision" version="26.0.0.0-rc4" />
+            <dependency id="Xamarin.GooglePlayServices.Vision" version="26.0.0.0" />
         </group>
     </dependencies>
   </metadata>
@@ -43,6 +43,8 @@ Please note that version 0.5.0-beta contains api breaks and most of the automati
          target="lib/MonoAndroid10/Rb.Forms.Barcode.Pcl.dll" />
      <file src="Rb.Forms.Barcode.Droid/bin/Release/Rb.Forms.Barcode.Droid.dll"
          target="lib/MonoAndroid10/Rb.Forms.Barcode.Droid.dll" />
+     <file src="Rb.Forms.Barcode.Droid/bin/Release/CameraSourceBindings.dll"
+         target="lib/MonoAndroid10/CameraSourceBindings.dll" />
 
   </files>
 </package>

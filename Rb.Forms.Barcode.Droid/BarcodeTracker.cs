@@ -47,11 +47,6 @@ namespace Rb.Forms.Barcode.Droid
 
         private void setBarcode(JObject item)
         {
-
-            if (!barcodeScanner.BarcodeDecoder) {
-                return;
-            }
-
             barcodeScanner.Barcode = createResult(item);
         }
 

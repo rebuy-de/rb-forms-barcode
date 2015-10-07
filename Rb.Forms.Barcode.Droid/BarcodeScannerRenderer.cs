@@ -11,6 +11,7 @@ using Android.Views;
 using System.Threading.Tasks;
 using Rb.Forms.Barcode.Droid.View;
 using Android.Content.PM;
+using Android.Runtime;
 
 [assembly: ExportRenderer(typeof(BarcodeScanner), typeof(BarcodeScannerRenderer))]
 namespace Rb.Forms.Barcode.Droid
@@ -24,7 +25,11 @@ namespace Rb.Forms.Barcode.Droid
         private CameraService CameraService {
             get {
                 if (null == cameraService) {
-                    var configurator = new CameraConfigurator(config, Context);
+                    var configurator = new CameraConfigurator();
+
+                    configurator.SetContext(Context)
+                        .SetConfiguration(config);
+                    
                     var factory = new CameraServiceFactory(configurator);
                     cameraService = factory.Create(Context, Element);                    
                 }
@@ -64,6 +69,11 @@ namespace Rb.Forms.Barcode.Droid
         public async void SurfaceCreated(ISurfaceHolder holder)
         {
             this.Debug("SurfaceCreated");
+        }
+
+        public async void SurfaceChanged(ISurfaceHolder holder, global::Android.Graphics.Format format, int width, int height)
+        {
+            this.Debug("SurfaceChanged");
 
             if (!Element.IsEnabled) {
                 return;
@@ -73,12 +83,17 @@ namespace Rb.Forms.Barcode.Droid
                 return;
             }
 
-            await Task.Run(() => CameraService.OpenCamera(holder));
-        }
+            // portrait mode
+            if (height > width) {
+                CameraService.SetViewSize(height, width);
+            } else {
+                CameraService.SetViewSize(width, height);
+            }
 
-        public void SurfaceChanged(ISurfaceHolder holder, global::Android.Graphics.Format format, int width, int height)
-        {
-            this.Debug("SurfaceChanged");
+            await Task.Run(() => {
+                CameraService.HaltPreview();
+                CameraService.StartPreview(holder);
+            });
         }
 
         public void SurfaceDestroyed(ISurfaceHolder holder)
@@ -133,7 +148,7 @@ namespace Rb.Forms.Barcode.Droid
                 this.Debug("Enabled [{0}]", Element.IsEnabled);
 
                 if (Element.IsEnabled && HasValidSurface) {
-                    await Task.Run(() => CameraService.OpenCamera(Control.Holder));
+                    await Task.Run(CameraService.OpenCamera);
                 } 
 
                 if (!Element.IsEnabled) {
@@ -168,9 +183,22 @@ namespace Rb.Forms.Barcode.Droid
 
                 this.Debug("Torch [{0}]", Element.Torch);
 
-                CameraService.SetTorch(Element.Torch);
+                CameraService.ToggleTorch(Element.Torch);
+            }
+
+            if (e.PropertyName == BarcodeScanner.BarcodeDecoderProperty.PropertyName) {
+                this.Debug("Decoder state [{0}]", Element.BarcodeDecoder);
+
+                if (Element.BarcodeDecoder) {
+                    CameraService.StartDecoder();
+                } 
+
+                if (!Element.BarcodeDecoder) {
+                    CameraService.StopDecoder();
+                }
             }
         }
+
 
         protected override void Dispose(bool disposing)
         {
