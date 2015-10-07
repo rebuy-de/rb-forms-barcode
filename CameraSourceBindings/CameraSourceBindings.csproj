@@ -40,20 +40,17 @@
     <Reference Include="System.Core" />
     <Reference Include="Mono.Android" />
     <Reference Include="Xamarin.Android.Support.v4">
-      <HintPath>..\packages\Xamarin.Android.Support.v4.23.0.1.0-rc2\lib\MonoAndroid403\Xamarin.Android.Support.v4.dll</HintPath>
+      <HintPath>..\packages\Xamarin.Android.Support.v4.23.0.1.1\lib\MonoAndroid403\Xamarin.Android.Support.v4.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.GooglePlayServices.Base">
-      <HintPath>..\packages\Xamarin.GooglePlayServices.Base.26.0.0.0-rc4\lib\MonoAndroid41\Xamarin.GooglePlayServices.Base.dll</HintPath>
+      <HintPath>..\packages\Xamarin.GooglePlayServices.Base.26.0.0.0\lib\MonoAndroid41\Xamarin.GooglePlayServices.Base.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.GooglePlayServices.Vision">
-      <HintPath>..\packages\Xamarin.GooglePlayServices.Vision.26.0.0.0-rc4\lib\MonoAndroid41\Xamarin.GooglePlayServices.Vision.dll</HintPath>
+      <HintPath>..\packages\Xamarin.GooglePlayServices.Vision.26.0.0.0\lib\MonoAndroid41\Xamarin.GooglePlayServices.Vision.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <TransformFile Include="Transforms\EnumFields.xml" />
@@ -68,5 +65,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Additions\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>
