@@ -12,21 +12,14 @@ namespace Rb.Forms.Barcode.Droid.Camera
 {
     public class CameraServiceFactory
     {
-        private readonly CameraConfigurator configurator;
-
-        public CameraServiceFactory(CameraConfigurator configurator)
+        public CameraService Create(Context context, BarcodeScanner barcodeScanner, CameraConfigurator configurator)
         {
-            this.configurator = configurator;
+            var cameraSource = createCameraSource(context, barcodeScanner, configurator);
+
+            return new CameraService(barcodeScanner, cameraSource, configurator);
         }
 
-        public CameraService Create(Context context, BarcodeScanner barcodeScanner)
-        {
-            var cs = createCameraSource(context, barcodeScanner);
-
-            return new CameraService(barcodeScanner, cs, configurator);
-        }
-
-        private RebuyCameraSource createCameraSource(Context context, BarcodeScanner barcodeScanner)
+        private RebuyCameraSource createCameraSource(Context context, BarcodeScanner barcodeScanner, CameraConfigurator configurator)
         {
             var barcodeDetector = new BarcodeDetector.Builder(context).Build();
             var barcodeFactory = new BarcodeTrackerFactory(barcodeScanner);

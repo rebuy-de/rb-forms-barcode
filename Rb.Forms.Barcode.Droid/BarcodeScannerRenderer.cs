@@ -20,18 +20,19 @@ namespace Rb.Forms.Barcode.Droid
     {
         private static Configuration config;
 
+        private readonly Lazy<CameraServiceFactory> cameraServiceFactory =
+            new Lazy<CameraServiceFactory>(() => new CameraServiceFactory());
+
         private CameraService cameraService;
 
         private CameraService CameraService {
             get {
                 if (null == cameraService) {
                     var configurator = new CameraConfigurator();
-
-                    configurator.SetContext(Context)
-                        .SetConfiguration(config);
+                    configurator.SetConfiguration(config);
                     
-                    var factory = new CameraServiceFactory(configurator);
-                    cameraService = factory.Create(Context, Element);                    
+
+                    cameraService = cameraServiceFactory.Value.Create(Context, Element, configurator);
                 }
 
                 return cameraService;
@@ -116,6 +117,11 @@ namespace Rb.Forms.Barcode.Droid
 
             if (!Platform.HasCamera) {
                 this.Debug("Unable to setup scanner: Device has no camera.");
+                return;
+            }
+
+            if (!Platform.IsGmsReady) {
+                this.Debug("Unable to setup scanner: Google mobile services are not ready.");
                 return;
             }
 
@@ -204,6 +210,7 @@ namespace Rb.Forms.Barcode.Droid
         {
             this.Debug("Disposing");
 
+            cameraService.ReleaseCamera();
             cameraService = null;
 
             base.Dispose(disposing);
