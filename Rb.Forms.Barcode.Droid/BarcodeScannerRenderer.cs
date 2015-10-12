@@ -18,28 +18,37 @@ namespace Rb.Forms.Barcode.Droid
 {
     public class BarcodeScannerRenderer : ViewRenderer<BarcodeScanner, SurfaceView>, ISurfaceHolderCallback, ILog
     {
+        /// <summary>
+        /// The desired BarcodeScannerRenderer configuration.
+        /// </summary>
+        /// <see cref="Configuration" />
         private static Configuration config;
 
-        private readonly Lazy<CameraServiceFactory> cameraServiceFactory =
-            new Lazy<CameraServiceFactory>(() => new CameraServiceFactory());
+        /// <summary>
+        /// Camera configuration callback. 
+        /// We want to keep the same instance over the life time of the BarcodeScannerRenderer so that we 
+        /// remember configured options when Enabling/Disabling the camera
+        /// </summary>
+        private readonly CameraConfigurator configurator;
 
-        private CameraService cameraService;
+        /// <summary>
+        /// Do not use this. Use the Property instead.
+        /// </summary>
+        /// <see cref="BarcodeScannerRenderer.CameraService" />
+        private CameraService cameraServiceHolder;
 
         private CameraService CameraService {
             get {
-                if (null == cameraService) {
-                    var configurator = new CameraConfigurator();
-                    configurator.SetConfiguration(config);
-                    
-
-                    cameraService = cameraServiceFactory.Value.Create(Context, Element, configurator);
+                if (null == cameraServiceHolder) {
+                    var factory = new CameraServiceFactory();
+                    cameraServiceHolder = factory.Create(Context, Element, configurator);                
                 }
 
-                return cameraService;
+                return cameraServiceHolder;
             }
         }
 
-        private Lazy<Platform> platform = new Lazy<Platform>(() => new Platform());
+        private Lazy<Platform> platform;
 
         private Platform Platform {
             get {
@@ -67,6 +76,12 @@ namespace Rb.Forms.Barcode.Droid
             BarcodeScannerRenderer.config = config;
         }
 
+        public BarcodeScannerRenderer()
+        {
+            configurator = new CameraConfigurator().SetConfiguration(config);
+            platform = new Lazy<Platform>(() => new Platform());
+        }
+
         public async void SurfaceCreated(ISurfaceHolder holder)
         {
             this.Debug("SurfaceCreated");
@@ -75,10 +90,6 @@ namespace Rb.Forms.Barcode.Droid
         public async void SurfaceChanged(ISurfaceHolder holder, global::Android.Graphics.Format format, int width, int height)
         {
             this.Debug("SurfaceChanged");
-
-            if (!Element.IsEnabled) {
-                return;
-            }
 
             if (!HasValidSurface) {
                 return;
@@ -89,6 +100,10 @@ namespace Rb.Forms.Barcode.Droid
                 CameraService.SetViewSize(height, width);
             } else {
                 CameraService.SetViewSize(width, height);
+            }
+
+            if (!Element.IsEnabled) {
+                return;
             }
 
             await Task.Run(() => {
@@ -158,8 +173,7 @@ namespace Rb.Forms.Barcode.Droid
                 } 
 
                 if (!Element.IsEnabled) {
-                    CameraService.ReleaseCamera();
-                    cameraService = null;
+                    ReleaseCamera();
                 }
             }
 
@@ -210,10 +224,15 @@ namespace Rb.Forms.Barcode.Droid
         {
             this.Debug("Disposing");
 
-            cameraService.ReleaseCamera();
-            cameraService = null;
+            ReleaseCamera();
 
             base.Dispose(disposing);
+        }
+
+        private void ReleaseCamera()
+        {
+            CameraService?.ReleaseCamera();
+            cameraServiceHolder = null;
         }
     }
 }

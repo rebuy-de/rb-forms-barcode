@@ -240,6 +240,7 @@ namespace Rb.Forms.Barcode.Pcl
 
         public void OnCameraReleased()
         {
+            Barcode = null;
             CameraReleasedCommand.Raise();
             CameraReleased.Raise(this, EventArgs.Empty);
         }
@@ -255,6 +256,10 @@ namespace Rb.Forms.Barcode.Pcl
 
         private void OnBarcodeDecoded(Barcode barcode)
         {
+            if (barcode == null) {
+                return;
+            }
+
             Debug.WriteLine("[ScannerView] OnBarcodeDecoded [{0} - {1}]", barcode.Result, barcode.Format);
 
             BarcodeDecodedCommand.Raise(barcode);

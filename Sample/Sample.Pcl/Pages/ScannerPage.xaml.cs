@@ -23,13 +23,13 @@ namespace Sample.Pcl.Pages
 
         protected override void OnAppearing()
         {
-            barcodeScanner.PreviewActive = true;
+            barcodeScanner.IsEnabled = true;
             base.OnAppearing();
         }
 
         protected override void OnDisappearing()
         {
-            barcodeScanner.PreviewActive = false;
+            barcodeScanner.IsEnabled = false;
             base.OnDisappearing();
         }
 
