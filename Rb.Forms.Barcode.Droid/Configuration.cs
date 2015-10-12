@@ -13,6 +13,14 @@ namespace Rb.Forms.Barcode.Droid
             Low
         };
 
+        public enum Fps {
+            Ultra = 60,
+            High = 30,
+            Medium = 15,
+            Low = 10,
+            Default = 0
+        };
+
         /// <summary>
         /// Enable or disable compatible mode.
         /// If enabled advanced camera features, except focus mode configuration,
@@ -46,7 +54,7 @@ namespace Rb.Forms.Barcode.Droid
         /// </summary>
         /// <remarks>
         /// The aspect ratio of the barcode view is considered when selecting a preview resolution.
-        /// <seealso cref="Configuration.AspectRatioThreshold" />
+        /// <see cref="Configuration.AspectRatioThreshold" />
         /// </remarks>
         public Quality PreviewResolution = Quality.High;
 
@@ -54,7 +62,7 @@ namespace Rb.Forms.Barcode.Droid
         /// Threshold value that controls if a preview resolution should be discarded when the aspect ratio exceeds
         /// the view ratio.
         /// A bigger tolerance level means more resolutions to pick from but can result in distorted preview images.
-        /// <seealso cref="Configuration.PreviewResolution"/>
+        /// <see cref="Configuration.PreviewResolution"/>
         /// </summary>
         public double AspectRatioThreshold = 0.8;
 
@@ -102,6 +110,26 @@ namespace Rb.Forms.Barcode.Droid
         /// Advanced device feature, disabled when compatibility mode is turned on.
         /// </remarks>
         public bool WhiteBalance = true;
+
+        /// <summary>
+        /// Zooms the preview image. Decreases the visible view area, but brings the image closer
+        /// thus allowing to scan barcodes from further away. This may speed up the barcode decoding
+        /// as the viewed barcode takes up more preview space.
+        /// 
+        /// A value of 0 turns zoom off.
+        /// </summary>
+        public uint Zoom = 0;
+
+        /// <summary>
+        /// Set preview FPS. Choose a lower value if the CPU usage is to high, or a higher value if image is to jerky.
+        /// This value also controls how often the decoder is run per second.
+        /// 
+        /// A value of 0 disables the FPS configuration.
+        /// </summary>
+        /// <remarks>
+        /// See <see cref="Configuration.Fps" /> for a list of suggested FPS settings.
+        /// </remarks>
+        public uint TargetFps = (uint) Fps.Default;
     }
 }
 

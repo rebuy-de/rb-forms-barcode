@@ -22,7 +22,8 @@ namespace Sample.Droid
 
             var config = new Configuration {
                 // Some devices, mostly samsung, stop auto focusing as soon as one of the advanced features is enabled.
-                CompatibilityMode = Build.Manufacturer.Contains("samsung")
+                CompatibilityMode = Build.Manufacturer.Contains("samsung"),
+                Zoom = 5
             };
 
             BarcodeScannerRenderer.Init(config);
