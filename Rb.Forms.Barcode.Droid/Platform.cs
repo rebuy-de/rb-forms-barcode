@@ -1,8 +1,8 @@
 ﻿using System;
+using Android.Content;
 using Android.Content.PM;
 using Android.Gms.Vision;
 using Android.Gms.Vision.Barcodes;
-using Android.Content;
 
 namespace Rb.Forms.Barcode.Droid
 {

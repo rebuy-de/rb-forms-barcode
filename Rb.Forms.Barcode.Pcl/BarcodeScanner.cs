@@ -1,10 +1,9 @@
 ﻿using System;
-
-using Xamarin.Forms;
-using System.Diagnostics;
-using Rb.Forms.Barcode.Pcl.Extensions;
-using System.Windows.Input;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.Windows.Input;
+using Rb.Forms.Barcode.Pcl.Extensions;
+using Xamarin.Forms;
 
 namespace Rb.Forms.Barcode.Pcl
 {

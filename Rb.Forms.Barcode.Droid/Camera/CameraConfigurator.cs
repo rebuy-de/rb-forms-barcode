@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Rb.Forms.Barcode.Pcl.Logger;
-using Rb.Forms.Barcode.Droid.Logger;
-
-using Android.Hardware;
-using AndroidCamera = Android.Hardware.Camera;
 using Android.Graphics;
+using Android.Hardware;
+using Rb.Forms.Barcode.Droid.Logger;
+using Rb.Forms.Barcode.Pcl.Logger;
+using AndroidCamera = Android.Hardware.Camera;
 using JObject = Java.Lang.Object;
 using RebuyCameraSource = Com.Rebuy.Play.Services.Vision.CameraSource;
 
@@ -339,8 +338,8 @@ namespace Rb.Forms.Barcode.Droid.Camera
                 case Configuration.Quality.Medium:
                 default:
                     // when working with medium quality we always opt for the higher resolution.
-                    var i = (int) Math.Ceiling(previewSizes.Count() / 2.0) - 1;
-                    return previewSizes.ElementAt(i);
+                    var index = (int) Math.Ceiling(previewSizes.Count() / 2.0) - 1;
+                    return previewSizes.ElementAt(index);
             }
         }
 

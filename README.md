@@ -22,14 +22,14 @@ We are very eager about your feedback, so do not hesitate to create an issue or 
 
 1. Install the [package via nuget](https://www.nuget.org/packages/Rb.Forms.Barcode) into your PCL and platform specific projects.
 2. [Set the appropriate Android permissions](http://developer.android.com/guide/topics/media/camera.html#manifest) to allow your app to access the camera and flash if need be.
-4. Add the registration call `BarcodeScannerRenderer.Init();` to your platform specific Main class. 
+4. Add the registration call `BarcodeScannerRenderer.Init();` to your platform specific Main class.
 4. Use the `BarcodeScanner` class in your c# or xaml code.
 
 Example implementation of the Init call:
 
 ```
-base.OnCreate(bundle);  
-Xamarin.Forms.Forms.Init(this, bundle);  
+base.OnCreate(bundle);
+Xamarin.Forms.Forms.Init(this, bundle);
 // this is important so that the compiler picks up the assembly reference
 BarcodeScannerRenderer.Init();
 ```
@@ -39,7 +39,7 @@ BarcodeScannerRenderer.Init();
 1. Create an instance of the `BarcodeScanner` class. Dont forget to give it a height and width.
 2. Register an EventHandler for the `BarcodeScanner.BarcodeChanged` event to receive the detected barcodes.
 
-For a hands on experience it is recommended to [take a look at the sample application](#sample).
+For a hands-on experience it is recommended to [take a look at the sample application](#sample).
 
 ### Please note
 
@@ -78,9 +78,9 @@ What | Type | Description
 
 ### Configuration
 
-Configuration can be applied by passing a `Configuration` object to the `BarcodeScannerRenderer.Init()` method. As the available options are platform specific, the configuration has to be done in the according platform solution. The corresponding [Android](Rb.Forms.Barcode.Droid/Configuration.cs) class documentation should give you a solid understanding of the available options. 
+Configuration can be applied by passing a `Configuration` object to the `BarcodeScannerRenderer.Init()` method. As the available options are platform specific, the configuration has to be done in the according platform solution. The corresponding [Android](Rb.Forms.Barcode.Droid/Configuration.cs) class documentation should give you a solid understanding of the available options.
 
-By default the compatibility mode is enabled to ensure the highest device compatibility. 
+By default the compatibility mode is enabled to ensure the highest device compatibility.
 
 Simple example:
 

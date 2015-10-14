@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Timers;
-using Rb.Forms.Barcode.Pcl.Logger;
-using Rb.Forms.Barcode.Droid.Logger;
 using Android.Hardware;
+using Rb.Forms.Barcode.Droid.Logger;
+using Rb.Forms.Barcode.Pcl.Logger;
 using AndroidCamera = Android.Hardware.Camera;
 using JObject = Java.Lang.Object;
 

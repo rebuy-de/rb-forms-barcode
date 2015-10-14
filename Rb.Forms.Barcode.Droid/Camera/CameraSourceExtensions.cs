@@ -1,7 +1,7 @@
 ﻿using System;
 using Android.Gms.Vision;
-using AndroidCamera = Android.Hardware.Camera;
 using Rb.Forms.Barcode.Droid.View;
+using AndroidCamera = Android.Hardware.Camera;
 using RebuyCameraSource = Com.Rebuy.Play.Services.Vision.CameraSource;
 
 

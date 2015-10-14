@@ -1,11 +1,11 @@
 ﻿using System;
+using Android.Content;
 using Android.Gms.Vision;
 using Android.Gms.Vision.Barcodes;
-using Android.Content;
-using Rb.Forms.Barcode.Pcl;
+using Com.Rebuy.Play.Services.Vision;
 using Rb.Forms.Barcode.Droid.Camera;
 using Rb.Forms.Barcode.Droid.View;
-using Com.Rebuy.Play.Services.Vision;
+using Rb.Forms.Barcode.Pcl;
 using RebuyCameraSource = Com.Rebuy.Play.Services.Vision.CameraSource;
 
 namespace Rb.Forms.Barcode.Droid.Camera

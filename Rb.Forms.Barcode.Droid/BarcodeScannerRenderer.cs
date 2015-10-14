@@ -1,17 +1,17 @@
 using System;
 using System.ComponentModel;
-using Xamarin.Forms;
-using Xamarin.Forms.Platform.Android;
-using Rb.Forms.Barcode.Pcl;
-using Rb.Forms.Barcode.Pcl.Logger;
+using System.Threading.Tasks;
+using Android.Content.PM;
+using Android.Runtime;
+using Android.Views;
 using Rb.Forms.Barcode.Droid;
 using Rb.Forms.Barcode.Droid.Camera;
 using Rb.Forms.Barcode.Droid.Logger;
-using Android.Views;
-using System.Threading.Tasks;
 using Rb.Forms.Barcode.Droid.View;
-using Android.Content.PM;
-using Android.Runtime;
+using Rb.Forms.Barcode.Pcl;
+using Rb.Forms.Barcode.Pcl.Logger;
+using Xamarin.Forms;
+using Xamarin.Forms.Platform.Android;
 
 [assembly: ExportRenderer(typeof(BarcodeScanner), typeof(BarcodeScannerRenderer))]
 namespace Rb.Forms.Barcode.Droid
