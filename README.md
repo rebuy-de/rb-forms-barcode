@@ -14,8 +14,8 @@ We are very eager about your feedback, so do not hesitate to create an issue or 
 ### Features
 
 * Fully Xamarin.Forms compatible. Add elements on top and adapt the ui to your needs.
-* Lots of configuration options, bindable properties and events. E.g. torch control or preview freezing.
-* Continuous scanning!
+* Lots of configuration options, bindable properties and events: Torch control, rotation support, preview freezing and other fine grained controls.
+* Build for continuous scanning!
 * Utilizing [Google Play Services Vision API](https://developers.google.com/vision/) on Android for best possible barcode scanning performance.
 
 ## Setup
@@ -43,9 +43,7 @@ For a hands-on experience it is recommended to [take a look at the sample applic
 
 ### Please note
 
-The scanning starts as soon as the element is visible on screen and stops when the page holding the element gets removed from the stack.
-
-The library tries to handle the basic camera control automagically. This includes starting/halting the preview and more important opening and releasing the camera when navigating to a page or removing it from the stack.
+**Since beta 0.5.0** the library only handles the most basic camera controls. The scanning starts as soon as the element is visible on screen and stops when the view element gets removed from the stack.
 
 Given the complexity of apps there are a lot of combinations that prevent a reasonable automatic control of the camera. For example when [sleeping](Sample/Sample.Pcl/Pages/ScannerPage.xaml.cs#L18)/[resuming](Sample/Sample.Pcl/Pages/ScannerPage.xaml.cs#L19) the device, when the [page gets disposed](Sample/Sample.Pcl/Pages/ScannerPage.xaml.cs#L74-L76) without notifying the view or another page get pushed onto the stack.
 

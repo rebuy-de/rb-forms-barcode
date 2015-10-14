@@ -14,15 +14,17 @@
 Beta notice: Currently only android is supported.</description>
     <summary>Rb.Forms.Barcode is a Xamarin.Forms view for scanning barcodes.</summary>
     <releaseNotes>0.5.0-beta:
-Please note that version 0.5.0-beta contains api breaks and most of the automatic camera control logic was removed. Thus you should check if your app still works as desired. To fix arising issues you probably have to weave in camera control code into your app.
+Please note that version 0.5.0-beta contains api breaks and most of the automated camera control logic was removed. Thus you should check if your app still works as desired. To fix arising issues you probably have to weave in camera control code into your app.
 
-* New: Use Google Play Services Vision API
+* New: Use Google Play Services - Vision API
 * New: Added torch control
+* New: Added rotation support
 * Changed: Removed most of the automatic camera control logic as it adds undesired complexity to the library.
 * Changed: Dropped ZXing dependency
+* Changed: Dropped FastAndroidCamera in favor of GMS.
 * Improved: Updated Xamarin.Forms to version 1.5.0.6446
 </releaseNotes>
-    <tags>barcode scanner scanning scan zxing xamarin xamarin.forms rebuy unicorns</tags>
+    <tags>barcode scanner scanning scan xamarin xamarin.forms googleplayservices vision gms rebuy unicorns</tags>
     <dependencies>
         <group>
             <dependency id="Xamarin.Forms" version="1.5.0.6447" />
