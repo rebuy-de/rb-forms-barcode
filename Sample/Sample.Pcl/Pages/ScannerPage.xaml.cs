@@ -1,5 +1,6 @@
 ﻿using Xamarin.Forms;
 using Rb.Forms.Barcode.Pcl;
+using System;
 
 namespace Sample.Pcl.Pages
 {
@@ -20,6 +21,29 @@ namespace Sample.Pcl.Pages
             barcodeScanner.BarcodeChanged += animateFlash;
         }
 
+        protected override void OnAppearing()
+        {
+            barcodeScanner.IsEnabled = true;
+            base.OnAppearing();
+        }
+
+        protected override void OnDisappearing()
+        {
+            barcodeScanner.IsEnabled = false;
+            base.OnDisappearing();
+        }
+
+        public void DisableScanner()
+        {
+            disableScanner(null);
+        }
+
+        private void gotoThirdPage(Object sender, EventArgs e)
+        {
+            Navigation.PushAsync(new ThirdPage());
+        }
+
+
         /**
          * Release camera so that other apps can access it.
          */
@@ -38,8 +62,10 @@ namespace Sample.Pcl.Pages
 
         private async void animateFlash(object sender, BarcodeEventArgs e)
         {
-            await flash.FadeTo(1, 150, Easing.CubicIn);
-            await flash.FadeTo(0, 150, Easing.CubicOut);            
+            Device.BeginInvokeOnMainThread(async () => {
+                await flash.FadeTo(1, 150, Easing.CubicInOut);
+                flash.Opacity = 0;
+            });      
         }
 
         /**

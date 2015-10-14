@@ -4,6 +4,7 @@ using System.Windows.Input;
 using Xamarin.Forms;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using Rb.Forms.Barcode.Pcl;
 
 namespace Sample.Pcl.Model
 {
@@ -12,6 +13,7 @@ namespace Sample.Pcl.Model
         private String barcode = "";
         private bool initialized = false;
         private bool preview = true;
+        private bool torch = false;
         private bool decoder = true;
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -20,6 +22,7 @@ namespace Sample.Pcl.Model
         public ICommand BarcodeChangedCommand { get; private set; }
         public ICommand BarcodeDecodedCommand { get; private set; }
         public ICommand TogglePreviewCommand { get; private set; }
+        public ICommand ToggleTorchCommand { get; private set; }
         public ICommand ToggleDecoderCommand { get; private set; }
 
         public String Barcode {
@@ -46,6 +49,15 @@ namespace Sample.Pcl.Model
             }
         }
 
+        public bool Torch {
+            get { return torch; }
+            set {
+                torch = value;
+                OnPropertyChanged();
+            }
+        }
+
+
         public bool Decoder {
             get { return decoder; }
             set {
@@ -57,20 +69,21 @@ namespace Sample.Pcl.Model
         public ScannerViewModel()
         {
             PreviewActivatedCommand = new Command(() => { Initialized = true; });
-            BarcodeChangedCommand = new Command(updateBarcode);
-            BarcodeDecodedCommand = new Command(logBarcode);
+            BarcodeChangedCommand = new Command<Barcode>(updateBarcode);
+            BarcodeDecodedCommand = new Command<Barcode>(logBarcode);
             TogglePreviewCommand = new Command(() => { Preview = !Preview; });
+            ToggleTorchCommand = new Command(() => { Torch = !Torch; });
             ToggleDecoderCommand = new Command(() => { Decoder = !Decoder; });
         }
 
-        private void logBarcode(object barcode)
+        private void logBarcode(Barcode barcode)
         {
-            Debug.WriteLine("Decoded barcode [{0}]", barcode);   
+            Debug.WriteLine("Decoded barcode [{0} - {1}]", barcode.Result, barcode.Format);
         }
 
-        private void updateBarcode(object barcode)
+        private void updateBarcode(Barcode barcode)
         {
-            Barcode = String.Format("Last Barcode: {0}", barcode);
+            Barcode = String.Format("Last Barcode: [{0} - {1}]", barcode.Result, barcode.Format);
         }
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = "")

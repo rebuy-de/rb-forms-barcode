@@ -1,9 +1,9 @@
 ﻿using System;
-
-using Xamarin.Forms;
+using System.ComponentModel;
 using System.Diagnostics;
-using Rb.Forms.Barcode.Pcl.Extensions;
 using System.Windows.Input;
+using Rb.Forms.Barcode.Pcl.Extensions;
+using Xamarin.Forms;
 
 namespace Rb.Forms.Barcode.Pcl
 {
@@ -73,17 +73,19 @@ namespace Rb.Forms.Barcode.Pcl
         /// OneWay source to target binding for the current barcode.
         /// </summary>
         public static readonly BindableProperty BarcodeProperty =
-            BindableProperty.Create<BarcodeScanner, String>(
-                p => p.Barcode, default(string), propertyChanged: OnBarcodeChanged
+            BindableProperty.Create<BarcodeScanner, Barcode>(
+                getter: view => view.Barcode,
+                defaultValue: default(Barcode),
+                propertyChanged: OnBarcodeChanged
             );
 
         /// <summary>
         /// Gets or sets the current barcode.
         /// </summary>
         /// <value>The barcode.</value>
-        public String Barcode
+        public Barcode Barcode
         {
-            get { return (String) GetValue(BarcodeProperty); }
+            get { return (Barcode) GetValue(BarcodeProperty); }
             set {
                 SetValue(BarcodeProperty, value);
                 OnBarcodeDecoded(value);
@@ -96,13 +98,14 @@ namespace Rb.Forms.Barcode.Pcl
         /// </summary>
         public static readonly BindableProperty PreviewActiveProperty =
             BindableProperty.Create<BarcodeScanner, bool>(
-                p => p.PreviewActive, true, BindingMode.TwoWay
+                getter: view => view.PreviewActive,
+                defaultValue: true,
+                defaultBindingMode: BindingMode.TwoWay
             );
 
         /// <summary>
         /// Gets or controlls the current preview state.
         /// </summary>
-        /// <value>The barcode.</value>
         public bool PreviewActive
         {
             get { return (bool) GetValue(PreviewActiveProperty); }
@@ -115,8 +118,40 @@ namespace Rb.Forms.Barcode.Pcl
         /// </summary>
         public static readonly BindableProperty BarcodeDecoderProperty =
             BindableProperty.Create<BarcodeScanner, bool>(
-                p => p.BarcodeDecoder, true, BindingMode.TwoWay
+                getter: view => view.BarcodeDecoder,
+                defaultValue: true,
+                defaultBindingMode: BindingMode.TwoWay
             );
+
+        /// <summary>
+        /// Gets or controlls the decoder state.
+        /// </summary>
+        /// <value>The barcode.</value>
+        public bool BarcodeDecoder
+        {
+            get { return (bool) GetValue(BarcodeDecoderProperty); }
+            set { SetValue(BarcodeDecoderProperty, value); }
+        }
+
+        /// <summary>
+        /// TwoWay binding to control the scanner preview and decoder state.
+        /// If set to true the preview is active, false deactivates the preview image.
+        /// </summary>
+        public static readonly BindableProperty TorchProperty =
+            BindableProperty.Create<BarcodeScanner, bool>(
+                getter: view => view.Torch,
+                defaultValue: false,
+                defaultBindingMode: BindingMode.TwoWay
+            );
+
+        /// <summary>
+        /// Gets or controlls the current preview state.
+        /// </summary>
+        public bool Torch
+        {
+            get { return (bool) GetValue(TorchProperty); }
+            set { SetValue(TorchProperty, value); }
+        }
 
         /// <summary>
         /// Command gets called only when the barcode text changes.
@@ -167,16 +202,6 @@ namespace Rb.Forms.Barcode.Pcl
         }
 
         /// <summary>
-        /// Gets or controlls the decoder state.
-        /// </summary>
-        /// <value>The barcode.</value>
-        public bool BarcodeDecoder
-        {
-            get { return (bool) GetValue(BarcodeDecoderProperty); }
-            set { SetValue(BarcodeDecoderProperty, value); }
-        }
-
-        /// <summary>
         /// Occurs only when the barcode text changes.
         /// </summary>
         public event EventHandler<BarcodeEventArgs> BarcodeChanged;
@@ -214,21 +239,27 @@ namespace Rb.Forms.Barcode.Pcl
 
         public void OnCameraReleased()
         {
+            Barcode = null;
             CameraReleasedCommand.Raise();
             CameraReleased.Raise(this, EventArgs.Empty);
         }
 
-        private static void OnBarcodeChanged(BindableObject bindable, String oldValue, String newBarcode)
+        private static void OnBarcodeChanged(BindableObject bindable, Barcode oldValue, Barcode newBarcode)
         {
-            Debug.WriteLine("[ScannerView] OnBarcodeChanged [{0}]", newBarcode, null);
+            Debug.WriteLine("[ScannerView] OnBarcodeChanged [{0} - {1}]", newBarcode.Result, newBarcode.Format);
+
             var b = (BarcodeScanner) bindable;
             b.BarcodeChangedCommand.Raise(newBarcode);
             b.BarcodeChanged.Raise(b, new BarcodeEventArgs(newBarcode));
         }
 
-        private void OnBarcodeDecoded(String barcode)
+        private void OnBarcodeDecoded(Barcode barcode)
         {
-            Debug.WriteLine("[ScannerView] OnBarcodeDecoded [{0}]", barcode, null);
+            if (barcode == null) {
+                return;
+            }
+
+            Debug.WriteLine("[ScannerView] OnBarcodeDecoded [{0} - {1}]", barcode.Result, barcode.Format);
 
             BarcodeDecodedCommand.Raise(barcode);
             BarcodeDecoded.Raise(this, new BarcodeEventArgs(barcode));

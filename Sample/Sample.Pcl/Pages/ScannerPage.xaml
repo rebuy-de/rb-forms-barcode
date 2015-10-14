@@ -19,6 +19,7 @@
             BarcodeChangedCommand="{Binding BarcodeChangedCommand}"
             BarcodeDecodedCommand="{Binding BarcodeDecodedCommand}"
             PreviewActive="{Binding Preview}"
+            Torch="{Binding Torch}"
             BarcodeDecoder="{Binding Decoder}"
         />
 
@@ -58,16 +59,24 @@
         </StackLayout>
 
 
-        <StackLayout Orientation="Horizontal"
+        <StackLayout
             RelativeLayout.XConstraint="{ConstraintExpression Type=Constant, Constant=5}"
-            RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1, Constant=-60}"
+            RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.6}"
         >
-            <Button FontSize="12" Text="Toggle preview"
+            <Button FontSize="8" Text="Toggle preview"
                 Command="{Binding TogglePreviewCommand}"
             />
 
-            <Button FontSize="12" Text="Toggle decoder"
+            <Button FontSize="8" Text="Toggle decoder"
                 Command="{Binding ToggleDecoderCommand}"
+            />
+
+            <Button FontSize="8" Text="Toggle torch"
+                Command="{Binding ToggleTorchCommand}"
+            />
+
+            <Button FontSize="8" Text="Goto third page"
+                Clicked="gotoThirdPage"
             />
         </StackLayout>
     </RelativeLayout>

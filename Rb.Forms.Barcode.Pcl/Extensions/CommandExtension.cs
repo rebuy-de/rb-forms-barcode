@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace Rb.Forms.Barcode.Pcl
+namespace Rb.Forms.Barcode.Pcl.Extensions
 {
     public static class CommandExtension
     {
