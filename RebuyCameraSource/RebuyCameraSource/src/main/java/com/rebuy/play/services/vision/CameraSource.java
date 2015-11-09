@@ -398,6 +398,7 @@ public class CameraSource {
      */
     public CameraSource stopFrameProcessor() {
         mFrameProcessor.setActive(false);
+        mFrameProcessor.setNextFrame(new byte[0], mCamera);
         if (mProcessingThread != null) {
             try {
                 // Wait for the thread to complete to ensure that we can't have multiple threads
@@ -772,7 +773,7 @@ public class CameraSource {
                         }
                     }
 
-                    if (!mActive) {
+                    if (!mActive || mPendingFrameData == null) {
                         // Exit the loop once this camera source is stopped or released.  We check
                         // this here, immediately after the wait() above, to handle the case where
                         // setActive(false) had been called, triggering the termination of this
