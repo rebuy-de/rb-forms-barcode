@@ -398,7 +398,7 @@ public class CameraSource {
      */
     public CameraSource stopFrameProcessor() {
         mFrameProcessor.setActive(false);
-        mFrameProcessor.setNextFrame(new byte[0], mCamera);
+//        mFrameProcessor.setNextFrame(new byte[0], mCamera);
         if (mProcessingThread != null) {
             try {
                 // Wait for the thread to complete to ensure that we can't have multiple threads

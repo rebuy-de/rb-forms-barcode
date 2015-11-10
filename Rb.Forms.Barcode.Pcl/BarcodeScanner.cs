@@ -246,7 +246,11 @@ namespace Rb.Forms.Barcode.Pcl
 
         private static void OnBarcodeChanged(BindableObject bindable, Barcode oldValue, Barcode newBarcode)
         {
-            Debug.WriteLine("[ScannerView] OnBarcodeChanged [{0} - {1}]", newBarcode.Result, newBarcode.Format);
+            if (newBarcode == null) {
+                return;
+            }
+
+            Debug.WriteLine ("[ScannerView] OnBarcodeChanged [{0} - {1}]", newBarcode?.Result, newBarcode?.Format);
 
             var b = (BarcodeScanner) bindable;
             b.BarcodeChangedCommand.Raise(newBarcode);
