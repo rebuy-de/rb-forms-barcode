@@ -78,12 +78,12 @@ namespace Sample.Pcl.Model
 
         private void logBarcode(Barcode barcode)
         {
-            Debug.WriteLine("Decoded barcode [{0} - {1}]", barcode.Result, barcode.Format);
+            Debug.WriteLine("Decoded barcode [{0} - {1}]", barcode?.Result, barcode?.Format);
         }
 
         private void updateBarcode(Barcode barcode)
         {
-            Barcode = String.Format("Last Barcode: [{0} - {1}]", barcode.Result, barcode.Format);
+            Barcode = String.Format("Last Barcode: [{0} - {1}]", barcode?.Result, barcode?.Format);
         }
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = "")

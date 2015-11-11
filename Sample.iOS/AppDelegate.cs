@@ -17,7 +17,7 @@ namespace Sample.iOS
 			Forms.Init();
 			BarcodeScannerRenderer.Init(
 				new Configuration { 
-					Barcodes = new List<Barcode.BarcodeFormat>() { Barcode.BarcodeFormat.Ean13, Barcode.BarcodeFormat.Ean8 }
+					Barcodes = Barcode.BarcodeFormat.Ean13 | Barcode.BarcodeFormat.Ean8
 				}
 			);
 
