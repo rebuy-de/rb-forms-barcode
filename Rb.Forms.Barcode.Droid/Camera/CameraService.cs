@@ -18,7 +18,7 @@ namespace Rb.Forms.Barcode.Droid.Camera
         private readonly AutoFocusCallback autoFocus;
         private readonly CameraConfigurator cameraConfigurator;
 
-        private bool started = false;
+        private bool opened = false;
         private bool previewActive = false;
 
         public CameraService(BarcodeScanner renderer, RebuyCameraSource cameraSource, CameraConfigurator configurator)
@@ -33,12 +33,12 @@ namespace Rb.Forms.Barcode.Droid.Camera
         public void OpenCamera()
         {
             try {
-                if (started) {
+                if (opened) {
                     cameraSource.Stop();
                 }
 
                 cameraSource.Open();
-                started = true;
+                opened = true;
 
                 renderer.OnCameraOpened();
             } catch (Exception ex) {
@@ -53,7 +53,7 @@ namespace Rb.Forms.Barcode.Droid.Camera
 
             try {
                 cameraSource?.Release();
-                started = false;
+                opened = false;
                 previewActive = false;
 
                 renderer.OnCameraReleased();
@@ -67,7 +67,7 @@ namespace Rb.Forms.Barcode.Droid.Camera
         public void StartPreview(ISurfaceHolder holder)
         {
             try {
-                if (!started) {
+                if (!opened) {
                     OpenCamera();
                     return;
                 }

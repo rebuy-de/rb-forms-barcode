@@ -250,7 +250,7 @@ namespace Rb.Forms.Barcode.Pcl
                 return;
             }
 
-            Debug.WriteLine ("[ScannerView] OnBarcodeChanged [{0} - {1}]", newBarcode?.Result, newBarcode?.Format);
+            Debug.WriteLine ("[ScannerView] OnBarcodeChanged [{0} - {1}]", newBarcode.Result, newBarcode.Format);
 
             var b = (BarcodeScanner) bindable;
             b.BarcodeChangedCommand.Raise(newBarcode);
