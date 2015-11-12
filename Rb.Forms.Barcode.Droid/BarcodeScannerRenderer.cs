@@ -106,8 +106,8 @@ namespace Rb.Forms.Barcode.Droid
                 return;
             }
 
+            CameraService.HaltPreview();
             await Task.Run(() => {
-                CameraService.HaltPreview();
                 CameraService.StartPreview(holder);
             });
         }
