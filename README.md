@@ -7,7 +7,7 @@ It provides continuous scanning, aims to give high control to the user  combined
 
 [Available via Nuget](https://www.nuget.org/packages/Rb.Forms.Barcode), full of awesomeness and also unicorns.
 
-**Please note** that the library currently supports Android.
+**Please note** that the library currently supports Android and iOS.
 
 We are very eager about your feedback, so do not hesitate to create an issue or feel free to improve our code via a contribution.
 
@@ -17,6 +17,7 @@ We are very eager about your feedback, so do not hesitate to create an issue or 
 * Lots of configuration options, bindable properties and events: Torch control, rotation support, preview freezing and other fine grained controls.
 * Build for continuous scanning!
 * Utilizing [Google Play Services Vision API](https://developers.google.com/vision/) on Android for best possible barcode scanning performance.
+* iOS scanner uses the AVFoundation.
 
 ## Setup
 
@@ -25,13 +26,44 @@ We are very eager about your feedback, so do not hesitate to create an issue or 
 4. Add the registration call `BarcodeScannerRenderer.Init();` to your platform specific Main class.
 4. Use the `BarcodeScanner` class in your c# or xaml code.
 
-Example implementation of the Init call:
+Example Android implementation of the Init call:
+
 
 ```
-base.OnCreate(bundle);
-Xamarin.Forms.Forms.Init(this, bundle);
-// this is important so that the compiler picks up the assembly reference
-BarcodeScannerRenderer.Init();
+// MainActivity
+protected override void OnCreate(Bundle bundle)
+{
+    base.OnCreate(bundle);
+    Forms.Init(this, bundle);
+
+    var config = new Configuration {
+        Zoom = 5
+    };
+
+    BarcodeScannerRenderer.Init(config);
+
+    LoadApplication(new App());
+}
+```
+
+Example iOS implementation of the Init call:
+
+
+```
+// AppDelegate
+public override bool FinishedLaunching(UIApplication app, NSDictionary options)
+{
+    Forms.Init();
+    BarcodeScannerRenderer.Init(
+        new Configuration { 
+            Barcodes = Barcode.BarcodeFormat.Ean13 | Barcode.BarcodeFormat.Ean8
+        }
+    );
+
+    LoadApplication(new App());
+
+    return base.FinishedLaunching(app, options);
+}
 ```
 
 ## Usage
@@ -49,7 +81,7 @@ Given the complexity of apps there are a lot of combinations that prevent a reas
 
 Thats why you should weave in camera control code into the logic of your app by utilizing the offered bindings. Not doing so might lead to bad performance or unexpected camera exceptions.
 
-Do's:
+Android Do's:
 
 * Disable the preview when you add a page to the navigation stack.
 * Disable the camera when the page gets removed from the stack.
