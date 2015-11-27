@@ -3,7 +3,7 @@
   <metadata>
     <id>Rb.Forms.Barcode</id>
     <title>Barcode scanner plugin for Xamarin.Forms</title>
-    <version>0.5.0-beta</version>
+    <version>0.6.0-beta</version>
     <authors>Ota Mares</authors>
     <owners>reBuy reCommerce GmbH</owners>
     <licenseUrl>https://github.com/rebuy-de/rb-forms-barcode/blob/master/LICENSE</licenseUrl>
@@ -11,25 +11,11 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Rb.Forms.Barcode is a Xamarin.Forms view for scanning barcodes full of awesomeness and also unicorns. Please check the website for further details.
 
-Beta notice: Currently only android is supported.</description>
+Beta notice: Now with experimental iOS support.</description>
     <summary>Rb.Forms.Barcode is a Xamarin.Forms view for scanning barcodes.</summary>
-    <releaseNotes>0.5.2-beta:
-* Improved: Fixed a bug when SurfaceChanged is called to fast.
-
-0.5.1-beta:
-* New: Use Google Play Services - Vision API
-* Improved: Updated Xamarin.Forms to version 1.5.0.6447
-
-0.5.0-beta:
-Please note that version 0.5.0-beta contains api breaks and most of the automated camera control logic was removed. Thus you should check if your app still works as desired. To fix arising issues you probably have to weave in camera control code into your app.
-
-* New: Use Google Play Services - Vision API
-* New: Added torch control
-* New: Added rotation support
-* Changed: Removed most of the automatic camera control logic as it adds undesired complexity to the library.
-* Changed: Dropped ZXing dependency
-* Changed: Dropped FastAndroidCamera in favor of GMS.
-* Improved: Updated Xamarin.Forms to version 1.5.0.6446
+    <releaseNotes>0.6.0-beta: 
+* New: add iOS support.
+* Public API should be nearly the same, only the config for iOS scanner is shorter than the Android config.
 </releaseNotes>
     <tags>barcode scanner scanning scan xamarin xamarin.forms googleplayservices vision gms rebuy unicorns</tags>
     <dependencies>
@@ -55,5 +41,10 @@ Please note that version 0.5.0-beta contains api breaks and most of the automate
      <file src="Rb.Forms.Barcode.Droid/bin/Release/CameraSourceBindings.dll"
          target="lib/MonoAndroid10/CameraSourceBindings.dll" />
 
+	<!-- Xamamarin.iOS -->
+     <file src="Rb.Forms.Barcode.iOS/bin/Release/Rb.Forms.Barcode.iOS.dll"
+         target="lib/Xamarin.iOS10/Rb.Forms.Barcode.iOS.dll" />
+     <file src="Rb.Forms.Barcode.iOS/bin/Release/Rb.Forms.Barcode.Pcl.dll"
+         target="lib/Xamarin.iOS10/Rb.Forms.Barcode.Pcl.dll" />
   </files>
 </package>

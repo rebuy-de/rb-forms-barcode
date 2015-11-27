@@ -263,7 +263,7 @@ namespace Rb.Forms.Barcode.Pcl
                 return;
             }
 
-            Debug.WriteLine("[ScannerView] OnBarcodeDecoded [{0} - {1}]", barcode.Result, barcode.Format);
+            Debug.WriteLine("[ScannerView] OnBarcodeDecoded [{0} - {1}]", barcode?.Result, barcode?.Format);
 
             BarcodeDecodedCommand.Raise(barcode);
             BarcodeDecoded.Raise(this, new BarcodeEventArgs(barcode));
