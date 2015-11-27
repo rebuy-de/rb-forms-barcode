@@ -3,7 +3,7 @@
   <metadata>
     <id>Rb.Forms.Barcode</id>
     <title>Barcode scanner plugin for Xamarin.Forms</title>
-    <version>0.6.0-beta</version>
+    <version>0.6.1-beta</version>
     <authors>Ota Mares</authors>
     <owners>reBuy reCommerce GmbH</owners>
     <licenseUrl>https://github.com/rebuy-de/rb-forms-barcode/blob/master/LICENSE</licenseUrl>
@@ -13,7 +13,10 @@
 
 Beta notice: Now with experimental iOS support.</description>
     <summary>Rb.Forms.Barcode is a Xamarin.Forms view for scanning barcodes.</summary>
-    <releaseNotes>0.6.0-beta: 
+    <releaseNotes>0.6.1-beta:
+* change: replace deprecated av orientation call
+    
+0.6.0-beta: 
 * New: add iOS support.
 * Public API should be nearly the same, only the config for iOS scanner is shorter than the Android config.
 </releaseNotes>

@@ -130,7 +130,7 @@ namespace Rb.Forms.Barcode.iOS
         private void startSession() 
         {
             session.StartRunning();
-            captureVideoPreviewLayer.Orientation = getDeviceOrientation();
+            captureVideoPreviewLayer.Connection.VideoOrientation = getDeviceOrientation();
             this.Debug("StartRunning");
             addOrientationObserver();
         }
@@ -201,7 +201,7 @@ namespace Rb.Forms.Barcode.iOS
             captureVideoPreviewLayer = AVCaptureVideoPreviewLayer.FromSession(session);
             captureVideoPreviewLayer.Frame = CGRect.Empty;
             captureVideoPreviewLayer.VideoGravity = AVLayerVideoGravity.ResizeAspectFill;
-            captureVideoPreviewLayer.Orientation = getDeviceOrientation();
+            captureVideoPreviewLayer.Connection.VideoOrientation = getDeviceOrientation();
 
             return true;
         }
