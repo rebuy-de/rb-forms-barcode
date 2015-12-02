@@ -80,7 +80,7 @@ namespace Rb.Forms.Barcode.iOS
         protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             base.OnElementPropertyChanged(sender, e);
-            if (device == null) {
+            if (input == null) {
                 return;
             }
             updateSize(e);
@@ -183,13 +183,19 @@ namespace Rb.Forms.Barcode.iOS
         {
             device = AVCaptureDevice.DefaultDeviceWithMediaType(AVMediaType.Video);
             if (device == null) {
-                this.Debug("AVCaptureDeviceInput is null");
+                this.Debug("AVCaptureDevice is null");
 
                 return false;
             }
 
             input = AVCaptureDeviceInput.FromDevice(device);
           
+            if (input == null) {
+                this.Debug("AVCaptureDeviceInput is null");
+
+                return false;
+            }
+
             output = new AVCaptureMetadataOutput();
             output.SetDelegate(this, DispatchQueue.MainQueue);
 
