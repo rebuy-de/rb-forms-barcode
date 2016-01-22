@@ -3,7 +3,7 @@
   <metadata>
     <id>Rb.Forms.Barcode</id>
     <title>Barcode scanner plugin for Xamarin.Forms</title>
-    <version>0.6.2-beta</version>
+    <version>0.6.3-beta</version>
     <authors>Ota Mares</authors>
     <owners>reBuy reCommerce GmbH</owners>
     <licenseUrl>https://github.com/rebuy-de/rb-forms-barcode/blob/master/LICENSE</licenseUrl>
@@ -13,7 +13,10 @@
 
 Beta notice: Now with experimental iOS support.</description>
     <summary>Rb.Forms.Barcode is a Xamarin.Forms view for scanning barcodes.</summary>
-    <releaseNotes>0.6.2-beta:
+    <releaseNotes>0.6.3-beta:
+* Change: downgrade GooglePlayServices.Vision to 26.0.0.0
+
+0.6.2-beta:
 * Fix: handle camera permissions to prevent a crash
 0.6.1-beta:
 * Change: replace deprecated av orientation call
@@ -29,7 +32,7 @@ Beta notice: Now with experimental iOS support.</description>
         </group>
 
         <group targetFramework="MonoAndroid10">
-            <dependency id="Xamarin.GooglePlayServices.Vision" version="27.0.0.0" />
+            <dependency id="Xamarin.GooglePlayServices.Vision" version="26.0.0.0" />
         </group>
     </dependencies>
   </metadata>
