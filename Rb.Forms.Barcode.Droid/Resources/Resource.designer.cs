@@ -236,68 +236,68 @@ namespace Rb.Forms.Barcode.Droid
 			// aapt resource value: 0x7f030022
 			public static int app_name = 2130903074;
 			
-			// aapt resource value: 0x7f030003
-			public static int auth_google_play_services_client_facebook_display_name = 2130903043;
+			// aapt resource value: 0x7f030001
+			public static int auth_google_play_services_client_facebook_display_name = 2130903041;
 			
-			// aapt resource value: 0x7f030002
-			public static int auth_google_play_services_client_google_display_name = 2130903042;
+			// aapt resource value: 0x7f030000
+			public static int auth_google_play_services_client_google_display_name = 2130903040;
 			
-			// aapt resource value: 0x7f030006
-			public static int common_android_wear_notification_needs_update_text = 2130903046;
-			
-			// aapt resource value: 0x7f030013
-			public static int common_android_wear_update_text = 2130903059;
+			// aapt resource value: 0x7f030004
+			public static int common_android_wear_notification_needs_update_text = 2130903044;
 			
 			// aapt resource value: 0x7f030011
-			public static int common_android_wear_update_title = 2130903057;
+			public static int common_android_wear_update_text = 2130903057;
+			
+			// aapt resource value: 0x7f03000f
+			public static int common_android_wear_update_title = 2130903055;
 			
 			// aapt resource value: 0x7f03001f
 			public static int common_google_play_services_api_unavailable_text = 2130903071;
 			
-			// aapt resource value: 0x7f03000f
-			public static int common_google_play_services_enable_button = 2130903055;
-			
-			// aapt resource value: 0x7f03000e
-			public static int common_google_play_services_enable_text = 2130903054;
-			
 			// aapt resource value: 0x7f03000d
-			public static int common_google_play_services_enable_title = 2130903053;
-			
-			// aapt resource value: 0x7f030008
-			public static int common_google_play_services_error_notification_requested_by_msg = 2130903048;
+			public static int common_google_play_services_enable_button = 2130903053;
 			
 			// aapt resource value: 0x7f03000c
-			public static int common_google_play_services_install_button = 2130903052;
-			
-			// aapt resource value: 0x7f03000a
-			public static int common_google_play_services_install_text_phone = 2130903050;
+			public static int common_google_play_services_enable_text = 2130903052;
 			
 			// aapt resource value: 0x7f03000b
-			public static int common_google_play_services_install_text_tablet = 2130903051;
+			public static int common_google_play_services_enable_title = 2130903051;
+			
+			// aapt resource value: 0x7f030006
+			public static int common_google_play_services_error_notification_requested_by_msg = 2130903046;
+			
+			// aapt resource value: 0x7f03000a
+			public static int common_google_play_services_install_button = 2130903050;
+			
+			// aapt resource value: 0x7f030008
+			public static int common_google_play_services_install_text_phone = 2130903048;
 			
 			// aapt resource value: 0x7f030009
-			public static int common_google_play_services_install_title = 2130903049;
-			
-			// aapt resource value: 0x7f030019
-			public static int common_google_play_services_invalid_account_text = 2130903065;
-			
-			// aapt resource value: 0x7f030018
-			public static int common_google_play_services_invalid_account_title = 2130903064;
+			public static int common_google_play_services_install_text_tablet = 2130903049;
 			
 			// aapt resource value: 0x7f030007
-			public static int common_google_play_services_needs_enabling_title = 2130903047;
+			public static int common_google_play_services_install_title = 2130903047;
 			
 			// aapt resource value: 0x7f030017
-			public static int common_google_play_services_network_error_text = 2130903063;
+			public static int common_google_play_services_invalid_account_text = 2130903063;
 			
 			// aapt resource value: 0x7f030016
-			public static int common_google_play_services_network_error_title = 2130903062;
+			public static int common_google_play_services_invalid_account_title = 2130903062;
 			
 			// aapt resource value: 0x7f030005
-			public static int common_google_play_services_notification_needs_update_title = 2130903045;
+			public static int common_google_play_services_needs_enabling_title = 2130903045;
 			
-			// aapt resource value: 0x7f030004
-			public static int common_google_play_services_notification_ticker = 2130903044;
+			// aapt resource value: 0x7f030015
+			public static int common_google_play_services_network_error_text = 2130903061;
+			
+			// aapt resource value: 0x7f030014
+			public static int common_google_play_services_network_error_title = 2130903060;
+			
+			// aapt resource value: 0x7f030003
+			public static int common_google_play_services_notification_needs_update_title = 2130903043;
+			
+			// aapt resource value: 0x7f030002
+			public static int common_google_play_services_notification_ticker = 2130903042;
 			
 			// aapt resource value: 0x7f030021
 			public static int common_google_play_services_sign_in_failed_text = 2130903073;
@@ -305,38 +305,38 @@ namespace Rb.Forms.Barcode.Droid
 			// aapt resource value: 0x7f030020
 			public static int common_google_play_services_sign_in_failed_title = 2130903072;
 			
-			// aapt resource value: 0x7f03001a
-			public static int common_google_play_services_unknown_issue = 2130903066;
+			// aapt resource value: 0x7f030018
+			public static int common_google_play_services_unknown_issue = 2130903064;
 			
-			// aapt resource value: 0x7f03001c
-			public static int common_google_play_services_unsupported_text = 2130903068;
+			// aapt resource value: 0x7f03001a
+			public static int common_google_play_services_unsupported_text = 2130903066;
+			
+			// aapt resource value: 0x7f030019
+			public static int common_google_play_services_unsupported_title = 2130903065;
 			
 			// aapt resource value: 0x7f03001b
-			public static int common_google_play_services_unsupported_title = 2130903067;
-			
-			// aapt resource value: 0x7f03001d
-			public static int common_google_play_services_update_button = 2130903069;
-			
-			// aapt resource value: 0x7f030012
-			public static int common_google_play_services_update_text = 2130903058;
+			public static int common_google_play_services_update_button = 2130903067;
 			
 			// aapt resource value: 0x7f030010
-			public static int common_google_play_services_update_title = 2130903056;
+			public static int common_google_play_services_update_text = 2130903056;
 			
-			// aapt resource value: 0x7f030015
-			public static int common_google_play_services_updating_text = 2130903061;
+			// aapt resource value: 0x7f03000e
+			public static int common_google_play_services_update_title = 2130903054;
 			
-			// aapt resource value: 0x7f030014
-			public static int common_google_play_services_updating_title = 2130903060;
+			// aapt resource value: 0x7f030013
+			public static int common_google_play_services_updating_text = 2130903059;
+			
+			// aapt resource value: 0x7f030012
+			public static int common_google_play_services_updating_title = 2130903058;
 			
 			// aapt resource value: 0x7f03001e
 			public static int common_open_on_phone = 2130903070;
 			
-			// aapt resource value: 0x7f030000
-			public static int common_signin_button_text = 2130903040;
+			// aapt resource value: 0x7f03001c
+			public static int common_signin_button_text = 2130903068;
 			
-			// aapt resource value: 0x7f030001
-			public static int common_signin_button_text_long = 2130903041;
+			// aapt resource value: 0x7f03001d
+			public static int common_signin_button_text_long = 2130903069;
 			
 			// aapt resource value: 0x7f030025
 			public static int library_name = 2130903077;
