@@ -9,7 +9,7 @@
     <RootNamespace>Rb.Forms.Barcode.iOS</RootNamespace>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
     <AssemblyName>Rb.Forms.Barcode.iOS</AssemblyName>
-    <ReleaseVersion>0.6.3-beta</ReleaseVersion>
+    <ReleaseVersion>0.6.2-beta</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
