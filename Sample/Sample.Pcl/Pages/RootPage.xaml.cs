@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 
 using Xamarin.Forms;
+using Plugin.Permissions;
+using Plugin.Permissions.Abstractions;
 
 namespace Sample.Pcl.Pages
 {
@@ -14,8 +16,10 @@ namespace Sample.Pcl.Pages
             NavigationPage.SetHasBackButton(this, true);
         }
 
-        private void gotoScannerPage(Object sender, EventArgs e)
+        private async void gotoScannerPage(Object sender, EventArgs e)
         {
+            var cameraPermission = new CameraPermission(CrossPermissions.Current);
+            await cameraPermission.RequestCameraPermissionIfNeeded();
             Navigation.PushAndRemovePrevious(ScannerPageControl.Instance.CreateScannerPage(), 1);
         }
     }
