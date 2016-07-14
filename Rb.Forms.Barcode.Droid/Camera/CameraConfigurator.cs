@@ -72,7 +72,11 @@ namespace Rb.Forms.Barcode.Droid.Camera
         {
             var parameters = camera.GetParameters();
 
-            camera.CancelAutoFocus();
+            try {
+                camera.CancelAutoFocus();
+            } catch (Exception e) {
+                this.Debug(e.Message);
+            }
 
             parameters.PreviewFormat = ImageFormatType.Nv21;
 
