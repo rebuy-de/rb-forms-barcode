@@ -22,6 +22,7 @@ namespace Rb.Forms.Barcode.iOS.Extensions
                 { RebuyBarcode.BarcodeFormat.Pdf417, AVMetadataObjectType.PDF417Code },
                 { RebuyBarcode.BarcodeFormat.QrCode, AVMetadataObjectType.QRCode },
                 { RebuyBarcode.BarcodeFormat.UpcE, AVMetadataObjectType.UPCECode },
+                { RebuyBarcode.BarcodeFormat.Interleaved2of5, AVMetadataObjectType.Interleaved2of5Code },
             };
 
             foreach (RebuyBarcode.BarcodeFormat barcode in barcodeFormat) {
@@ -46,6 +47,7 @@ namespace Rb.Forms.Barcode.iOS.Extensions
                 { AVMetadataObjectType.PDF417Code, RebuyBarcode.BarcodeFormat.Pdf417 },
                 { AVMetadataObjectType.QRCode, RebuyBarcode.BarcodeFormat.QrCode },
                 { AVMetadataObjectType.UPCECode, RebuyBarcode.BarcodeFormat.UpcE },
+                { AVMetadataObjectType.Interleaved2of5Code, RebuyBarcode.BarcodeFormat.Interleaved2of5 },
             };
 
             return !mapping.ContainsKey(type) ? RebuyBarcode.BarcodeFormat.Unknown : mapping[type];       
