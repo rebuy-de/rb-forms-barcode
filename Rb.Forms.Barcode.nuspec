@@ -3,7 +3,7 @@
   <metadata>
     <id>Rb.Forms.Barcode</id>
     <title>Barcode scanner plugin for Xamarin.Forms</title>
-    <version>0.7.0</version>
+    <version>0.7.1</version>
     <authors>Ota Mares</authors>
     <owners>reBuy reCommerce GmbH</owners>
     <licenseUrl>https://github.com/rebuy-de/rb-forms-barcode/blob/master/LICENSE</licenseUrl>
@@ -11,9 +11,9 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Rb.Forms.Barcode is a Xamarin.Forms view for scanning barcodes full of awesomeness and also unicorns. Please check the website for further details.</description>
     <summary>Rb.Forms.Barcode is a Xamarin.Forms view for scanning barcodes.</summary>
-    <releaseNotes>0.7.0:
+    <releaseNotes>0.7.1:
         *Change: update to googleplayServices 29.0.0.1
-        *Change: update Xamarin.Forms to 2.3.1.114
+        *Change: update Xamarin.Forms to 2.3.0.107
 
 0.6.6:
 *Fix:scanner crashed under android due to autofocus error on older devices.
@@ -36,7 +36,7 @@
     <tags>barcode scanner scanning scan xamarin xamarin.forms googleplayservices vision gms rebuy unicorns</tags>
     <dependencies>
         <group>
-            <dependency id="Xamarin.Forms" version="2.3.1.114" />
+            <dependency id="Xamarin.Forms" version="2.3.0.107" />
         </group>
 
         <group targetFramework="MonoAndroid10">
