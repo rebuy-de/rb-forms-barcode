@@ -1,6 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-
+using System.Threading.Tasks;
+using Plugin.Permissions;
+using Sample.Pcl.Helper;
 using Xamarin.Forms;
 
 namespace Sample.Pcl.Pages
@@ -14,10 +15,11 @@ namespace Sample.Pcl.Pages
             NavigationPage.SetHasBackButton(this, true);
         }
 
-        private void gotoScannerPage(Object sender, EventArgs e)
+        private async void gotoScannerPage(Object sender, EventArgs e)
         {
+            var cameraPermission = new CameraPermission(CrossPermissions.Current);
+            await cameraPermission.RequestCameraPermissionIfNeeded();
             Navigation.PushAndRemovePrevious(ScannerPageControl.Instance.CreateScannerPage(), 1);
         }
     }
 }
-
