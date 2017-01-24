@@ -13,9 +13,31 @@ obj/
 # Thumbnails
 ._*
 
+# Files that might appear on external disk
+.Spotlight-V100
+.Trashes
+
+# Directories potentially created on remote AFP share
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
 # NuGet Packages
 *.nupkg
 # The packages folder can be ignored because of Package Restore
 **/packages/*
 # except build/, which is used as an MSBuild target.
 !**/packages/build/
+
+# Mac bundle stuff
+*.dmg
+*.app
+
+RefitStubs.cs
+TestResult.xml
+.fake
+
+# dotCover
+*.dotCover
