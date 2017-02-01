@@ -24,6 +24,12 @@ Target "Restore" (fun _ ->
     }))
 )
 
+Target "Gradlew" (fun _ ->
+    let gradlew = (if isUnix then "gradle" else "gradlew.bat")
+    let result = Shell.Exec(gradlew, "build", "./RebuyCameraSource/")
+    if result <> 0 then failwithf "%s exited with error %d" gradlew result
+)
+
 Target "BuildSolution" (fun _ ->
     [ "./Rb.Forms.Barcode.sln" ]
     |> MSBuildRelease null "Build"
@@ -37,6 +43,7 @@ Target "Default" (fun _ ->
 Target "Build" (fun _ ->
     "Clean"
         ==> "Restore"
+        ==> "Gradlew"
         ==> "BuildSolution"
         |> ignore
 
