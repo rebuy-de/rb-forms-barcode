@@ -147,6 +147,27 @@ Decoded barcode [886970911399 - UpcA]
 [Rb.Forms.Barcode] [BarcodeScannerRenderer] Disposing
 ```
 
+### FAKE options / Tasks
+
+Execute `bin/fake <taskname>` to run a task or `bin/fake --<optionname>` for fake cli options. First run `bin/fake install`.
+
+(We are currently only supporting OSX to build the solution with FAKE. Feel free to add support for other platforms)
+
+Available tasks:
+
+```
+* Restore
+  Clean solution and afterwards restore all packages
+
+* Gradlew
+  Build Camera Source with Gradle
+
+* Build
+  Build all projects of the solution
+
+```
+
+
 ## Sample
 
 There is a [full working sample](Sample/) in the github repository that should give you a headstart. The relevant code is included in the PCL part of the project. The sample is part of the project solution.
