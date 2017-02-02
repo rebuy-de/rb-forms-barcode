@@ -1,0 +1,12 @@
+#!/bin/bash
+
+if [ $1 == "install" ]
+then
+    nuget install FAKE -OutputDirectory packages -ExcludeVersion
+    exit 0
+elif [[ $@ == -* ]]
+then
+    mono packages/FAKE/tools/FAKE.exe "$@"
+else
+    mono packages/FAKE/tools/FAKE.exe build.fsx "$@"
+fi
