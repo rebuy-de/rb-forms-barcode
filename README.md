@@ -4,7 +4,7 @@
 
 Rb.Forms.Barcode is a **Xamarin.Forms view for scanning barcodes**.
 It provides continuous scanning, aims to give high control to the user  combined with high stability.
-
+ 
 [Available via Nuget](https://www.nuget.org/packages/Rb.Forms.Barcode), full of awesomeness and also unicorns.
 
 **Please note** that the library currently supports Android and iOS.
