@@ -169,7 +169,7 @@ namespace Rb.Forms.Barcode.Droid
                 this.Debug("Enabled [{0}]", Element.IsEnabled);
 
                 if (Element.IsEnabled && HasValidSurface) {
-                    await Task.Run(CameraService.OpenCamera);
+                    await Task.Run(() => CameraService.OpenCamera());
                 } 
 
                 if (!Element.IsEnabled) {

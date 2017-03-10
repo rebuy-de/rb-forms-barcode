@@ -3,7 +3,7 @@
   <metadata>
     <id>Rb.Forms.Barcode</id>
     <title>Barcode scanner plugin for Xamarin.Forms</title>
-    <version>0.7.1</version>
+    <version>0.7.2-beta</version>
     <authors>Ota Mares</authors>
     <owners>reBuy reCommerce GmbH</owners>
     <licenseUrl>https://github.com/rebuy-de/rb-forms-barcode/blob/master/LICENSE</licenseUrl>
@@ -11,21 +11,25 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Rb.Forms.Barcode is a Xamarin.Forms view for scanning barcodes full of awesomeness and also unicorns. Please check the website for further details.</description>
     <summary>Rb.Forms.Barcode is a Xamarin.Forms view for scanning barcodes.</summary>
-    <releaseNotes>0.7.1:
-        *Change: update to googleplayServices 29.0.0.1
-        *Change: update Xamarin.Forms to 2.3.0.107
+    <releaseNotes>0.7.2-beta:
+* Fix:  installing no longer breaks Visual Studio Nuget Package Manager
+	
+0.7.1:
+* Change: update to googleplayServices 29.0.0.1
+* Change: update Xamarin.Forms to 2.3.0.107
 
 0.6.6:
-*Fix:scanner crashed under android due to autofocus error on older devices.
+* Fix: scanner crashed under android due to autofocus error on older devices.
 
 0.6.5:
-*Fix:in which the scanner sometimes crashes when locking/unlocking the device.
+* Fix: in which the scanner sometimes crashes when locking/unlocking the device.
 
 0.6.3-beta:
 * Change: downgrade GooglePlayServices.Vision to 26.0.0.0
 
 0.6.2-beta:
 * Fix: handle camera permissions to prevent a crash
+
 0.6.1-beta:
 * Change: replace deprecated av orientation call
     
@@ -46,21 +50,21 @@
   </metadata>
   <files>
       <!-- PCL -->
-     <file src="Rb.Forms.Barcode.Pcl/bin/Release/Rb.Forms.Barcode.Pcl.dll"
-         target="lib/portable-net45+wp8+win8+MonoAndroid10+MonoTouch10+Xamarin.iOS10/Rb.Forms.Barcode.Pcl.dll" />
+     <file src="Rb.Forms.Barcode.Pcl\bin\Release\Rb.Forms.Barcode.Pcl.dll"
+         target="lib\portable-net45+wp8+win8+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Rb.Forms.Barcode.Pcl.dll" />
 
      <!-- Xamarin.Android -->
-     <file src="Rb.Forms.Barcode.Droid/bin/Release/Rb.Forms.Barcode.Pcl.dll"
-         target="lib/MonoAndroid10/Rb.Forms.Barcode.Pcl.dll" />
-     <file src="Rb.Forms.Barcode.Droid/bin/Release/Rb.Forms.Barcode.Droid.dll"
-         target="lib/MonoAndroid10/Rb.Forms.Barcode.Droid.dll" />
-     <file src="Rb.Forms.Barcode.Droid/bin/Release/CameraSourceBindings.dll"
-         target="lib/MonoAndroid10/CameraSourceBindings.dll" />
+     <file src="Rb.Forms.Barcode.Droid\bin\Release\Rb.Forms.Barcode.Pcl.dll"
+         target="lib\MonoAndroid10\Rb.Forms.Barcode.Pcl.dll" />
+     <file src="Rb.Forms.Barcode.Droid\bin\Release\Rb.Forms.Barcode.Droid.dll"
+         target="lib\MonoAndroid10\Rb.Forms.Barcode.Droid.dll" />
+     <file src="Rb.Forms.Barcode.Droid\bin\Release\CameraSourceBindings.dll"
+         target="lib\MonoAndroid10\CameraSourceBindings.dll" />
 
 	<!-- Xamamarin.iOS -->
-     <file src="Rb.Forms.Barcode.iOS/bin/Release/Rb.Forms.Barcode.iOS.dll"
-         target="lib/Xamarin.iOS10/Rb.Forms.Barcode.iOS.dll" />
-     <file src="Rb.Forms.Barcode.iOS/bin/Release/Rb.Forms.Barcode.Pcl.dll"
-         target="lib/Xamarin.iOS10/Rb.Forms.Barcode.Pcl.dll" />
+     <file src="Rb.Forms.Barcode.iOS\bin\Release\Rb.Forms.Barcode.iOS.dll"
+         target="lib\Xamarin.iOS10\Rb.Forms.Barcode.iOS.dll" />
+     <file src="Rb.Forms.Barcode.iOS\bin\Release\Rb.Forms.Barcode.Pcl.dll"
+         target="lib\Xamarin.iOS10\Rb.Forms.Barcode.Pcl.dll" />
   </files>
 </package>
