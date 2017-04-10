@@ -5,6 +5,8 @@ bin/
 obj/
 *.userprefs
 
+Resource.designer.cs
+
 ### OSX ###
 .DS_Store
 .AppleDouble
