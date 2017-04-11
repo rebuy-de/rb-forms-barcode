@@ -20,7 +20,7 @@ Target "Restore" (fun _ ->
     |> Seq.iter (RestorePackage (fun defaults ->
     {
         defaults with
-            ToolPath = (if isMono then "/usr/local/bin/nuget" else defaults.ToolPath )
+            ToolPath = (if isMono then "/Library/Frameworks/Mono.framework/Versions/Current/Commands/nuget" else defaults.ToolPath )
     }))
 )
 
