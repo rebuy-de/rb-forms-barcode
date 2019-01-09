@@ -1,5 +1,11 @@
 # Rb.Forms.Barcode
 
+##  :warning: No active maintanance
+
+Hey,
+
+sadly this project is not actively maintained anymore. As we were unhappy with the performance and extensibility of Xamarin and Xamarin.forms, [reBuy moved to native development](https://medium.com/rebuy/mobile-development-at-rebuy-moving-back-to-native-7f66bed9b882).
+
 ## What is this?
 
 Rb.Forms.Barcode is a **Xamarin.Forms view for scanning barcodes**.
