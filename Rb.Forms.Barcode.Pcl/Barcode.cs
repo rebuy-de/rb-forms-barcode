@@ -18,7 +18,8 @@ namespace Rb.Forms.Barcode.Pcl
             QrCode = 256,
             UpcA = 512,
             UpcE = 1024,
-            Pdf417 = 2048
+            Pdf417 = 2048,
+            Interleaved2of5 = 4096,
         }
 
         public BarcodeFormat Format { get; private set; }
